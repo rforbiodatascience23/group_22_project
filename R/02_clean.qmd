@@ -70,3 +70,9 @@ rows_removed <- nrow(original_df) - nrow(df)
 cat("Rows removed because of incorrect values:", rows_removed, "\n")
 ```
 
+## Writing the file
+
+```{r}
+write.table(df, file = "../data/02_dat_clean.tsv", sep = "\t", row.names = FALSE)
+```
+
