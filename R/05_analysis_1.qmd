@@ -1,0 +1,13 @@
+---
+title: "05_analysis_1"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+```{r}
+df <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+head(df)
+```
