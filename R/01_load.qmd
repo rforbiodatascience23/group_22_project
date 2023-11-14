@@ -13,3 +13,14 @@ editor: visual
 df <- read.csv("../_raw/project_data.csv")
 head(df)
 ```
+
+
+## Save loaded data
+
+```{r}
+write.table(df, file = "../data/01_dat_load.tsv", sep = "\t", row.names = FALSE)
+
+df <- read.table(file = "../data/01_dat_load.tsv", sep = "\t", header = TRUE)
+head(df)
+```
+
