@@ -77,7 +77,4 @@ df_cleaned |>
   scale_fill_viridis_d()
 ```
 =======
-Trying
 
-### 
->>>>>>> 5429f910a7241f7bcd089eb9a1a1d8ca3b8683e7
