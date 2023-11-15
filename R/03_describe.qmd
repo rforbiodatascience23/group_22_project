@@ -63,6 +63,16 @@ df_cleaned <-
     Income > 6 ~ "Wealthy"))
 ```
 
+### Physical Activity
+
+```{r}
+df_cleaned <-
+  df_cleaned |> 
+  mutate(PhysActivity = case_when(
+    PhysActivity == 0 ~ "No",
+    PhysActivity == 1 ~ "Yes"))
+```
+
 ## Plot
 
 ```{r}
@@ -73,5 +83,21 @@ df_cleaned |>
   labs(x = "BMI",
        y = "Age Group") +
   theme_minimal()+
-  scale_fill_viridis_d()
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(title = "BMI distribution over the different age groups", 
+       subtitle = "A comparison between smokers and non-smokers")
+```
+
+```{r}
+df_cleaned |> 
+  ggplot(mapping = aes(x = BMI,
+                       y = Income_Class)) +
+  geom_boxplot(aes(fill = PhysActivity),
+               outlier.shape = NA) +
+  xlim(0,60) +
+  xlab("BMI") +
+  ylab("Income Class") +
+  labs(title = "Comparison of BMI between different income classes", 
+       subtitle = "Dependance of Physical Activity")
 ```
