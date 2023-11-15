@@ -16,7 +16,7 @@ library("RColorBrewer")
 
 df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
 
-# 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
+# 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
 ```
 
 ## Rename binary variables
