@@ -6,3 +6,23 @@ format:
     embed-resources: true
 editor: visual
 ---
+
+## Load libraries and data
+
+```{r}
+library("tidyverse")
+df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+```
+
+## Rename binary variables
+
+Changing the smokers variable from binary format to categorical. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
+
+```{r}
+df_cleaned <-
+  df_cleaned |> 
+  mutate(Smoker = case_when(
+    Smoker == 0 ~ "Non-Smoker",
+    Smoker == 1 ~ "Smoker"
+  ))
+```
