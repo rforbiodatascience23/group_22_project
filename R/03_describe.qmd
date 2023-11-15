@@ -14,7 +14,7 @@ library("tidyverse")
 
 df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
 
-# 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
+# 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
 ```
 
 ## Rename binary variables
