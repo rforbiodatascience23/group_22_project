@@ -26,7 +26,7 @@ Changing the smokers variable from binary format to categorical. The value "0" w
 ```{r}
 df_cleaned <-
   df_cleaned |> 
-  mutate(Smoker = case_when(
+  mutate(Smoking_Status = case_when(
     Smoker == 0 ~ "Non-Smoker",
     Smoker == 1 ~ "Smoker"
   ))
@@ -41,18 +41,37 @@ df_cleaned <-
   df_cleaned |> 
   mutate(Age_Range = case_when(
     Age == 1 ~ "18-24",
-    Age == 2 ~ "25-29",
-    Age == 3 ~ "30-34",
-    Age == 4 ~ "35-39",
-    Age == 5 ~ "40-44",
-    Age == 6 ~ "45-49",
-    Age == 7 ~ "50-54",
-    Age == 8 ~ "55-59",
-    Age == 9 ~ "60-64",
-    Age == 10 ~ "65-69",
-    Age == 11 ~ "70-74",
-    Age == 12 ~ "75-79",
-    Age == 13 ~ "80-"))
+    Age == 2 | Age == 3 ~ "25-34",
+    Age == 4 | Age == 5 ~ "35-44",
+    Age == 6 | Age == 7 | Age == 8 ~ "45-59",
+    Age == 9 | Age == 10 | Age == 11 ~ "60-74",
+    Age == 12 | Age == 13 ~ "75-"))
 ```
 
-### 
+### Income
+
+Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.
+
+```{r}
+df_cleaned <-
+  df_cleaned |> 
+  mutate(Income_Class = case_when(
+    Income <= 3 ~ "Poor",
+    Income  > 3 & Income <= 6 ~ "Average",
+    Income > 6 ~ "Wealthy"))
+```
+
+## Plot
+
+```{r}
+  library(ggridges)
+library(RColorBrewer)
+df_cleaned |> 
+  ggplot(aes(x = BMI, y = Age_Range)) +
+  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
+  facet_wrap(~Smoking_Status)+
+  labs(x = "BMI",
+       y = "Age Group") +
+  theme_minimal()+
+  scale_fill_viridis_d()
+```
