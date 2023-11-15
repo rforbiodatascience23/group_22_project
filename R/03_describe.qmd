@@ -11,10 +11,15 @@ editor: visual
 
 ```{r}
 library("tidyverse")
+
 df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+
+# 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
 ```
 
 ## Rename binary variables
+
+### Smoking
 
 Changing the smokers variable from binary format to categorical. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
 
@@ -26,3 +31,28 @@ df_cleaned <-
     Smoker == 1 ~ "Smoker"
   ))
 ```
+
+### Age
+
+The age was changed from the 13-level age category to the corresponding range values.
+
+```{r}
+df_cleaned <-
+  df_cleaned |> 
+  mutate(Age_Range = case_when(
+    Age == 1 ~ "18-24",
+    Age == 2 ~ "25-29",
+    Age == 3 ~ "30-34",
+    Age == 4 ~ "35-39",
+    Age == 5 ~ "40-44",
+    Age == 6 ~ "45-49",
+    Age == 7 ~ "50-54",
+    Age == 8 ~ "55-59",
+    Age == 9 ~ "60-64",
+    Age == 10 ~ "65-69",
+    Age == 11 ~ "70-74",
+    Age == 12 ~ "75-79",
+    Age == 13 ~ "80-"))
+```
+
+### 
