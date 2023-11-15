@@ -7,10 +7,12 @@ format:
 editor: visual
 ---
 
-## Load libraries and data
+### Load libraries and data
 
 ```{r}
 library("tidyverse")
+library("ggridges")
+library("RColorBrewer")
 
 df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
 
@@ -48,7 +50,6 @@ df_cleaned <-
     Age == 12 | Age == 13 ~ "75-"))
 ```
 
-<<<<<<< HEAD
 ### Income
 
 Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.
@@ -65,8 +66,6 @@ df_cleaned <-
 ## Plot
 
 ```{r}
-  library(ggridges)
-library(RColorBrewer)
 df_cleaned |> 
   ggplot(aes(x = BMI, y = Age_Range)) +
   geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
@@ -76,8 +75,3 @@ df_cleaned |>
   theme_minimal()+
   scale_fill_viridis_d()
 ```
-=======
-Trying
-
-### 
->>>>>>> 5429f910a7241f7bcd089eb9a1a1d8ca3b8683e7
