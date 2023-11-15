@@ -48,6 +48,7 @@ df_cleaned <-
     Age == 12 | Age == 13 ~ "75-"))
 ```
 
+<<<<<<< HEAD
 ### Income
 
 Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.
@@ -75,3 +76,8 @@ df_cleaned |>
   theme_minimal()+
   scale_fill_viridis_d()
 ```
+=======
+Trying
+
+### 
+>>>>>>> 5429f910a7241f7bcd089eb9a1a1d8ca3b8683e7
