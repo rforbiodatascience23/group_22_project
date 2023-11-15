@@ -16,10 +16,10 @@ df_cleaned <- na.omit(df)
 rows_removed <- nrow(df) - nrow(df_cleaned)
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
+
 ```{r}
 df <- df_cleaned
 ```
-
 
 ## Checking for right type and values of each variable:
 
@@ -66,7 +66,7 @@ df <- df[df$Age %in% 1:13, ]
 df <- df[df$Education %in% 1:6, ]
 df <- df[df$Income %in% 1:8, ]
 
-rows_removed <- nrow(original_df) - nrow(df)
+rows_removed <- nrow(original_df) - nrow(df) #???
 cat("Rows removed because of incorrect values:", rows_removed, "\n")
 ```
 
@@ -75,4 +75,3 @@ cat("Rows removed because of incorrect values:", rows_removed, "\n")
 ```{r}
 write.table(df, file = "../data/02_dat_clean.tsv", sep = "\t", row.names = FALSE)
 ```
-
