@@ -18,8 +18,6 @@ str(df)
 
 ```{r}
 library(tidyverse)
-#library(ISLR)
-#library(e1071)
 ```
 
 ```{r}
@@ -96,4 +94,8 @@ cat("Accuracy:", accuracy, "\n")
 cat("Precision:", precision, "\n")
 cat("Recall:", recall, "\n")
 cat("F1 Score:", f1_score, "\n")
+```
+
+```{r}
+print("First part of the analysis made.")
 ```
