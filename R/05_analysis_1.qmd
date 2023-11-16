@@ -11,3 +11,89 @@ editor: visual
 df <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
 head(df)
 ```
+
+```{r}
+str(df)
+```
+
+```{r}
+library(tidyverse)
+#library(ISLR)
+#library(e1071)
+```
+
+```{r}
+table(df$Diabetes_binary)
+```
+
+```{r}
+table(df$Diabetes_binary) / nrow(df)
+```
+
+```{r}
+model_all = glm(data = df,
+                Diabetes_binary ~ .,
+                family = binomial)
+summary(model_all)
+```
+
+```{r}
+# Fit a full model
+full_model <- glm(Diabetes_binary ~ ., family = binomial, data = df)
+
+# Forward selection
+forward_model <- step(full_model, direction = "forward")
+
+# Backward selection
+backward_model <- step(full_model, direction = "backward")
+
+# Display summaries
+cat("Full Model Summary:\n")
+summary(full_model)
+
+cat("\nForward Selection Model Summary:\n")
+summary(forward_model)
+
+cat("\nBackward Selection Model Summary:\n")
+summary(backward_model)
+```
+
+```{r}
+# Load necessary libraries
+if (!requireNamespace("MASS", quietly = TRUE)) {
+  install.packages("MASS")
+}
+library(MASS)
+
+# Assuming df is your dataset
+# Replace "Diabetes_binary" with the name of your binary response variable
+
+# Split the data into training and testing sets
+set.seed(123)  # for reproducibility
+split_index <- sample(1:nrow(df), 0.8 * nrow(df))
+train_data <- df[split_index, ]
+test_data <- df[-split_index, ]
+
+# Fit logistic regression model
+model <- glm(Diabetes_binary ~ ., family = binomial, data = train_data)
+
+# Make predictions on the test set
+predictions <- predict(model, newdata = test_data, type = "response")
+
+# Convert probabilities to binary predictions (0 or 1)
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+# Evaluate the model performance
+confusion_matrix <- table(binary_predictions, test_data$Diabetes_binary)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+precision <- confusion_matrix[2, 2] / sum(confusion_matrix[, 2])
+recall <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Display performance metrics
+cat("Confusion Matrix:\n", confusion_matrix, "\n")
+cat("Accuracy:", accuracy, "\n")
+cat("Precision:", precision, "\n")
+cat("Recall:", recall, "\n")
+cat("F1 Score:", f1_score, "\n")
+```
