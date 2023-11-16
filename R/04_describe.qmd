@@ -1,0 +1,51 @@
+---
+title: "04_describe"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load data
+
+```{r}
+df_aug <- read.table(file = "../data/03_dat_aug.tsv", sep = "\t", header = TRUE)
+```
+
+## Visualization
+
+```{r}
+df_aug |> 
+  ggplot(aes(x = BMI, y = Age_Range)) +
+  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
+  facet_wrap(~Smoking_Status)+
+  labs(x = "BMI",
+       y = "Age Group") +
+  theme_minimal()+
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(title = "BMI distribution over the different age groups", 
+       subtitle = "A comparison between smokers and non-smokers")
+```
+
+```{r}
+df_aug |> 
+  ggplot(mapping = aes(x = BMI,
+                       y = Income_Class)) +
+  geom_boxplot(aes(fill = Physically_Active),
+               outlier.shape = NA) +
+  xlim(0,60) +
+  xlab("BMI") +
+  ylab("Income Class") +
+  labs(title = "Comparison of BMI between different income classes", 
+       subtitle = "Dependance of Physical Activity")
+```
+
+```{r}
+df_aug |> 
+  ggplot(mapping = aes(x = Habits,
+                       fill = Sex)) +
+  geom_bar(aes(fill = Sex)) +
+  facet_wrap(~Diabetes_Status)
+```

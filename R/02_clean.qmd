@@ -1,5 +1,5 @@
 ---
-title: "01_load"
+title: "02_clean"
 author: "group22"
 format:
   html:
@@ -10,16 +10,19 @@ editor: visual
 ## Checking for missing values
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", sep = "\t", header = TRUE)
+df <- read.table(file = "../data/01_dat_load.tsv", 
+                 sep = "\t", 
+                 header = TRUE)
 
 df_cleaned <- na.omit(df)
 rows_removed <- nrow(df) - nrow(df_cleaned)
+
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
+
 ```{r}
 df <- df_cleaned
 ```
-
 
 ## Checking for right type and values of each variable:
 
@@ -29,7 +32,9 @@ print(column_types)
 ```
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", sep = "\t", header = TRUE)
+df <- read.table(file = "../data/01_dat_load.tsv", 
+                 sep = "\t", 
+                 header = TRUE)
 
 
 
@@ -39,7 +44,7 @@ remove_incorrect_rows <- function(df, column_name, correct_values) {
   return(df)
 }
 
-
+original_df <- df
 
 # Apply the function to each column
 df <- remove_incorrect_rows(df, "Diabetes_binary", c(0, 1, 2))
@@ -75,4 +80,3 @@ cat("Rows removed because of incorrect values:", rows_removed, "\n")
 ```{r}
 write.table(df, file = "../data/02_dat_clean.tsv", sep = "\t", row.names = FALSE)
 ```
-

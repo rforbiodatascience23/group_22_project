@@ -1,0 +1,144 @@
+---
+title: "03_augment"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load Data
+
+```{r}
+df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+```
+
+## Adding new variables
+
+### Smoking
+
+Changing the smokers variable from binary format to categorical. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
+
+```{r}
+df_aug <-
+  df_cleaned |> 
+  mutate(Smoking_Status = case_when(
+    Smoker == 0 ~ "Non-Smoker",
+    Smoker == 1 ~ "Smoker"
+  ))
+```
+
+### Diabetes
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Diabetes_Status = case_when(
+    Diabetes_binary == 0 ~ "Non-Diabetic",
+    Diabetes_binary == 1 ~ "Diabetic"),
+    .keep = "unused")
+```
+
+### Gender
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Sex = case_when(
+    Sex == 0 ~ "Female",
+    Sex == 1 ~ "Male"))
+```
+
+### Age
+
+The age was changed from the 13-level age category to the corresponding range values.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Age_Range = case_when(
+    Age == 1 ~ "18-24",
+    Age == 2 | Age == 3 ~ "25-34",
+    Age == 4 | Age == 5 ~ "35-44",
+    Age == 6 | Age == 7 | Age == 8 ~ "45-59",
+    Age == 9 | Age == 10 | Age == 11 ~ "60-74",
+    Age == 12 | Age == 13 ~ "75-"))
+```
+
+### Income
+
+Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Income_Class = case_when(
+    Income <= 3 ~ "Poor",
+    Income  > 3 & Income <= 6 ~ "Average",
+    Income > 6 ~ "Wealthy"))
+```
+
+### Physical Activity
+
+This variable transforms the "PhysActivity" from binary to categorical.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Physically_Active = case_when(
+    PhysActivity == 0 ~ "No",
+    PhysActivity == 1 ~ "Yes"))
+```
+
+### Habits
+
+One variable that should be added is habits, a categorical variable that describes whether the lifestyle of the individual is healthy or not. This depends on many variables, namely Smoking, Alcohol consumption, Fruits and Veggies consumption and Physical Activity. For the first 2, we assigned -1 point, while for the latter 3, we assigned +1 respectively. A high score indicates a healthy lifestyle, a medium one indicates an average lifestyle, while a low score indicates an unhealthy one.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Habit_Score = Veggies + Fruits + PhysActivity - Smoker - HvyAlcoholConsump) |> 
+  mutate(Habits = case_when(
+    Habit_Score < 0 ~ "Unhealthy",
+    Habit_Score >= 0 & Habit_Score < 2 ~ "Average",
+    Habit_Score >= 2 ~ "Healthy"),
+    .keep = "unused")
+```
+
+### Health risk
+
+The health risk depends on the prevalence of a heart attack/disease, stroke, high BP and high cholesterol. This variable weights the heart disease and stroke variables more than the others.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Risk_Score = HighBP + HighChol + 2*Stroke + 2*HeartDiseaseorAttack) |> 
+  mutate(Health_Risk = case_when(
+    Risk_Score < 2 ~ "Low Risk",
+    Risk_Score >= 2 & Risk_Score < 4 ~ "Medium Risk",
+    Risk_Score >= 4 ~ "High Risk"),
+    .keep = "unused")
+```
+
+### Socio-economical Class
+
+At first we created a binary variable for the educational background. 0 refers to individuals who didn't attend school or attend school and didn't graduate high-school, while 1 refers to those who graduated high school and maybe received higher education.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Education_binary = case_when(
+    Education < 4 ~ 0,
+    Education >= 4 ~ 1)) |> 
+  mutate(SE_Score = Income + AnyHealthcare + Education_binary + PhysActivity) |> 
+  mutate(SE_Background = case_when(
+    SE_Score < 6 ~ "Lower Class",
+    SE_Score >= 6 ~ "Higher Class"),
+    .keep = "unused")
+```
+
+## Writing the file
+
+```{r}
+write.table(df_aug, file = "../data/03_dat_aug.tsv", sep = "\t", row.names = FALSE)
+```
