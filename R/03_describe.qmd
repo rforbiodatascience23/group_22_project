@@ -68,7 +68,7 @@ df_cleaned <-
 ```{r}
 df_cleaned <-
   df_cleaned |> 
-  mutate(PhysActivity = case_when(
+  mutate(Physically_Active = case_when(
     PhysActivity == 0 ~ "No",
     PhysActivity == 1 ~ "Yes"))
 ```
@@ -93,7 +93,7 @@ df_cleaned |>
 df_cleaned |> 
   ggplot(mapping = aes(x = BMI,
                        y = Income_Class)) +
-  geom_boxplot(aes(fill = PhysActivity),
+  geom_boxplot(aes(fill = Physically_Active),
                outlier.shape = NA) +
   xlim(0,60) +
   xlab("BMI") +
