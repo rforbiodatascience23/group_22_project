@@ -7,13 +7,9 @@ format:
 editor: visual
 ---
 
-## Load libraries and data
+## Load data
 
 ```{r}
-library("tidyverse")
-library("ggridges")
-library("RColorBrewer")
-
 df_aug <- read.table(file = "../data/03_dat_aug.tsv", sep = "\t", header = TRUE)
 ```
 

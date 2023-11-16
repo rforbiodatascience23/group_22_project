@@ -10,10 +10,13 @@ editor: visual
 ## Checking for missing values
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", sep = "\t", header = TRUE)
+df <- read.table(file = "../data/01_dat_load.tsv", 
+                 sep = "\t", 
+                 header = TRUE)
 
 df_cleaned <- na.omit(df)
 rows_removed <- nrow(df) - nrow(df_cleaned)
+
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
 
@@ -29,7 +32,9 @@ print(column_types)
 ```
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", sep = "\t", header = TRUE)
+df <- read.table(file = "../data/01_dat_load.tsv", 
+                 sep = "\t", 
+                 header = TRUE)
 
 
 

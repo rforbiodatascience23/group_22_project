@@ -7,11 +7,9 @@ format:
 editor: visual
 ---
 
-## Load libraries and Data
+## Load Data
 
 ```{r}
-library("tidyverse")
-
 df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
 ```
 
