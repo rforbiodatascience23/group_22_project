@@ -1,0 +1,16 @@
+---
+title: "00_all"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load Libraries
+
+```{r}
+library("tidyverse")
+library("ggridges")
+library("RColorBrewer")
+```
