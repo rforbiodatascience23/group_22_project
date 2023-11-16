@@ -82,8 +82,8 @@ df_aug <-
   mutate(Habits = case_when(
     Habit_Score < 0 ~ "Unhealthy",
     Habit_Score >= 0 & Habit_Score < 2 ~ "Average",
-    Habit_Score >= 2 ~ "Healthy"
-  ))
+    Habit_Score >= 2 ~ "Healthy"),
+    .keep = "unused")
 ```
 
 ### Health risk
@@ -97,8 +97,25 @@ df_aug <-
   mutate(Health_Risk = case_when(
     Risk_Score < 2 ~ "Low Risk",
     Risk_Score >= 2 & Risk_Score < 4 ~ "Medium Risk",
-    Risk_Score >= 4 ~ "High Risk"
-  ))
+    Risk_Score >= 4 ~ "High Risk"),
+    .keep = "unused")
+```
+
+### Socio-economical Class
+
+At first we created a binary variable for the educational background. 0 refers to individuals who didn't attend school or attend school and didn't graduate high-school, while 1 refers to those who graduated high school and maybe received higher education.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Education_binary = case_when(
+    Education < 4 ~ 0,
+    Education >= 4 ~ 1)) |> 
+  mutate(SE_Score = Income + AnyHealthcare + Education_binary + PhysActivity) |> 
+  mutate(SE_Background = case_when(
+    SE_Score < 6 ~ "Lower Class",
+    SE_Score >= 6 ~ "Higher Class"),
+    .keep = "unused")
 ```
 
 ## Writing the file
