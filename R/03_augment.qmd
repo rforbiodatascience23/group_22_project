@@ -28,6 +28,27 @@ df_aug <-
   ))
 ```
 
+### Diabetes
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Diabetes_Status = case_when(
+    Diabetes_binary == 0 ~ "Non-Diabetic",
+    Diabetes_binary == 1 ~ "Diabetic"),
+    .keep = "unused")
+```
+
+### Gender
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Sex = case_when(
+    Sex == 0 ~ "Female",
+    Sex == 1 ~ "Male"))
+```
+
 ### Age
 
 The age was changed from the 13-level age category to the corresponding range values.
