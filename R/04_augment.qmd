@@ -29,3 +29,18 @@ df_cleaned <-
     Habit_Score >= 2 ~ "Healthy"
   ))
 ```
+
+### Health risk
+
+The health risk depends on the prevalence of a heart attack/disease, stroke, high BP and high cholesterol. This variable weights the heart disease and stroke variables more than the others.
+
+```{r}
+df_cleaned <-
+  df_cleaned |> 
+  mutate(Risk_Score = HighBP + HighChol + 2*Stroke + 2*HeartDiseaseorAttack) |> 
+  mutate(Health_Risk = case_when(
+    Risk_Score < 2 ~ "Low Risk",
+    Risk_Score >= 2 & Risk_Score < 4 ~ "Medium Risk",
+    Risk_Score >= 4 ~ "High Risk"
+  ))
+```
