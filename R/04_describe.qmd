@@ -7,7 +7,7 @@ format:
 editor: visual
 ---
 
-### Load libraries and data
+## Load libraries and data
 
 ```{r}
 library("tidyverse")
