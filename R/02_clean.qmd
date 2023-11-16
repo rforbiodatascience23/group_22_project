@@ -44,7 +44,7 @@ remove_incorrect_rows <- function(df, column_name, correct_values) {
   return(df)
 }
 
-
+original_df <- df
 
 # Apply the function to each column
 df <- remove_incorrect_rows(df, "Diabetes_binary", c(0, 1, 2))
@@ -71,7 +71,7 @@ df <- df[df$Age %in% 1:13, ]
 df <- df[df$Education %in% 1:6, ]
 df <- df[df$Income %in% 1:8, ]
 
-rows_removed <- nrow(original_df) - nrow(df) #???
+rows_removed <- nrow(original_df) - nrow(df)
 cat("Rows removed because of incorrect values:", rows_removed, "\n")
 ```
 
