@@ -17,13 +17,8 @@ head(df)
 ## Save loaded data
 
 ```{r}
-write.table(df, file = "../data/01_dat_load.tsv", 
-            sep = "\t", 
-            row.names = FALSE)
+write_tsv(df, "../data/01_dat_load.tsv")
 
-df <- read.table(file = "../data/01_dat_load.tsv", 
-                 sep = "\t", 
-                 header = TRUE)
-
+df <- read_tsv("../data/01_dat_load.tsv")
 head(df)
 ```

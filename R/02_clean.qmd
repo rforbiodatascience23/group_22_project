@@ -7,76 +7,60 @@ format:
 editor: visual
 ---
 
+```{r}
+library(tidyverse)
+```
+
 ## Checking for missing values
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", 
-                 sep = "\t", 
-                 header = TRUE)
+df <- read_tsv("../data/01_dat_load.tsv")
 
-df_cleaned <- na.omit(df)
+df_cleaned <- df |> drop_na()
 rows_removed <- nrow(df) - nrow(df_cleaned)
-
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
-
-```{r}
-df <- df_cleaned
-```
-
 ## Checking for right type and values of each variable:
 
 ```{r}
-column_types <- sapply(df, class)
+column_types <- df_cleaned |> summarise(across(everything(), class))
 print(column_types)
 ```
 
 ```{r}
-df <- read.table(file = "../data/01_dat_load.tsv", 
-                 sep = "\t", 
-                 header = TRUE)
-
-
-
-# Define a function to remove rows with incorrect values
-remove_incorrect_rows <- function(df, column_name, correct_values) {
-  df <- df[df[[column_name]] %in% correct_values, ]
-  return(df)
-}
-
-original_df <- df
+original_df <- df_cleaned
 
 # Apply the function to each column
-df <- remove_incorrect_rows(df, "Diabetes_binary", c(0, 1, 2))
-df <- remove_incorrect_rows(df, "HighBP", c(0, 1))
-df <- remove_incorrect_rows(df, "HighChol", c(0, 1))
-df <- remove_incorrect_rows(df, "CholCheck", c(0, 1))
-df <- df[df$BMI > 0, ] # Assuming BMI should be a positive value
-df <- remove_incorrect_rows(df, "Smoker", c(0, 1))
-df <- remove_incorrect_rows(df, "Stroke", c(0, 1))
-df <- remove_incorrect_rows(df, "HeartDiseaseorAttack", c(0, 1))
-df <- remove_incorrect_rows(df, "PhysActivity", c(0, 1))
-df <- remove_incorrect_rows(df, "Fruits", c(0, 1))
-df <- remove_incorrect_rows(df, "Veggies", c(0, 1))
-df <- remove_incorrect_rows(df, "HvyAlcoholConsump", c(0, 1))
-df <- remove_incorrect_rows(df, "AnyHealthcare", c(0, 1))
-df <- remove_incorrect_rows(df, "NoDocbcCost", c(0, 1))
-df <- df[df$GenHlth %in% 1:5, ]
-df <- df[df$MentHlth %in% 0:30, ]
-df <- df[df$PhysHlth %in% 0:30, ]
-df <- remove_incorrect_rows(df, "DiffWalk", c(0, 1))
-df <- remove_incorrect_rows(df, "Sex", c(0, 1))
-df <- remove_incorrect_rows(df, "Sex", c(0, 1))
-df <- df[df$Age %in% 1:13, ]
-df <- df[df$Education %in% 1:6, ]
-df <- df[df$Income %in% 1:8, ]
+df_cleaned <- df_cleaned |>
+  filter(Diabetes_binary %in% c(0, 1, 2),
+         HighBP %in% c(0, 1),
+         HighChol %in% c(0, 1),
+         CholCheck %in% c(0, 1),
+         BMI > 0,
+         Smoker %in% c(0, 1),
+         Stroke %in% c(0, 1),
+         HeartDiseaseorAttack %in% c(0, 1),
+         PhysActivity %in% c(0, 1),
+         Fruits %in% c(0, 1),
+         Veggies %in% c(0, 1),
+         HvyAlcoholConsump %in% c(0, 1),
+         AnyHealthcare %in% c(0, 1),
+         NoDocbcCost %in% c(0, 1),
+         GenHlth %in% 1:5,
+         MentHlth %in% 0:30,
+         PhysHlth %in% 0:30,
+         DiffWalk %in% c(0, 1),
+         Sex %in% c(0, 1),
+         Age %in% 1:13,
+         Education %in% 1:6,
+         Income %in% 1:8)
 
-rows_removed <- nrow(original_df) - nrow(df)
-cat("Rows removed because of incorrect values:", rows_removed, "\n")
+rows_removed_after_filter <- nrow(original_df) - nrow(df_cleaned)
+cat("Rows removed because of incorrect values:", rows_removed_after_filter, "\n")
 ```
 
 ## Writing the file
 
 ```{r}
-write.table(df, file = "../data/02_dat_clean.tsv", sep = "\t", row.names = FALSE)
+write_tsv(df, "../data/02_dat_clean.tsv")
 ```
