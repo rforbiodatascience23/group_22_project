@@ -46,6 +46,9 @@ df_aug |>
 df_aug |> 
   ggplot(mapping = aes(x = Habits,
                        fill = Sex)) +
-  geom_bar(aes(fill = Sex)) +
-  facet_wrap(~Diabetes_Status)
+  geom_bar(position = position_dodge()) +
+  facet_wrap(~Diabetes_Status) +
+  ylab("Count") +
+  labs(title = "Comparison of BMI between different income classes", 
+       subtitle = "Dependance of Physical Activity")
 ```
