@@ -20,6 +20,7 @@ df_cleaned <- df |> drop_na()
 rows_removed <- nrow(df) - nrow(df_cleaned)
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
+
 ## Checking for right type and values of each variable:
 
 ```{r}

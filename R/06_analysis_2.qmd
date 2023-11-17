@@ -1,5 +1,5 @@
 ---
-title: "05_analysis_1"
+title: "06_analysis_2"
 author: "group22"
 format:
   html:
@@ -8,7 +8,10 @@ editor: visual
 ---
 
 ```{r}
-df <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+df <- read.table(file = "../data/02_dat_clean.tsv", 
+                 sep = "\t", 
+                 header = TRUE)
+
 head(df)
 ```
 
