@@ -35,8 +35,7 @@ df_aug <-
   df_aug |> 
   mutate(Diabetes_Status = case_when(
     Diabetes_binary == 0 ~ "Non-Diabetic",
-    Diabetes_binary == 1 ~ "Diabetic"),
-    .keep = "unused")
+    Diabetes_binary == 1 ~ "Diabetic"))
 ```
 
 ### Gender
