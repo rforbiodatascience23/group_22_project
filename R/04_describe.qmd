@@ -49,6 +49,6 @@ df_aug |>
   geom_bar(position = position_dodge()) +
   facet_wrap(~Diabetes_Status) +
   ylab("Count") +
-  labs(title = "Comparison of BMI between different income classes", 
-       subtitle = "Dependance of Physical Activity")
+  labs(title = "The distribution of habits among individuals", 
+       subtitle = "Comparison between 2 genders")
 ```
