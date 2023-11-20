@@ -101,10 +101,6 @@ print(variance_df)
 ```
 
 ```{r}
-biplot(pca_result)
-```
-
-```{r}
 # Assuming you have performed PCA and selected the desired number of components
 # Let's assume you have selected 5 components, update accordingly
 num_components <- 11
@@ -183,56 +179,4 @@ cat("Accuracy:", accuracy, "\n")
 cat("Precision:", precision, "\n")
 cat("Recall:", recall, "\n")
 cat("F1 Score:", f1, "\n")
-```
-
-```{r}
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
-
-# Calculate the correlation matrix for all variables
-cor_matrix <- cor(df)
-
-# Print the correlation matrix
-print("Correlation Matrix:")
-print(cor_matrix)
-
-# Visualize the correlation matrix as a heatmap
-library(ggplot2)
-ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill = Freq)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-```{r}
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
-# Assume 'Diabetes_binary' is the outcome variable (0 or 1)
-
-# Load necessary libraries
-library(stats)
-
-# Numeric variables for t-tests
-numeric_vars <- c("HighBP", "HighChol")  # Replace with actual numeric variables
-
-# Split the data into diabetic and non-diabetic groups
-diabetic_group <- df[df$Diabetes_binary == 1, ]
-non_diabetic_group <- df[df$Diabetes_binary == 0, ]
-
-# Perform t-tests for numeric variables
-numeric_results <- lapply(numeric_vars, function(var) {
-  t_test_result <- t.test(diabetic_group[[var]], non_diabetic_group[[var]])
-  return(data.frame(
-    Variable = var,
-    Mean_Diabetic = mean(diabetic_group[[var]]),
-    Mean_NonDiabetic = mean(non_diabetic_group[[var]]),
-    P_Value = t_test_result$p.value
-  ))
-})
-
-# Print the comparison results
-print("Comparison of Groups:")
-print(numeric_results)
-
 ```

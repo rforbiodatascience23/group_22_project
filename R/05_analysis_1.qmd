@@ -24,9 +24,44 @@ library(tidyverse)
 table(df$Diabetes_binary)
 ```
 
+# CORRELATION
+
 ```{r}
-table(df$Diabetes_binary) / nrow(df)
+df_numeric <- df[sapply(df, is.numeric)]
 ```
+
+```{r}
+# Calculate the correlation matrix for all numeric variables
+cor_matrix <- cor(df_numeric, use = "pairwise.complete.obs")
+
+# Print the correlation matrix
+print("Correlation Matrix:")
+print(cor_matrix)
+```
+
+```{r}
+# Visualize the correlation matrix as a heatmap
+library(ggplot2)
+ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Assuming your correlation matrix is stored in 'cor_matrix'
+
+# Exclude the diagonals
+diag(cor_matrix) <- 0
+
+# Identify strongly correlated pairs
+strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.4 | Freq < -0.4)
+print("Strong Correlations:")
+print(strong_correlations)
+```
+
+# GENERAL MODEL WITH ALL VARIABLES
 
 ```{r}
 model_all = glm(data = df,
@@ -54,48 +89,4 @@ summary(forward_model)
 
 cat("\nBackward Selection Model Summary:\n")
 summary(backward_model)
-```
-
-```{r}
-# Load necessary libraries
-if (!requireNamespace("MASS", quietly = TRUE)) {
-  install.packages("MASS")
-}
-library(MASS)
-
-# Assuming df is your dataset
-# Replace "Diabetes_binary" with the name of your binary response variable
-
-# Split the data into training and testing sets
-set.seed(123)  # for reproducibility
-split_index <- sample(1:nrow(df), 0.8 * nrow(df))
-train_data <- df[split_index, ]
-test_data <- df[-split_index, ]
-
-# Fit logistic regression model
-model <- glm(Diabetes_binary ~ ., family = binomial, data = train_data)
-
-# Make predictions on the test set
-predictions <- predict(model, newdata = test_data, type = "response")
-
-# Convert probabilities to binary predictions (0 or 1)
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-# Evaluate the model performance
-confusion_matrix <- table(binary_predictions, test_data$Diabetes_binary)
-accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
-precision <- confusion_matrix[2, 2] / sum(confusion_matrix[, 2])
-recall <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])
-f1_score <- 2 * (precision * recall) / (precision + recall)
-
-# Display performance metrics
-cat("Confusion Matrix:\n", confusion_matrix, "\n")
-cat("Accuracy:", accuracy, "\n")
-cat("Precision:", precision, "\n")
-cat("Recall:", recall, "\n")
-cat("F1 Score:", f1_score, "\n")
-```
-
-```{r}
-print("First part of the analysis made. I need to change more things.")
 ```
