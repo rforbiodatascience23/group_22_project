@@ -8,7 +8,7 @@ editor: visual
 ---
 
 ```{r}
-df <- read_tsv("../data/02_dat_clean.tsv")
+df <- read_tsv("../data/03_dat_aug.tsv")
 head(df)
 ```
 
@@ -56,7 +56,7 @@ ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill 
 diag(cor_matrix) <- 0
 
 # Identify strongly correlated pairs
-strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.4 | Freq < -0.4)
+strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.45 | Freq < -0.45)
 print("Strong Correlations:")
 print(strong_correlations)
 ```
@@ -64,7 +64,7 @@ print(strong_correlations)
 # GENERAL MODEL WITH ALL VARIABLES
 
 ```{r}
-model_all = glm(data = df,
+model_all = glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
 summary(model_all)
