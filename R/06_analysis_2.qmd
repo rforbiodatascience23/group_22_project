@@ -8,9 +8,7 @@ editor: visual
 ---
 
 ```{r}
-df <- read.table(file = "../data/02_dat_clean.tsv", 
-                 sep = "\t", 
-                 header = TRUE)
+df <- read_tsv("../data/02_dat_clean.tsv")
 
 head(df)
 ```

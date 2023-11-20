@@ -10,7 +10,7 @@ editor: visual
 ## Load data
 
 ```{r}
-df_aug <- read.table(file = "../data/03_dat_aug.tsv", sep = "\t", header = TRUE)
+df_aug <- read_tsv("../data/03_dat_aug.tsv")
 ```
 
 ## Visualization
@@ -46,6 +46,9 @@ df_aug |>
 df_aug |> 
   ggplot(mapping = aes(x = Habits,
                        fill = Sex)) +
-  geom_bar(aes(fill = Sex)) +
-  facet_wrap(~Diabetes_Status)
+  geom_bar(position = position_dodge()) +
+  facet_wrap(~Diabetes_Status) +
+  ylab("Count") +
+  labs(title = "The distribution of habits among individuals", 
+       subtitle = "Comparison between 2 genders")
 ```

@@ -10,7 +10,7 @@ editor: visual
 ## Load Data
 
 ```{r}
-df_cleaned <- read.table(file = "../data/02_dat_clean.tsv", sep = "\t", header = TRUE)
+df_cleaned <- read_tsv("../data/02_dat_clean.tsv")
 ```
 
 ## Adding new variables
