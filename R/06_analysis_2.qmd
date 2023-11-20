@@ -278,3 +278,7 @@ accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
+
+```{r}
+str(selected_components)
+```
