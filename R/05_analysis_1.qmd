@@ -31,16 +31,13 @@ df_numeric <- df[sapply(df, is.numeric)]
 ```
 
 ```{r}
-# Calculate the correlation matrix for all numeric variables
 cor_matrix <- cor(df_numeric, use = "pairwise.complete.obs")
 
-# Print the correlation matrix
 print("Correlation Matrix:")
 print(cor_matrix)
 ```
 
 ```{r}
-# Visualize the correlation matrix as a heatmap
 library(ggplot2)
 ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill = Freq)) +
   geom_tile() +
@@ -50,10 +47,8 @@ ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill 
 ```
 
 ```{r}
-# Exclude the diagonals
 diag(cor_matrix) <- 0
 
-# Identify strongly correlated pairs
 strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.45 | Freq < -0.45)
 print("Strong Correlations:")
 print(strong_correlations)
@@ -69,13 +64,10 @@ summary(model_all)
 ```
 
 ```{r}
-# Forward selection
 forward_model <- step(model_all, direction = "forward")
 
-# Backward selection
 backward_model <- step(model_all, direction = "backward")
 
-# Display summaries
 cat("\nForward Selection Model Summary:\n")
 summary(forward_model)
 
@@ -84,35 +76,28 @@ summary(backward_model)
 ```
 
 ```{r}
-# AIC for full model
 AIC_full <- AIC(model_all)
 
-# AIC for forward model
 AIC_forward <- AIC(forward_model)
 
-# AIC for backward model
 AIC_backward <- AIC(backward_model)
 
-# Print AIC values
 cat("AIC for Full Model:", AIC_full, "\n")
 cat("AIC for Forward Model:", AIC_forward, "\n")
 cat("AIC for Backward Model:", AIC_backward, "\n")
 ```
 
 ```{r}
-# Count the number of selected variables
 count_selected_variables <- function(model) {
   return(sum(coefficients(model) != 0))
 }
 
-# Function to print selected variables
 print_selected_variables <- function(model, model_name) {
   selected_variables <- names(coefficients(model)[coefficients(model) != 0])
   cat("Number of Variables selected by", model_name, ":", length(selected_variables), "\n")
   cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
 }
 
-# Count and print selected variables for each model
 count_full_model <- count_selected_variables(model_all)
 count_forward_model <- count_selected_variables(forward_model)
 count_backward_model <- count_selected_variables(backward_model)
@@ -121,7 +106,6 @@ print_selected_variables(model_all, "Full Model")
 print_selected_variables(forward_model, "Forward Model")
 print_selected_variables(backward_model, "Backward Model")
 
-# Print the counts
 cat("Count of Variables selected by Full Model:", count_full_model, "\n")
 cat("Count of Variables selected by Forward Model:", count_forward_model, "\n")
 cat("Count of Variables selected by Backward Model:", count_backward_model, "\n")

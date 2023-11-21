@@ -14,23 +14,23 @@ head(df)
 ```
 
 ```{r}
-sapply(df,class) # Checking the class of every variable of the dataset
-numeriques <- which(sapply(df,is.numeric)) # Creating a vector containing the column index of the dataset's numeric variables
+sapply(df,class)
+numeriques <- which(sapply(df,is.numeric))
 numeriques
 ```
 
 ```{r}
-df_num = df[,numeriques] # Taking the numerical values of the data set.
+df_num = df[,numeriques]
 ```
 
-# PCA of the blog
+# PCA
 
 ```{r}
 library(tidyverse)
 
 pca_fit <- df |> 
-  select_if(where(is.numeric)) |> # retain only numeric columns
-  prcomp(scale = TRUE) # do PCA on scaled data
+  select_if(where(is.numeric)) |>
+  prcomp(scale = TRUE)
 ```
 
 ```{r}
@@ -46,25 +46,22 @@ df_augmented <- augment(pca_fit, df)
 ggplot(df_augmented, aes(.fittedPC1, .fittedPC2, color = Diabetes_Status)) + 
   geom_point(size = 1.5) +
   scale_color_manual(
-    values = c("Non-diabetic" = "#D55E00", "Diabetic" = "#0072B2")
+    values = c("Non-Diabetic" = "#D55E00", "Diabetic" = "#0072B2")
   ) +
-  theme_minimal() + # Change this to an appropriate theme
+  theme_minimal() +
   background_grid()
 ```
 
 ```{r}
-# extract rotation matrix
 pca_fit |>
   tidy(matrix = "rotation")
 ```
 
 ```{r}
-# define arrow style for plotting
 arrow_style <- arrow(
   angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
 )
 
-# plot rotation matrix
 pca_fit |>
   tidy(matrix = "rotation") |>
   pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") |>
@@ -76,7 +73,7 @@ pca_fit |>
     color = "#904C2F"
   ) +
   xlim(-1.25, .5) + ylim(-.5, 1) +
-  coord_fixed() + # fix aspect ratio to 1:1
+  coord_fixed() +
   theme_minimal_grid(12)
 ```
 
@@ -99,13 +96,11 @@ pca_fit |>
 ```
 
 ```{r}
-# Cumulative variance plot
 plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
      xlab = "Number of Principal Components",
      ylab = "Cumulative Proportion of Variance Explained",
      type = "b")
 
-# Agregar líneas horizontales en el 70%, 75%, y 80%
 abline(h = 0.7, col = "red", lty = 2)
 abline(h = 0.75, col = "blue", lty = 2)
 abline(h = 0.8, col = "green", lty = 2)
@@ -116,39 +111,27 @@ abline(h = 0.8, col = "green", lty = 2)
 ### With all the variables (numeric)
 
 ```{r}
-# Load necessary libraries
 library(stats)
 
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
-
-# Set seed for reproducibility
 set.seed(123)
 
-# Split the data into training and testing sets without using caTools
 split <- sample(1:nrow(df_num), 0.7 * nrow(df_num))
 train_data <- df_num[split, ]
 test_data <- df_num[-split, ]
 
-# Train a logistic regression model
 model <- glm(Diabetes_binary ~ ., family = "binomial", data = train_data)
 
-# Make predictions on the test set
 predictions <- predict(model, newdata = test_data, type = "response")
 
-# Convert probabilities to binary predictions (0 or 1)
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-# Evaluate the model without using Metrics library
 conf_matrix <- table(binary_predictions, test_data$Diabetes_binary)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-# Calculate precision, recall, and F1 score
 precision <- conf_matrix[2, 2] / sum(conf_matrix[, 2])
 recall <- conf_matrix[2, 2] / sum(conf_matrix[2, ])
 f1 <- 2 * (precision * recall) / (precision + recall)
 
-# Print evaluation metrics
 cat("Confusion Matrix:\n", conf_matrix, "\n\n")
 cat("Accuracy:", accuracy, "\n")
 cat("Precision:", precision, "\n")
@@ -159,40 +142,29 @@ cat("F1 Score:", f1, "\n")
 ### With the selected components that achieve the 70%. (11)
 
 ```{r}
-# Assuming you have performed PCA and selected the desired number of components
 num_components <- 11
 
-# Use the selected components for training the model
 selected_components <- pca_fit$x[, 1:num_components]
 
-# Assuming your outcome variable is 'Diabetes_binary' and it's binary (0 or 1)
-# Replace 'Diabetes_binary' with the actual name of your outcome variable
 outcome_variable <- df$Diabetes_binary
 
-# Split the data into training and testing sets
-set.seed(123)  # for reproducibility
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))  # 70% for training
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
 
-# Create training and testing sets
 train_data <- selected_components[train_indices, ]
 train_outcome <- outcome_variable[train_indices]
 test_data <- selected_components[-train_indices, ]
 test_outcome <- outcome_variable[-train_indices]
 
-# Train a logistic regression model
 model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
 
- # Make predictions on the test set
 predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
 
-# Convert probabilities to binary predictions (0 or 1)
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-# Evaluate the model
 conf_matrix <- table(binary_predictions, test_outcome)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-# Print the confusion matrix and accuracy
 print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
@@ -200,40 +172,29 @@ cat("Accuracy:", accuracy, "\n")
 ### With the selected components that achieve the 75%. (13)
 
 ```{r}
-# Assuming you have performed PCA and selected the desired number of components
 num_components <- 13
 
-# Use the selected components for training the model
 selected_components <- pca_fit$x[, 1:num_components]
 
-# Assuming your outcome variable is 'Diabetes_binary' and it's binary (0 or 1)
-# Replace 'Diabetes_binary' with the actual name of your outcome variable
 outcome_variable <- df$Diabetes_binary
 
-# Split the data into training and testing sets
-set.seed(123)  # for reproducibility
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))  # 70% for training
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
 
-# Create training and testing sets
 train_data <- selected_components[train_indices, ]
 train_outcome <- outcome_variable[train_indices]
 test_data <- selected_components[-train_indices, ]
 test_outcome <- outcome_variable[-train_indices]
 
-# Train a logistic regression model
 model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
 
- # Make predictions on the test set
 predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
 
-# Convert probabilities to binary predictions (0 or 1)
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-# Evaluate the model
 conf_matrix <- table(binary_predictions, test_outcome)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-# Print the confusion matrix and accuracy
 print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
@@ -241,40 +202,29 @@ cat("Accuracy:", accuracy, "\n")
 ### With the selected components that achieve the 80%. (14)
 
 ```{r}
-# Assuming you have performed PCA and selected the desired number of components
 num_components <- 14
 
-# Use the selected components for training the model
 selected_components <- pca_fit$x[, 1:num_components]
 
-# Assuming your outcome variable is 'Diabetes_binary' and it's binary (0 or 1)
-# Replace 'Diabetes_binary' with the actual name of your outcome variable
 outcome_variable <- df$Diabetes_binary
 
-# Split the data into training and testing sets
-set.seed(123)  # for reproducibility
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))  # 70% for training
+set.seed(123) 
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
 
-# Create training and testing sets
 train_data <- selected_components[train_indices, ]
 train_outcome <- outcome_variable[train_indices]
 test_data <- selected_components[-train_indices, ]
 test_outcome <- outcome_variable[-train_indices]
 
-# Train a logistic regression model
 model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
 
- # Make predictions on the test set
 predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
 
-# Convert probabilities to binary predictions (0 or 1)
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-# Evaluate the model
 conf_matrix <- table(binary_predictions, test_outcome)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-# Print the confusion matrix and accuracy
 print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
