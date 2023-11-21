@@ -50,8 +50,6 @@ ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill 
 ```
 
 ```{r}
-# Assuming your correlation matrix is stored in 'cor_matrix'
-
 # Exclude the diagonals
 diag(cor_matrix) <- 0
 
@@ -72,7 +70,7 @@ summary(model_all)
 
 ```{r}
 # Fit a full model
-full_model <- glm(Diabetes_binary ~ ., family = binomial, data = df)
+full_model <- glm(Diabetes_binary ~ ., family = binomial, data = df_numeric)
 
 # Forward selection
 forward_model <- step(full_model, direction = "forward")
