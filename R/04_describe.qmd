@@ -15,7 +15,7 @@ df_aug <- read_tsv("../data/03_dat_aug.tsv")
 
 ## Visualization
 
-1.  The distribution of BMI in the different age groups, including a comparison between smokers and non-smokers.
+1.  **The distribution of BMI in the different age groups, including a comparison between smokers and non-smokers.**
 
 ```{r}
 df_aug |> 
@@ -31,7 +31,9 @@ df_aug |>
        subtitle = "A comparison between smokers and non-smokers")
 ```
 
-2.  Comparison of BMI between income classes, divided into individuals with and without physical activity.
+As it is illustrated from the plot above, smoking status affects mostly the youngest age groups, namely 18-24 and 25-34, where it is shown that smokers have a generally higher BMI than the non-smokers. For the other age groups, the behavior is almost the same between smokers and non-smokers, so smoking doesn't appear as a main factor influencing BMI for individuals over 35. However, the general tendency is that BMI increases over the age, as it can be seen by the peak.
+
+2.  **Comparison of BMI between income classes, divided into individuals with and without physical activity.**
 
 ```{r}
 df_aug |> 
@@ -47,7 +49,7 @@ df_aug |>
        subtitle = "Red: No Physical Activity, Blue: Physical Activity")
 ```
 
-3.  Distribution of habits among individuals between genders
+3.  **Distribution of habits among individuals between genders**
 
 ```{r}
 df_aug |> 
