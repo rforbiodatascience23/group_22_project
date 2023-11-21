@@ -24,14 +24,15 @@ cat("Rows removed because of missing values:", rows_removed, "\n")
 ## Checking for right type and values of each variable:
 
 ```{r}
-column_types <- df_cleaned |> summarise(across(everything(), class))
+column_types <- df_cleaned |> 
+  summarise(across(everything(), class))
+
 print(column_types)
 ```
 
 ```{r}
 original_df <- df_cleaned
 
-# Apply the function to each column
 df_cleaned <- df_cleaned |>
   filter(Diabetes_binary %in% c(0, 1, 2),
          HighBP %in% c(0, 1),
