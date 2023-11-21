@@ -108,6 +108,34 @@ abline(h = 0.8, col = "green", lty = 2)
 
 # NEW MODELS
 
+```{r}
+num_components <- 17
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
 ### With all the variables (numeric)
 
 ```{r}

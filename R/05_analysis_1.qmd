@@ -31,7 +31,7 @@ df_numeric <- df[sapply(df, is.numeric)]
 ```
 
 ```{r}
-cor_matrix <- cor(df_numeric, use = "pairwise.complete.obs")
+cor_matrix <- cor(df_numeric, method = "spearman")
 
 print("Correlation Matrix:")
 print(cor_matrix)
@@ -50,6 +50,35 @@ ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill 
 diag(cor_matrix) <- 0
 
 strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.45 | Freq < -0.45)
+print("Strong Correlations:")
+print(strong_correlations)
+```
+
+```{r}
+cor_with_diabetes <- cor(df_numeric, df_numeric$Diabetes_binary, method = "spearman")
+
+cor_df <- as.data.frame(as.table(cor_with_diabetes))
+colnames(cor_df) <- c("Variable", "Correlation")
+```
+
+```{r}
+print(cor_with_diabetes)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = as.data.frame(as.table(cor_with_diabetes)), aes(x = Var2, y = Var1, fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+diag(cor_matrix) <- 0
+
+strong_correlations <- subset(as.data.frame(as.table(cor_with_diabetes)), Freq > 0.3 | Freq < -0.3)
 print("Strong Correlations:")
 print(strong_correlations)
 ```
@@ -88,25 +117,10 @@ cat("AIC for Backward Model:", AIC_backward, "\n")
 ```
 
 ```{r}
-count_selected_variables <- function(model) {
-  return(sum(coefficients(model) != 0))
-}
+count_selected_variables <- sum(coefficients(backward_model) != 0)
 
-print_selected_variables <- function(model, model_name) {
-  selected_variables <- names(coefficients(model)[coefficients(model) != 0])
-  cat("Number of Variables selected by", model_name, ":", length(selected_variables), "\n")
-  cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
-}
+selected_variables <- names(coefficients(backward_model)[coefficients(backward_model) != 0])
 
-count_full_model <- count_selected_variables(model_all)
-count_forward_model <- count_selected_variables(forward_model)
-count_backward_model <- count_selected_variables(backward_model)
-
-print_selected_variables(model_all, "Full Model")
-print_selected_variables(forward_model, "Forward Model")
-print_selected_variables(backward_model, "Backward Model")
-
-cat("Count of Variables selected by Full Model:", count_full_model, "\n")
-cat("Count of Variables selected by Forward Model:", count_forward_model, "\n")
-cat("Count of Variables selected by Backward Model:", count_backward_model, "\n")
+cat("Number of Variables selected by Backward Model:", length(selected_variables), "\n")
+cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
 ```
