@@ -7,17 +7,14 @@ format:
 editor: visual
 ---
 
+## Load data
+
 ```{r}
 df <- read_tsv("../data/03_dat_aug.tsv")
-head(df)
 ```
 
 ```{r}
 str(df)
-```
-
-```{r}
-library(tidyverse)
 ```
 
 ```{r}
