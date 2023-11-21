@@ -69,22 +69,60 @@ summary(model_all)
 ```
 
 ```{r}
-# Fit a full model
-full_model <- glm(Diabetes_binary ~ ., family = binomial, data = df_numeric)
-
 # Forward selection
-forward_model <- step(full_model, direction = "forward")
+forward_model <- step(model_all, direction = "forward")
 
 # Backward selection
-backward_model <- step(full_model, direction = "backward")
+backward_model <- step(model_all, direction = "backward")
 
 # Display summaries
-cat("Full Model Summary:\n")
-summary(full_model)
-
 cat("\nForward Selection Model Summary:\n")
 summary(forward_model)
 
 cat("\nBackward Selection Model Summary:\n")
 summary(backward_model)
+```
+
+```{r}
+# AIC for full model
+AIC_full <- AIC(model_all)
+
+# AIC for forward model
+AIC_forward <- AIC(forward_model)
+
+# AIC for backward model
+AIC_backward <- AIC(backward_model)
+
+# Print AIC values
+cat("AIC for Full Model:", AIC_full, "\n")
+cat("AIC for Forward Model:", AIC_forward, "\n")
+cat("AIC for Backward Model:", AIC_backward, "\n")
+```
+
+```{r}
+# Count the number of selected variables
+count_selected_variables <- function(model) {
+  return(sum(coefficients(model) != 0))
+}
+
+# Function to print selected variables
+print_selected_variables <- function(model, model_name) {
+  selected_variables <- names(coefficients(model)[coefficients(model) != 0])
+  cat("Number of Variables selected by", model_name, ":", length(selected_variables), "\n")
+  cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
+}
+
+# Count and print selected variables for each model
+count_full_model <- count_selected_variables(model_all)
+count_forward_model <- count_selected_variables(forward_model)
+count_backward_model <- count_selected_variables(backward_model)
+
+print_selected_variables(model_all, "Full Model")
+print_selected_variables(forward_model, "Forward Model")
+print_selected_variables(backward_model, "Backward Model")
+
+# Print the counts
+cat("Count of Variables selected by Full Model:", count_full_model, "\n")
+cat("Count of Variables selected by Forward Model:", count_forward_model, "\n")
+cat("Count of Variables selected by Backward Model:", count_backward_model, "\n")
 ```
