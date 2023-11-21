@@ -49,15 +49,22 @@ df_aug |>
        subtitle = "Red: No Physical Activity, Blue: Physical Activity")
 ```
 
+The graph displays a general decrease of BMI in physically active individuals, comparing to inactive ones. Also, it is evident that BMI gradually increases from the wealthiest to the poorest income group, regardless of the physical activity status.
+
 3.  **Distribution of habits among individuals between genders**
 
 ```{r}
 df_aug |> 
-  ggplot(mapping = aes(x = Habits,
+  ggplot(mapping = aes(x = fct_relevel(Habits,"Unhealthy","Average","Healthy"),
                        fill = Sex)) +
   geom_bar(position = position_dodge()) +
   facet_wrap(~Diabetes_Status) +
   ylab("Count") +
+  xlab("Habits") +
   labs(title = "The distribution of habits among individuals", 
        subtitle = "Comparison between 2 genders")
 ```
+
+Among the individuals with healthy habits, it is illustrated that, in both diabetic and non-diabetic cases, more women have healthier habits, whereas in the "Average" habits group, the results are more conflicting. It can be seen that while in the non-diabetic cases, more women have an "Average" lifestyle, it is the opposite for the diabetic counterparts. It is also remarkable that female individuals in the non-diabetic group doubled from the "Average" to the "Healthy" group, while the increase is slighter in the diabetic cases.
+
+On the contrary, regarding the male counterparts, among the diabetic cases, there is not an important change between "Average" and "Healthy" groups, while in the non-diabetic cases, the "Healthy" cases where nearly 2000 more than the "Average" ones.
