@@ -36,7 +36,7 @@ df_aug |>
 ```{r}
 df_aug |> 
   ggplot(mapping = aes(x = BMI,
-                       y = Income_Class)) +
+                       y = fct_relevel(Income_Class,"Poor","Average","Whealthy"))) +
   geom_boxplot(aes(fill = Physically_Active),
                outlier.shape = NA) +
   xlim(0,60) +
