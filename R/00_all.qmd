@@ -10,7 +10,10 @@ editor: visual
 ## Load Libraries
 
 ```{r}
-library("tidyverse")
-library("ggridges")
-library("RColorBrewer")
+{{< include 01_load.qmd >}}
+{{< include 02_clean.qmd >}}
+{{< include 03_augment.qmd >}}
+{{< include 04_describe.qmd >}}
+{{< include 05_analysis_1.qmd >}}
+{{< include 06_analysis_2.qmd >}}
 ```

@@ -8,7 +8,7 @@ editor: visual
 ---
 
 ```{r}
-library(tidyverse)
+library("tidyverse")
 ```
 
 ## Checking for missing values
@@ -16,7 +16,9 @@ library(tidyverse)
 ```{r}
 df <- read_tsv("../data/01_dat_load.tsv")
 
-df_cleaned <- df |> drop_na()
+df_cleaned <- df |> 
+  drop_na()
+
 rows_removed <- nrow(df) - nrow(df_cleaned)
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
