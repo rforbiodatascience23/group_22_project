@@ -21,11 +21,25 @@ str(df)
 table(df$Diabetes_binary)
 ```
 
-# CORRELATION
+As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
+
+This script will the first one related to the analysis part. The focus here will be on interpreting the correlation coefficients to see what interaction exists between the variables and how they affect the variable related to the diagnosis of diabetes (Diabetes_binary).
+
+The analysis will continue with the creation of a general linear model. The model will be tested with all available variables and an interpretation of the results obtained will be made. This script will end with the use of the "step" method in order to find out which are the best variables according to our data. What is more, a comparison between models will be made as well regarding to AIC and the selected variables.
+
+## Correlation analysis
+
+Thus, what is correlation? Correlation is an statistical measure of a relationship involving two variables. Specifically, correlation reffers to a linear relationship between two independent variables. The correlation coefficient is the numerical measure of a statistical correlation and indicates the strength of the relationship.
+
+One of the major restrictions of correlation is that it measures relationships only between numerical variables. If the relationship between categorical variables wants to be made, performing a chi-square test would be a good option. However, in this case, a dataset only containing numerical variables will be needed.
 
 ```{r}
 df_numeric <- df[sapply(df, is.numeric)]
 ```
+
+There are several correlation coefficient formulas such as the Sample correlation coefficient, the Population correlation coefficient or the Rank correlation coefficient. The formula selected for this analysis is the Pearson product-moment correlation. Also known as the Pearson correlation. This is the most common correlation coefficient and it can be computed for any data set that has a finite covariance matrix. To achieve the values, a division between the covariance of two variables by the product of their standard deviations has to be made.
+
+The following code computes the Pearson correlation between the numerical variables of the dataset and shows the obtained values.
 
 ```{r}
 cor_matrix <- cor(df_numeric, method = "spearman")
@@ -33,6 +47,24 @@ cor_matrix <- cor(df_numeric, method = "spearman")
 print("Correlation Matrix:")
 print(cor_matrix)
 ```
+
+As there are many values, a plot will be displayed to make better assumptions. The selected plot has been a heatmap. But how are we supposed to interpret it? The correlation allows us to measure the sign and the magnitude of the tendency between two variables.
+
+1.  The sign indicates the direction of the relationship.
+
+    -\> A positive value shows a direct or positive relationship,
+
+    -\> A negative value shows an indirect or negative relationship,
+
+    -\> A null value shows that there does not exist any tendency between both variables.
+
+2.  The magnitude indicates the strength of the relationship, and it takes values between -1 and 1. The closer the value is to the extremes of the interval (1 or -1) the stronger the trend of the variables. The closer the correlation coefficient is to zero, the weaker the trend.
+
+    -\> If the correlation value takes the value 1 or -1, we will say that the correlation is "perfect",
+
+    -\> If the correlation value takes the value 0, we will say that the variables are not correlated.
+
+Now that it is known how to interpret the correlation coefficients lets see the plot and analyze it.
 
 ```{r}
 library(ggplot2)
@@ -43,10 +75,14 @@ ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+The redder the colour, the stronger the correlation in a positive way and the bluer the colour, the stronger but in a negative way. At first glance it can be seen that the health-related variables are positively related to each other. We are talking for example about the variables PhysHlth, GenHlth and DiffWalk and that there are no pairs of variables whose relationship is particularly negative.
+
+EXPLICAR QUÉ SIGNIFICA ESTAR CORRELACIONAS POSITIVA/NEGATIVAMENTE.
+
 ```{r}
 diag(cor_matrix) <- 0
 
-strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.45 | Freq < -0.45)
+strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.35 | Freq < -0.35)
 print("Strong Correlations:")
 print(strong_correlations)
 ```
