@@ -48,17 +48,17 @@ print("Correlation Matrix:")
 print(cor_matrix)
 ```
 
-As there are many values, a plot will be displayed to make better assumptions. The selected plot has been a heatmap. But how are we supposed to interpret it? The correlation allows us to measure the sign and the magnitude of the tendency between two variables.
+As there are many values, a plot will be displayed to make better assumptions. The selected plot has been a heatmap. But how are we supposed to interpret it? The correlation sets the ground to quantify the sign and the magnitude of the tendency between two variables.
 
-1.  The sign indicates the direction of the relationship.
+1.  The sign denotes the direction of the variable relationship.
 
-    -\> A positive value shows a direct or positive relationship,
+    -\> Values above 0 show a direct or positive relationship between the variables,
 
-    -\> A negative value shows an indirect or negative relationship,
+    -\> Values below 0 show an indirect or negative relationship,
 
     -\> A null value shows that there does not exist any tendency between both variables.
 
-2.  The magnitude indicates the strength of the relationship, and it takes values between -1 and 1. The closer the value is to the extremes of the interval (1 or -1) the stronger the trend of the variables. The closer the correlation coefficient is to zero, the weaker the trend.
+2.  The magnitude indicates the strength of the relationship. If the magnitude value is close to the extreme of the interval (1 or -1) the trend the trend of the variables is higher. As the correlation efficient reaches zero, the trend minimizes.
 
     -\> If the correlation value takes the value 1 or -1, we will say that the correlation is "perfect",
 
@@ -68,9 +68,16 @@ Now that it is known how to interpret the correlation coefficients lets see the 
 
 ```{r}
 library(ggplot2)
-ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill = Freq)) +
+ggplot(data = as.data.frame(as.table(cor_matrix)), 
+       aes(x = Var1, y = Var2, fill = Freq)) +
   geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+  scale_fill_gradient2(low = "blue", 
+                       high = "red", 
+                       mid = "white", 
+                       midpoint = 0, 
+                       limit = c(-1, 1), 
+                       space = "Lab", 
+                       name = "Correlation") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
@@ -82,13 +89,17 @@ EXPLICAR QUÉ SIGNIFICA ESTAR CORRELACIONAS POSITIVA/NEGATIVAMENTE.
 ```{r}
 diag(cor_matrix) <- 0
 
-strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), Freq > 0.35 | Freq < -0.35)
+strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), 
+                              Freq > 0.35 | Freq < -0.35)
+
 print("Strong Correlations:")
 print(strong_correlations)
 ```
 
 ```{r}
-cor_with_diabetes <- cor(df_numeric, df_numeric$Diabetes_binary, method = "spearman")
+cor_with_diabetes <- cor(df_numeric, 
+                         df_numeric$Diabetes_binary, # Is this baseR?
+                         method = "spearman")
 
 cor_df <- as.data.frame(as.table(cor_with_diabetes))
 colnames(cor_df) <- c("Variable", "Correlation")
@@ -101,17 +112,29 @@ print(cor_with_diabetes)
 ```{r}
 library(ggplot2)
 
-ggplot(data = as.data.frame(as.table(cor_with_diabetes)), aes(x = Var2, y = Var1, fill = Freq)) +
+ggplot(data = as.data.frame(as.table(cor_with_diabetes)), 
+       aes(x = Var2, 
+           y = Var1, 
+           fill = Freq)) +
   geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+  scale_fill_gradient2(low = "blue", 
+                       high = "red", 
+                       mid = "white", 
+                       midpoint = 0, 
+                       limit = c(-1, 1), 
+                       space = "Lab", 
+                       name = "Correlation") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1))
 ```
 
 ```{r}
 diag(cor_matrix) <- 0
 
-strong_correlations <- subset(as.data.frame(as.table(cor_with_diabetes)), Freq > 0.3 | Freq < -0.3)
+strong_correlations <- subset(as.data.frame(as.table(cor_with_diabetes)),
+                              Freq > 0.3 | Freq < -0.3)
+
 print("Strong Correlations:")
 print(strong_correlations)
 ```
@@ -122,13 +145,16 @@ print(strong_correlations)
 model_all = glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
+
 summary(model_all)
 ```
 
 ```{r}
-forward_model <- step(model_all, direction = "forward")
+forward_model <- step(model_all, 
+                      direction = "forward")
 
-backward_model <- step(model_all, direction = "backward")
+backward_model <- step(model_all,
+                       direction = "backward")
 
 cat("\nForward Selection Model Summary:\n")
 summary(forward_model)
