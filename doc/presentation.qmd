@@ -1,29 +1,48 @@
 ---
 title: "Project presentation"
-author: "Ander Barrio Campos(231938), Dionysios Dimitreas(), Erikas Mikužis(), Valeria Tedeschi(s231945), Angeliki Vliora()"
+author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
   revealjs:
     embed-resources: true
 editor: visual
 ---
 
-## R for Bio Data Science
+## Introduction
 
-Group 22
+Intro to the class and tidyverse
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+## Dataset selection
 
-## Bullets
+Intro to selected dataframe and to research questions
 
-When you click the **Render** button a document will be generated that includes:
+## Materials and Methods
 
--   Content authored with markdown
--   Output from executable code
+Flowchart
 
-## Code
+## Data cleaning
 
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+Data clean part
 
-```{r}
-1 + 1
-```
+## Data Augmentation
+
+Data augmentation part
+
+## Data Analysis
+
+Quick run through over both analysis parts (whan methods we use)
+
+## Results
+
+Data description
+
+## Results
+
+Analysis part1 results
+
+## Results
+
+Analysis part2 results
+
+## Discussion
+
+Discussion and key takeaways
