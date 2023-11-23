@@ -7,8 +7,6 @@ format:
 editor: visual
 ---
 
-## Load Libraries
-
 {{< include 01_load.qmd >}}
 {{< include 02_clean.qmd >}}
 {{< include 03_augment.qmd >}}
