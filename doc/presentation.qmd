@@ -1,13 +1,15 @@
 ---
-title: "presentation"
-author: "group22"
+title: "Project presentation"
+author: "Ander Barrio Campos(231938), Dionysios Dimitreas(), Erikas Mikužis(), Valeria Tedeschi(s231945), Angeliki Vliora()"
 format:
-  html:
+  revealjs:
     embed-resources: true
 editor: visual
 ---
 
-## Quarto
+## R for Bio Data Science
+
+Group 22
 
 Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
 
