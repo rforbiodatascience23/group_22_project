@@ -7,13 +7,11 @@ format:
 editor: visual
 ---
 
-```{r}
-library("tidyverse")
-```
-
 ## Checking for missing values
 
-```{r}
+In the first part of data cleaning, we focus on identifying and removing any missing values in our dataset. Missing data can significantly impact the quality of our analysis, leading to biased or inaccurate results.
+
+```{r message = FALSE}
 df <- read_tsv("../data/01_dat_load.tsv")
 
 df_cleaned <- df |> 
@@ -23,7 +21,11 @@ rows_removed <- nrow(df) - nrow(df_cleaned)
 cat("Rows removed because of missing values:", rows_removed, "\n")
 ```
 
-## Checking for right type and values of each variable:
+From the first part we can see that the dataset didn't have any missing variables. If there would have been any missing values, we would have removed those rows with missing values.
+
+## Checking for right type and values of each variable
+
+In the second part we want to ensure that each of the variables in the dataset has expected type. By doing this we can make sure that we don't have any faulty variables and we understand our variables for further analysis.
 
 ```{r}
 column_types <- df_cleaned |> 
@@ -31,6 +33,12 @@ column_types <- df_cleaned |>
 
 print(column_types)
 ```
+
+We can see that all of our variables are numeric.
+
+## Filtering incorrect values
+
+In the third part of cleaning we want to filter out incorrect values. With the dataset received we also received range of values each numeric variable. So this part is all about making sure that each of the value falls into correct range of values.
 
 ```{r}
 original_df <- df_cleaned
@@ -62,6 +70,8 @@ df_cleaned <- df_cleaned |>
 rows_removed_after_filter <- nrow(original_df) - nrow(df_cleaned)
 cat("Rows removed because of incorrect values:", rows_removed_after_filter, "\n")
 ```
+
+From this part we can see that the dataset didn't have any out of range values for all of the variables. If there would have been any incorrect values, we would have removed those rows with incorrect values.
 
 ## Writing the file
 
