@@ -7,6 +7,7 @@ format:
 editor: visual
 ---
 
+<<<<<<< HEAD
 ## Load Libraries
 
 {{< include 01_load.qmd >}}
@@ -20,3 +21,11 @@ editor: visual
 {{< include 05_analysis_1.qmd >}}
 
 {{< include 06_analysis_2.qmd >}}
+=======
+{{< include 01_load.qmd >}}
+{{< include 02_clean.qmd >}}
+{{< include 03_augment.qmd >}}
+{{< include 04_describe.qmd >}}
+{{< include 05_analysis_1.qmd >}}
+{{< include 06_analysis_2.qmd >}}
+>>>>>>> 53a1cf65e5cb9e7e92596f5b44baade763a30c10

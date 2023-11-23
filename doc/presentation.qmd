@@ -1,0 +1,48 @@
+---
+title: "Project presentation"
+author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
+format:
+  revealjs:
+    embed-resources: true
+editor: visual
+---
+
+## Introduction
+
+Intro to the class and tidyverse
+
+## Dataset selection
+
+Intro to selected dataframe and to research questions
+
+## Materials and Methods
+
+Flowchart
+
+## Data cleaning
+
+Data clean part
+
+## Data Augmentation
+
+Data augmentation part
+
+## Data Analysis
+
+Quick run through over both analysis parts (whan methods we use)
+
+## Results
+
+Data description
+
+## Results
+
+Analysis part1 results
+
+## Results
+
+Analysis part2 results
+
+## Discussion
+
+Discussion and key takeaways
