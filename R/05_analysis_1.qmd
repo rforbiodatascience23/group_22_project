@@ -84,7 +84,15 @@ ggplot(data = as.data.frame(as.table(cor_matrix)),
 
 The redder the colour, the stronger the correlation in a positive way and the bluer the colour, the stronger but in a negative way. At first glance it can be seen that the health-related variables are positively related to each other. We are talking for example about the variables PhysHlth, GenHlth and DiffWalk and that there are no pairs of variables whose relationship is particularly negative.
 
-EXPLICAR QUÉ SIGNIFICA ESTAR CORRELACIONAS POSITIVA/NEGATIVAMENTE.
+But what does it mean to be positively or negatively correlated? Lets see it with some examples:
+
+-   Positive correlations may include the relationship between beer sales and the temperature, implying hot weather is related to an increase in cold beer consumption.
+
+-   Negative correlations might look like the relationship between time spent going partying before doing an exam and a student's exams scores.
+
+-   Null hypothesis are simple relationships that have nothing in common, such as the height of a person and their exams scores.
+
+We will check now the highers values for the achieved correlations.
 
 ```{r}
 diag(cor_matrix) <- 0
@@ -96,18 +104,20 @@ print("Strong Correlations:")
 print(strong_correlations)
 ```
 
+As mentioned before, most of the highest correlation values ​​refer to the relationship of variables in the world of health. The higher positive value is achieved between PhysHlth and GenHlth. This means that the lower value for PhysHlth the lower value it will be achieved in GenHlth (lower values in those variables are a good sign in this dataset). It's something that makes a lot of sense. One thing that we found curious is the correlation between GenHlth and Income. Both get the most negative value, and with the previous explanation about what it means to be negatively correlated, this value tells us that the higher the value of GenHlth (a value of 5 means that health is poor) the smaller the value will be. Income (a value of 1 indicates that the patient does not have much money). Thus, this could lead to the conclusion that people with more money are more healthy.
+
+Once this analysis has been carried out, we believe that it is interesting to simply look at the relationship of the rest of the variables with the variable associated with diabetes. We will follow exactly the same process as before.
+
 ```{r}
 cor_with_diabetes <- cor(df_numeric, 
-                         df_numeric$Diabetes_binary, # Is this baseR?
+                         df_numeric$Diabetes_binary,
                          method = "spearman")
 
 cor_df <- as.data.frame(as.table(cor_with_diabetes))
 colnames(cor_df) <- c("Variable", "Correlation")
 ```
 
-```{r}
-print(cor_with_diabetes)
-```
+After generating the correlation matrix only related to the Diabetes_binary variable, we will generate a heatmap to take a look at the results.
 
 ```{r}
 library(ggplot2)
@@ -129,6 +139,14 @@ ggplot(data = as.data.frame(as.table(cor_with_diabetes)),
                                    hjust = 1))
 ```
 
+We will print the results to have a better understanding of the results.
+
+```{r}
+print(cor_with_diabetes)
+```
+
+Overall, we can achieve the same conclusions as before. Health related variables are positively correlated with diabates variable. It is something that everybody would expect but it was nice taking a look to it. Age has also something to do with having diabetes or not, as well as having difficulties to walk. Those are really interesting facts, but which are the top three correlated variables with diabetes?
+
 ```{r}
 diag(cor_matrix) <- 0
 
@@ -139,7 +157,21 @@ print("Strong Correlations:")
 print(strong_correlations)
 ```
 
-# GENERAL MODEL WITH ALL VARIABLES
+To conclude the correlation analysis, we see that the top three most correlated variables with diabetes are (in order): GenHlth, HighBP and BMI. With these variables we could say that:
+
+1.  Having a low value in the GenHlth variable (the lowest the value, the healthier) will lead to have a low value in Diabates_binary (0 means no diabetes). Thus, the better the general health of a person is could lead to not having diabetes.
+
+2.  Having a low value in HighBP variable (0 means that you do not have high blood pressure) will lead to have a low value in Diabates_binary (0 means no diabetes). Thus, the lower the blood pressure of a person is could lead to not having diabetes.
+
+3.  Having a low value in BMI variable (low values indicate that your body mass is not high) will lead to have a low value in Diabates_binary (0 means no diabetes). Thus, the lower the BMI of a person is could lead to not having diabetes.
+
+## Generalized Linear Model (GLM)
+
+In this section of the analysis we will work on two main tasks. The first one will be the creation and interpretation of a GLM with all the numerical variables available in the dataset. The second task will be related to applying some methods to improve this model and to check which are the most valuable features for the model.
+
+Having said that, a Generalized Linear Model (GLM) is a statistical model used to analyze relationships between variables, accommodating various types of data and allowing for the prediction of one variable based on others. In our case, the data that we will use is the dataset formed by all the numerical variables. We want to predict whether a patient will have diabetes or not using all the available numerical variables. Finally, **`family = binomial`** indicates that we are fitting a model for binary or binomial response variables. This is suitable when the outcome variable is binary, meaning it has only two possible outcomes, such as success/failure, yes/no, or 0/1. In this case, our outcome variable is 'Diabetes_binary' which only has 0 (non-diabetic) and 1 (diabetic).
+
+Lets create the model and interpret its results.
 
 ```{r}
 model_all = glm(data = df_numeric,
@@ -148,6 +180,26 @@ model_all = glm(data = df_numeric,
 
 summary(model_all)
 ```
+
+Running **`summary(model_all)`** gives us the summary of the fitted model. We will take a look to the most important aspects:
+
+1.  Coefficients: They represent the estimated log-odds (in the case of logistic regression) of the response variable based on the predictor variables. Positive coefficients indicate a positive association with the log-odds of the response, while negative coefficients indicate a negative association. In our case, the highest positive value is achieved by CholCheck (it relates to cholesterol check) and the highest negative value is achieved by HvyAlcoholConsump (it relates to drinking a lot of alcohol or not).
+
+    Thus, a high positive coefficient suggests that as the predictor variable increases, the odds of the positive outcome also increase and a high negative coefficient suggests that as the predictor variable increases, the odds of the positive outcome decrease.
+
+2.  p-values: Low p-values (typically below 0.05) suggest that the corresponding predictor variable is statistically significant in predicting the outcome. These variables can be seen in the model summary with the \*\*\* symbol. Most of them are the ones related with health (as mentioned in the correlation analysis). Here it seems interesting that being a smoker or not is not significant for diabetes outcome. However, looks like 'Sex' and 'Income' are really relevant for the outcome.
+
+3.  Deviance and Residual Deviance: Deviance is a measure of model fit. We compare the deviance of our model to a null model (a model with no predictors) to assess how well our model explains the variability in the data. Lower deviance indicates a better fit and it can be seen that our model achieves that.
+
+4.  AIC (Akaike Information Criterion): AIC is a measure of model performance that penalizes for the number of parameters in the model. Lower AIC values indicate a better trade-off between model complexity and fit.
+
+Now that we have our model with all the variables, we will try to improve it by applying the step method. This is a method that is used for selecting a subset of predictors to include in a model. This process involves adding or removing variables one at a time based on statistical criteria (such as p-values) to improve the model's fit or simplicity. We will use two different approaches:
+
+-   forward: Starts with no predictors and adds them one at a time, selecting the one that improves the model the most at each step.
+
+-   backward: Starts with all predictors and removes them one at a time, excluding the one that contributes the least at each step.
+
+Both methods aim to find an optimal subset of predictors for a model.
 
 ```{r}
 forward_model <- step(model_all, 
@@ -163,6 +215,8 @@ cat("\nBackward Selection Model Summary:\n")
 summary(backward_model)
 ```
 
+After printing their summaries, we will select the model with the lowest AIC.
+
 ```{r}
 AIC_full <- AIC(model_all)
 
@@ -175,11 +229,20 @@ cat("AIC for Forward Model:", AIC_forward, "\n")
 cat("AIC for Backward Model:", AIC_backward, "\n")
 ```
 
+It can be seen that the model with the lowest AIC is the one created by step backward. As we are intrigued about it, we will check how many variables it contains and which are those variables.
+
 ```{r}
-count_selected_variables <- sum(coefficients(backward_model) != 0)
+all_variables <- names(coef(model_all))
 
-selected_variables <- names(coefficients(backward_model)[coefficients(backward_model) != 0])
+selected_variables <- names(coef(backward_model)[coef(backward_model) != 0])
 
-cat("Number of Variables selected by Backward Model:", length(selected_variables), "\n")
+not_selected_variables <- setdiff(all_variables, selected_variables)
+
+count_selected_variables <- length(selected_variables)
+
+cat("Number of Variables selected by Backward Model:", count_selected_variables, "\n\n")
 cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
+cat("Variables in 'model_all' but not selected by Backward Model:", paste(not_selected_variables, collapse = ", "), "\n")
 ```
+
+The backward model is selecting 19 variables out of the 22 variables that is using the full model. There are three variables that the most optimal model is not taking into account and this ones are AnyHealthcare, NoDocbcCost and Education_binary. This is something that we could have predicted because if we take a look to the summary of the model with all the variables, these three variables are the ones which has the highest p-value. Thus, they are the less significant for the model.
