@@ -11,38 +11,36 @@ editor: visual
 
 Intro to the class and tidyverse
 
-## Dataset selection
-
-Intro to selected dataframe and to research questions
+Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)
 
 ## Materials and Methods
 
-Flowchart
+Flowchart(quick explanation on how we plan to answer research questions)
 
-## Data cleaning
+## Data Cleaning and Augmentation
 
-Data clean part
-
-## Data Augmentation
-
-Data augmentation part
+Data clean and data augmentation part(how we perform data cleaning and augmentation part and what we create also keep in mind biological perspective that influences our research questions)
 
 ## Data Analysis
 
-Quick run through over both analysis parts (whan methods we use)
+Quick run through over both analysis parts (what methods we use with research questions in mind)
+
+## Data Analysis
+
+Quick run through over both analysis parts (what methods we use with research questions in mind)
 
 ## Results
 
-Data description
+Data description (show the plots and what explain insights they give us, maybe even answer some research questions)
 
 ## Results
 
-Analysis part1 results
+Analysis part1 results (same as part above)
 
 ## Results
 
-Analysis part2 results
+Analysis part2 results (same as part above)
 
 ## Discussion
 
-Discussion and key takeaways
+Discussion and key takeaways 
