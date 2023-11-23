@@ -20,8 +20,7 @@ df_cleaned <- read_tsv("../data/02_dat_clean.tsv")
 Changing the smokers variable from binary format to categorical. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
 
 ```{r}
-df_aug <-
-  df_cleaned |> 
+df_aug <- df_cleaned |> 
   mutate(Smoking_Status = case_when(
     Smoker == 0 ~ "Non-Smoker",
     Smoker == 1 ~ "Smoker"
@@ -29,6 +28,8 @@ df_aug <-
 ```
 
 ### Diabetes
+
+Converting the diabetes_binary variable from binary to categorical.
 
 ```{r}
 df_aug <-
@@ -39,6 +40,8 @@ df_aug <-
 ```
 
 ### Gender
+
+Changing the Sex variable from binary to categorical.
 
 ```{r}
 df_aug <-
@@ -139,5 +142,5 @@ df_aug <-
 ## Writing the file
 
 ```{r}
-write.table(df_aug, file = "../data/03_dat_aug.tsv", sep = "\t", row.names = FALSE)
+write_tsv(df_aug, file = "../data/03_dat_aug.tsv")
 ```

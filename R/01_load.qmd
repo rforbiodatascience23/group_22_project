@@ -7,10 +7,18 @@ format:
 editor: visual
 ---
 
+## Load Libraries
+
+```{r}
+library("tidyverse")
+library("ggridges")
+library("RColorBrewer")
+```
+
 ## Load Data
 
 ```{r}
-df <- read.csv("../_raw/project_data.csv")
+df <- read_csv("../_raw/project_data.csv")
 head(df)
 ```
 

@@ -8,174 +8,136 @@ editor: visual
 ---
 
 ```{r}
-df <- read_tsv("../data/02_dat_clean.tsv")
+df <- read_tsv("../data/03_dat_aug.tsv")
 
 head(df)
 ```
 
 ```{r}
-library(stats)
-
-# Extract the features (exclude the outcome variable if applicable)
-features <- df[, -c(df$Diabetes_binary)]
-
-# Standardize the features
-scaled_features <- scale(features)
-
-# Perform PCA
-pca_result <- princomp(scaled_features)
-
-# Summary of PCA
-summary(pca_result)
-
-# Scree plot to visualize the variance explained by each principal component
-plot(pca_result)
-
-# Choose the number of components based on the scree plot and your requirements
-
-# Extract the loadings (weights) for each variable in each principal component
-loadings <- pca_result$loadings
-
-# Select the desired number of principal components based on the scree plot
-num_components <- 10  # Adjust this based on your analysis
-
-# Keep the selected components
-selected_components <- pca_result$scores[, 1:num_components]
-
-# Merge with the outcome variable if applicable
-# If your dataset includes an outcome variable, you might want to include it in the final dataset
-# Example: merged_data <- cbind(selected_components, outcome = diabetes_data$outcome)
-
-# Now, 'selected_components' contains the reduced set of features based on PCA
-
-# Train your prediction model using the reduced features
-# Example: model <- your_model_function(merged_data)
-
-# Continue with the rest of your analysis
+sapply(df,class)
+numeriques <- which(sapply(df,is.numeric))
+numeriques
 ```
 
 ```{r}
-# Scree plot
-plot(pca_result)
+df_num = df[,numeriques]
+```
+
+# PCA
+
+```{r}
+library(tidyverse)
+
+pca_fit <- df |> 
+  select_if(where(is.numeric)) |>
+  prcomp(scale = TRUE)
 ```
 
 ```{r}
-# Biplot
-biplot(pca_result)
+library(dplyr)
+library(broom)
+library(cowplot)
+
+pca_fit <- prcomp(df |> 
+           select_if(is.numeric), scale = TRUE)
+
+df_augmented <- augment(pca_fit, df)
+
+ggplot(df_augmented, aes(.fittedPC1, 
+                         .fittedPC2, 
+                         color = Diabetes_Status)) + 
+  geom_point(size = 1.5) +
+  scale_color_manual(
+    values = c("Non-Diabetic" = "#D55E00", 
+               "Diabetic" = "#0072B2")) +
+  theme_minimal() +
+  background_grid()
 ```
 
 ```{r}
-# Cumulative variance plot
-plot(cumsum(pca_result$sdev^2) / sum(pca_result$sdev^2), 
+pca_fit |>
+  tidy(matrix = "rotation")
+```
+
+```{r}
+arrow_style <- arrow(angle = 20, 
+                     ends = "first", 
+                     type = "closed", 
+                     length = grid::unit(8, "pt"))
+
+pca_fit |>
+  tidy(matrix = "rotation") |>
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") |>
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, 
+               yend = 0, 
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F") +
+  xlim(-1.25, .5) + 
+  ylim(-.5, 1) +
+  coord_fixed() +
+  theme_minimal_grid(12)
+```
+
+```{r}
+pca_fit |>
+  tidy(matrix = "eigenvalues")
+```
+
+```{r}
+pca_fit |>
+  tidy(matrix = "eigenvalues") |>
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:22) +
+  scale_y_continuous(labels = scales::percent_format(),
+                     expand = expansion(mult = c(0, 0.01))) +
+  theme_minimal_hgrid(12)
+```
+
+```{r}
+plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
      xlab = "Number of Principal Components",
      ylab = "Cumulative Proportion of Variance Explained",
      type = "b")
+
+abline(h = 0.7, col = "red", lty = 2)
+abline(h = 0.75, col = "blue", lty = 2)
+abline(h = 0.8, col = "green", lty = 2)
 ```
 
-```{r}
-# Individual principal component contributions
-barplot(abs(loadings[, 1]), main = "Absolute Loadings for PC1", names.arg = colnames(features))
-```
+# NEW MODELS
+
+### With all the variables (numeric)
 
 ```{r}
-# Extract the proportion of variance explained by each component
-variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2)
-
-# Create a data frame with component index, variance explained, cumulative sum, and variable names
-variance_df <- data.frame(
-  Component = 1:length(variance_explained),
-  VarianceExplained = variance_explained,
-  CumulativeVariance = cumsum(variance_explained)
-)
-
-# Add variable names to the data frame
-variance_df$Variable <- colnames(features)
-
-# Order the data frame by variance explained in descending order
-variance_df <- variance_df[order(-variance_df$VarianceExplained), ]
-
-# Print the ordered list with cumulative sum and variable names
-print(variance_df)
-```
-
-```{r}
-biplot(pca_result)
-```
-
-```{r}
-# Assuming you have performed PCA and selected the desired number of components
-# Let's assume you have selected 5 components, update accordingly
-num_components <- 11
-
-# Use the selected components for training the model
-selected_components <- pca_result$scores[, 1:num_components]
-
-# Assuming your outcome variable is 'Diabetes_binary' and it's binary (0 or 1)
-# Replace 'Diabetes_binary' with the actual name of your outcome variable
-outcome_variable <- df$Diabetes_binary
-
-# Split the data into training and testing sets
-set.seed(123)  # for reproducibility
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))  # 70% for training
-
-# Create training and testing sets
-train_data <- selected_components[train_indices, ]
-train_outcome <- outcome_variable[train_indices]
-test_data <- selected_components[-train_indices, ]
-test_outcome <- outcome_variable[-train_indices]
-
-# Train a logistic regression model
-model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
-
-# Make predictions on the test set
-predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
-
-# Convert probabilities to binary predictions (0 or 1)
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-# Evaluate the model
-conf_matrix <- table(binary_predictions, test_outcome)
-accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
-
-# Print the confusion matrix and accuracy
-print(conf_matrix)
-cat("Accuracy:", accuracy, "\n")
-```
-
-```{r}
-# Load necessary libraries
 library(stats)
 
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
-
-# Set seed for reproducibility
 set.seed(123)
 
-# Split the data into training and testing sets without using caTools
-split <- sample(1:nrow(df), 0.7 * nrow(df))
-train_data <- df[split, ]
-test_data <- df[-split, ]
+split <- sample(1:nrow(df_num), 0.7 * nrow(df_num))
+train_data <- df_num[split, ]
+test_data <- df_num[-split, ]
 
-# Train a logistic regression model
 model <- glm(Diabetes_binary ~ ., family = "binomial", data = train_data)
 
-# Make predictions on the test set
 predictions <- predict(model, newdata = test_data, type = "response")
 
-# Convert probabilities to binary predictions (0 or 1)
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-# Evaluate the model without using Metrics library
 conf_matrix <- table(binary_predictions, test_data$Diabetes_binary)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-# Calculate precision, recall, and F1 score
 precision <- conf_matrix[2, 2] / sum(conf_matrix[, 2])
 recall <- conf_matrix[2, 2] / sum(conf_matrix[2, ])
 f1 <- 2 * (precision * recall) / (precision + recall)
 
-# Print evaluation metrics
 cat("Confusion Matrix:\n", conf_matrix, "\n\n")
 cat("Accuracy:", accuracy, "\n")
 cat("Precision:", precision, "\n")
@@ -183,54 +145,96 @@ cat("Recall:", recall, "\n")
 cat("F1 Score:", f1, "\n")
 ```
 
+### With the selected components that achieve the 70%. (11)
+
 ```{r}
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
+num_components <- 11
 
-# Calculate the correlation matrix for all variables
-cor_matrix <- cor(df)
+selected_components <- pca_fit$x[, 1:num_components]
 
-# Print the correlation matrix
-print("Correlation Matrix:")
-print(cor_matrix)
+outcome_variable <- df$Diabetes_binary
 
-# Visualize the correlation matrix as a heatmap
-library(ggplot2)
-ggplot(data = as.data.frame(as.table(cor_matrix)), aes(x = Var1, y = Var2, fill = Freq)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+### With the selected components that achieve the 75%. (13)
+
+```{r}
+num_components <- 13
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+### With the selected components that achieve the 80%. (14)
+
+```{r}
+num_components <- 14
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123) 
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
 ```
 
 ```{r}
-# Assuming your dataset is stored in a variable named 'df'
-# Replace 'df' with the actual data frame name
-# Assume 'Diabetes_binary' is the outcome variable (0 or 1)
-
-# Load necessary libraries
-library(stats)
-
-# Numeric variables for t-tests
-numeric_vars <- c("HighBP", "HighChol")  # Replace with actual numeric variables
-
-# Split the data into diabetic and non-diabetic groups
-diabetic_group <- df[df$Diabetes_binary == 1, ]
-non_diabetic_group <- df[df$Diabetes_binary == 0, ]
-
-# Perform t-tests for numeric variables
-numeric_results <- lapply(numeric_vars, function(var) {
-  t_test_result <- t.test(diabetic_group[[var]], non_diabetic_group[[var]])
-  return(data.frame(
-    Variable = var,
-    Mean_Diabetic = mean(diabetic_group[[var]]),
-    Mean_NonDiabetic = mean(non_diabetic_group[[var]]),
-    P_Value = t_test_result$p.value
-  ))
-})
-
-# Print the comparison results
-print("Comparison of Groups:")
-print(numeric_results)
-
+str(selected_components)
 ```
