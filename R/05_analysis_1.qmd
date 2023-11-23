@@ -74,9 +74,9 @@ ggplot(data = as.data.frame(as.table(cor_matrix)),
   scale_fill_gradient2(low = "blue", 
                        high = "red", 
                        mid = "white", 
-                       midpoint = 0, 
-                       limit = c(-1, 1), 
-                       space = "Lab", 
+                       midpoint = 0,
+                       limit = c(-1, 1),
+                       space = "Lab",
                        name = "Correlation") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))

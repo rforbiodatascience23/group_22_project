@@ -1,0 +1,774 @@
+---
+title: "00_all"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+
+## Load Libraries
+
+---
+title: "01_load"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load Libraries
+
+```{r}
+library("tidyverse")
+library("ggridges")
+library("RColorBrewer")
+```
+
+## Load Data
+
+Loading the data from .csv file that has been downloaded.
+
+```{r message = FALSE}
+df <- read_csv("../_raw/project_data.csv")
+```
+
+## Save loaded data
+
+Saving the dataset as .tsv file in data directory. Also reading the saved file to make sure it works.
+
+```{r message = FALSE}
+write_tsv(df, "../data/01_dat_load.tsv")
+
+df <- read_tsv("../data/01_dat_load.tsv")
+```
+
+---
+title: "02_clean"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Checking for missing values
+
+In the first part of data cleaning, we focus on identifying and removing any missing values in our dataset. Missing data can significantly impact the quality of our analysis, leading to biased or inaccurate results.
+
+```{r message = FALSE}
+df <- read_tsv("../data/01_dat_load.tsv")
+
+df_cleaned <- df |> 
+  drop_na()
+
+rows_removed <- nrow(df) - nrow(df_cleaned)
+cat("Rows removed because of missing values:", rows_removed, "\n")
+```
+
+From the first part we can see that the dataset didn't have any missing variables. If there would have been any missing values, we would have removed those rows with missing values.
+
+## Checking for right type and values of each variable
+
+In the second part we want to ensure that each of the variables in the dataset has expected type. By doing this we can make sure that we don't have any faulty variables and we understand our variables for further analysis.
+
+```{r}
+column_types <- df_cleaned |> 
+  summarise(across(everything(), class))
+
+print(column_types)
+```
+
+We can see that all of our variables are numeric.
+
+## Filtering incorrect values
+
+In the third part of cleaning we want to filter out incorrect values. With the dataset received we also received range of values each numeric variable. So this part is all about making sure that each of the value falls into correct range of values.
+
+```{r}
+original_df <- df_cleaned
+
+df_cleaned <- df_cleaned |>
+  filter(Diabetes_binary %in% c(0, 1, 2),
+         HighBP %in% c(0, 1),
+         HighChol %in% c(0, 1),
+         CholCheck %in% c(0, 1),
+         BMI > 0,
+         Smoker %in% c(0, 1),
+         Stroke %in% c(0, 1),
+         HeartDiseaseorAttack %in% c(0, 1),
+         PhysActivity %in% c(0, 1),
+         Fruits %in% c(0, 1),
+         Veggies %in% c(0, 1),
+         HvyAlcoholConsump %in% c(0, 1),
+         AnyHealthcare %in% c(0, 1),
+         NoDocbcCost %in% c(0, 1),
+         GenHlth %in% 1:5,
+         MentHlth %in% 0:30,
+         PhysHlth %in% 0:30,
+         DiffWalk %in% c(0, 1),
+         Sex %in% c(0, 1),
+         Age %in% 1:13,
+         Education %in% 1:6,
+         Income %in% 1:8)
+
+rows_removed_after_filter <- nrow(original_df) - nrow(df_cleaned)
+cat("Rows removed because of incorrect values:", rows_removed_after_filter, "\n")
+```
+
+From this part we can see that the dataset didn't have any out of range values for all of the variables. If there would have been any incorrect values, we would have removed those rows with incorrect values.
+
+## Writing the file
+
+```{r}
+write_tsv(df, "../data/02_dat_clean.tsv")
+```
+
+---
+title: "03_augment"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load Data
+
+```{r}
+df_cleaned <- read_tsv("../data/02_dat_clean.tsv")
+```
+
+## Adding new variables
+
+### Smoking
+
+Changing the smokers variable from binary format to character. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
+
+```{r}
+df_aug <- df_cleaned |> 
+  mutate(Smoking_Status = case_when(
+    Smoker == 0 ~ "Non-Smoker",
+    Smoker == 1 ~ "Smoker"
+  ))
+```
+
+### Diabetes
+
+Converting the diabetes_binary variable from binary to character.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Diabetes_Status = case_when(
+    Diabetes_binary == 0 ~ "Non-Diabetic",
+    Diabetes_binary == 1 ~ "Diabetic"))
+```
+
+### Gender
+
+Changing the Sex variable from binary to character.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Sex_character = case_when(
+    Sex == 0 ~ "Female",
+    Sex == 1 ~ "Male"))
+```
+
+### Age
+
+The age was changed from the 13-level age category to the corresponding range values.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Age_Range = case_when(
+    Age == 1 ~ "18-24",
+    Age == 2 | Age == 3 ~ "25-34",
+    Age == 4 | Age == 5 ~ "35-44",
+    Age == 6 | Age == 7 | Age == 8 ~ "45-59",
+    Age == 9 | Age == 10 | Age == 11 ~ "60-74",
+    Age == 12 | Age == 13 ~ "75-"))
+```
+
+### Income
+
+Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Income_Class = case_when(
+    Income <= 3 ~ "Poor",
+    Income  > 3 & Income <= 6 ~ "Average",
+    Income > 6 ~ "Wealthy"))
+```
+
+### Physical Activity
+
+This variable transforms the "PhysActivity" from binary to character.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Physically_Active = case_when(
+    PhysActivity == 0 ~ "No",
+    PhysActivity == 1 ~ "Yes"))
+```
+
+### Habits
+
+One variable that should be added is habits, a character variable that describes whether the lifestyle of the individual is healthy or not. This depends on many variables, namely Smoking, Alcohol consumption, Fruits and Veggies consumption and Physical Activity. For the first 2, we assigned -1 point, while for the latter 3, we assigned +1 respectively. A high score indicates a healthy lifestyle, a medium one indicates an average lifestyle, while a low score indicates an unhealthy one.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Habit_Score = Veggies + Fruits + PhysActivity - Smoker - HvyAlcoholConsump) |> 
+  mutate(Habits = case_when(
+    Habit_Score < 0 ~ "Unhealthy",
+    Habit_Score >= 0 & Habit_Score < 2 ~ "Average",
+    Habit_Score >= 2 ~ "Healthy"),
+    .keep = "unused")
+```
+
+### Health risk
+
+The health risk depends on the prevalence of a heart attack/disease, stroke, high BP and high cholesterol. This variable weights the heart disease and stroke variables more than the others.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Risk_Score = HighBP + HighChol + 2*Stroke + 2*HeartDiseaseorAttack) |> 
+  mutate(Health_Risk = case_when(
+    Risk_Score < 2 ~ "Low Risk",
+    Risk_Score >= 2 & Risk_Score < 4 ~ "Medium Risk",
+    Risk_Score >= 4 ~ "High Risk"),
+    .keep = "unused")
+```
+
+### Socio-economical Class
+
+At first we created a binary variable for the educational background. 0 refers to individuals who didn't attend school or attend school and didn't graduate high-school, while 1 refers to those who graduated high school and maybe received higher education.
+
+```{r}
+df_aug <-
+  df_aug |> 
+  mutate(Education_binary = case_when(
+    Education < 4 ~ 0,
+    Education >= 4 ~ 1)) |> 
+  mutate(SE_Score = Income + AnyHealthcare + Education_binary + PhysActivity) |> 
+  mutate(SE_Background = case_when(
+    SE_Score < 6 ~ "Lower Class",
+    SE_Score >= 6 ~ "Higher Class"),
+    .keep = "unused")
+```
+
+## Writing the file
+
+```{r}
+write_tsv(df_aug, file = "../data/03_dat_aug.tsv")
+```
+
+---
+title: "04_describe"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load data
+
+```{r}
+df_aug <- read_tsv("../data/03_dat_aug.tsv")
+```
+
+## Visualization
+
+1.  **The distribution of BMI in the different age groups, including a comparison between smokers and non-smokers.**
+
+```{r}
+df_aug |> 
+  ggplot(aes(x = BMI, y = Age_Range)) +
+  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
+  facet_wrap(~Smoking_Status)+
+  labs(x = "BMI",
+       y = "Age Group") +
+  theme_minimal()+
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(title = "BMI distribution over the different age groups", 
+       subtitle = "A comparison between smokers and non-smokers")
+```
+
+As it is illustrated from the plot above, smoking status affects mostly the youngest age groups, namely 18-24 and 25-34, where it is shown that smokers have a generally higher BMI than the non-smokers. For the other age groups, the behavior is almost the same between smokers and non-smokers, so smoking doesn't appear as a main factor influencing BMI for individuals over 35. However, the general tendency is that BMI increases over the age, as it can be seen by the peak.
+
+2.  **Comparison of BMI between income classes, divided into individuals with and without physical activity.**
+
+```{r}
+df_aug |> 
+  ggplot(mapping = aes(x = BMI,
+                       y = fct_relevel(Income_Class,"Poor","Average","Wealthy"))) +
+  geom_boxplot(aes(fill = Physically_Active),
+               outlier.shape = NA) +
+  xlim(0,60) +
+  xlab("BMI") +
+  ylab("Income Class") +
+  theme(legend.position = "none") +
+  labs(title = "Comparison of BMI between different income classes", 
+       subtitle = "Red: No Physical Activity, Blue: Physical Activity")
+```
+
+The graph displays a general decrease of BMI in physically active individuals, comparing to inactive ones. Also, it is evident that BMI gradually increases from the wealthiest to the poorest income group, regardless of the physical activity status.
+
+3.  **Distribution of habits among individuals between genders**
+
+```{r}
+df_aug |> 
+  ggplot(mapping = aes(x = fct_relevel(Habits,"Unhealthy","Average","Healthy"),
+                       fill = Sex_character)) +
+  geom_bar(position = position_dodge()) +
+  facet_wrap(~Diabetes_Status) +
+  ylab("Count") +
+  xlab("Habits") +
+  labs(title = "The distribution of habits among individuals", 
+       subtitle = "Comparison between 2 genders")
+```
+
+Among the individuals with healthy habits, it is illustrated that, in both diabetic and non-diabetic cases, more women have healthier habits, whereas in the "Average" habits group, the results are more conflicting. It can be seen that while in the non-diabetic cases, more women have an "Average" lifestyle, it is the opposite for the diabetic counterparts. It is also remarkable that female individuals in the non-diabetic group doubled from the "Average" to the "Healthy" group, while the increase is slighter in the diabetic cases.
+
+On the contrary, regarding the male counterparts, among the diabetic cases, there is not an important change between "Average" and "Healthy" groups, while in the non-diabetic cases, the "Healthy" cases where nearly 2000 more than the "Average" ones.
+
+---
+title: "05_analysis_1"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+## Load data
+
+```{r}
+df <- read_tsv("../data/03_dat_aug.tsv")
+```
+
+```{r}
+str(df)
+```
+
+```{r}
+table(df$Diabetes_binary)
+```
+
+As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
+
+This script will the first one related to the analysis part. The focus here will be on interpreting the correlation coefficients to see what interaction exists between the variables and how they affect the variable related to the diagnosis of diabetes (Diabetes_binary).
+
+The analysis will continue with the creation of a general linear model. The model will be tested with all available variables and an interpretation of the results obtained will be made. This script will end with the use of the "step" method in order to find out which are the best variables according to our data. What is more, a comparison between models will be made as well regarding to AIC and the selected variables.
+
+## Correlation analysis
+
+Thus, what is correlation? Correlation is an statistical measure of a relationship involving two variables. Specifically, correlation reffers to a linear relationship between two independent variables. The correlation coefficient is the numerical measure of a statistical correlation and indicates the strength of the relationship.
+
+One of the major restrictions of correlation is that it measures relationships only between numerical variables. If the relationship between categorical variables wants to be made, performing a chi-square test would be a good option. However, in this case, a dataset only containing numerical variables will be needed.
+
+```{r}
+df_numeric <- df[sapply(df, is.numeric)]
+```
+
+There are several correlation coefficient formulas such as the Sample correlation coefficient, the Population correlation coefficient or the Rank correlation coefficient. The formula selected for this analysis is the Pearson product-moment correlation. Also known as the Pearson correlation. This is the most common correlation coefficient and it can be computed for any data set that has a finite covariance matrix. To achieve the values, a division between the covariance of two variables by the product of their standard deviations has to be made.
+
+The following code computes the Pearson correlation between the numerical variables of the dataset and shows the obtained values.
+
+```{r}
+cor_matrix <- cor(df_numeric, method = "spearman")
+
+print("Correlation Matrix:")
+print(cor_matrix)
+```
+
+As there are many values, a plot will be displayed to make better assumptions. The selected plot has been a heatmap. But how are we supposed to interpret it? The correlation sets the ground to quantify the sign and the magnitude of the tendency between two variables.
+
+1.  The sign denotes the direction of the variable relationship.
+
+    -\> Values above 0 show a direct or positive relationship between the variables,
+
+    -\> Values below 0 show an indirect or negative relationship,
+
+    -\> A null value shows that there does not exist any tendency between both variables.
+
+2.  The magnitude indicates the strength of the relationship. If the magnitude value is close to the extreme of the interval (1 or -1) the trend the trend of the variables is higher. As the correlation efficient reaches zero, the trend minimizes.
+
+    -\> If the correlation value takes the value 1 or -1, we will say that the correlation is "perfect",
+
+    -\> If the correlation value takes the value 0, we will say that the variables are not correlated.
+
+Now that it is known how to interpret the correlation coefficients lets see the plot and analyze it.
+
+```{r}
+library(ggplot2)
+ggplot(data = as.data.frame(as.table(cor_matrix)), 
+       aes(x = Var1, y = Var2, fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", 
+                       high = "red", 
+                       mid = "white", 
+                       midpoint = 0,
+                       limit = c(-1, 1),
+                       space = "Lab",
+                       name = "Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The redder the colour, the stronger the correlation in a positive way and the bluer the colour, the stronger but in a negative way. At first glance it can be seen that the health-related variables are positively related to each other. We are talking for example about the variables PhysHlth, GenHlth and DiffWalk and that there are no pairs of variables whose relationship is particularly negative.
+
+EXPLICAR QUÉ SIGNIFICA ESTAR CORRELACIONAS POSITIVA/NEGATIVAMENTE.
+
+```{r}
+diag(cor_matrix) <- 0
+
+strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), 
+                              Freq > 0.35 | Freq < -0.35)
+
+print("Strong Correlations:")
+print(strong_correlations)
+```
+
+```{r}
+cor_with_diabetes <- cor(df_numeric, 
+                         df_numeric$Diabetes_binary, # Is this baseR?
+                         method = "spearman")
+
+cor_df <- as.data.frame(as.table(cor_with_diabetes))
+colnames(cor_df) <- c("Variable", "Correlation")
+```
+
+```{r}
+print(cor_with_diabetes)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = as.data.frame(as.table(cor_with_diabetes)), 
+       aes(x = Var2, 
+           y = Var1, 
+           fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", 
+                       high = "red", 
+                       mid = "white", 
+                       midpoint = 0, 
+                       limit = c(-1, 1), 
+                       space = "Lab", 
+                       name = "Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1))
+```
+
+```{r}
+diag(cor_matrix) <- 0
+
+strong_correlations <- subset(as.data.frame(as.table(cor_with_diabetes)),
+                              Freq > 0.3 | Freq < -0.3)
+
+print("Strong Correlations:")
+print(strong_correlations)
+```
+
+# GENERAL MODEL WITH ALL VARIABLES
+
+```{r}
+model_all = glm(data = df_numeric,
+                Diabetes_binary ~ .,
+                family = binomial)
+
+summary(model_all)
+```
+
+```{r}
+forward_model <- step(model_all, 
+                      direction = "forward")
+
+backward_model <- step(model_all,
+                       direction = "backward")
+
+cat("\nForward Selection Model Summary:\n")
+summary(forward_model)
+
+cat("\nBackward Selection Model Summary:\n")
+summary(backward_model)
+```
+
+```{r}
+AIC_full <- AIC(model_all)
+
+AIC_forward <- AIC(forward_model)
+
+AIC_backward <- AIC(backward_model)
+
+cat("AIC for Full Model:", AIC_full, "\n")
+cat("AIC for Forward Model:", AIC_forward, "\n")
+cat("AIC for Backward Model:", AIC_backward, "\n")
+```
+
+```{r}
+count_selected_variables <- sum(coefficients(backward_model) != 0)
+
+selected_variables <- names(coefficients(backward_model)[coefficients(backward_model) != 0])
+
+cat("Number of Variables selected by Backward Model:", length(selected_variables), "\n")
+cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
+```
+
+---
+title: "06_analysis_2"
+author: "group22"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+```{r}
+df <- read_tsv("../data/03_dat_aug.tsv")
+
+head(df)
+```
+
+```{r}
+sapply(df,class)
+numeriques <- which(sapply(df,is.numeric))
+numeriques
+```
+
+```{r}
+df_num = df[,numeriques]
+```
+
+# PCA
+
+```{r}
+library(tidyverse)
+
+pca_fit <- df |> 
+  select_if(where(is.numeric)) |>
+  prcomp(scale = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(broom)
+library(cowplot)
+
+pca_fit <- prcomp(df |> 
+           select_if(is.numeric), scale = TRUE)
+
+df_augmented <- augment(pca_fit, df)
+
+ggplot(df_augmented, aes(.fittedPC1, 
+                         .fittedPC2, 
+                         color = Diabetes_Status)) + 
+  geom_point(size = 1.5) +
+  scale_color_manual(
+    values = c("Non-Diabetic" = "#D55E00", 
+               "Diabetic" = "#0072B2")) +
+  theme_minimal() +
+  background_grid()
+```
+
+```{r}
+pca_fit |>
+  tidy(matrix = "rotation")
+```
+
+```{r}
+arrow_style <- arrow(angle = 20, 
+                     ends = "first", 
+                     type = "closed", 
+                     length = grid::unit(8, "pt"))
+
+pca_fit |>
+  tidy(matrix = "rotation") |>
+  pivot_wider(names_from = "PC", 
+              names_prefix = "PC", 
+              values_from = "value") |>
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, 
+               yend = 0, 
+               arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, 
+    nudge_x = -0.02, 
+    color = "#904C2F") +
+  xlim(-1.25, .5) + 
+  ylim(-.5, 1) +
+  coord_fixed() +
+  theme_minimal_grid(12)
+```
+
+```{r}
+pca_fit |>
+  tidy(matrix = "eigenvalues")
+```
+
+```{r}
+pca_fit |>
+  tidy(matrix = "eigenvalues") |>
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:22) +
+  scale_y_continuous(labels = scales::percent_format(),
+                     expand = expansion(mult = c(0, 0.01))) +
+  theme_minimal_hgrid(12)
+```
+
+```{r}
+plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
+     xlab = "Number of Principal Components",
+     ylab = "Cumulative Proportion of Variance Explained",
+     type = "b")
+
+abline(h = 0.7, col = "red", lty = 2)
+abline(h = 0.75, col = "blue", lty = 2)
+abline(h = 0.8, col = "green", lty = 2)
+```
+
+# NEW MODELS
+
+### With all the variables (numeric)
+
+```{r}
+library(stats)
+
+set.seed(123)
+
+split <- sample(1:nrow(df_num), 0.7 * nrow(df_num))
+train_data <- df_num[split, ]
+test_data <- df_num[-split, ]
+
+model <- glm(Diabetes_binary ~ ., family = "binomial", data = train_data)
+
+predictions <- predict(model, newdata = test_data, type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_data$Diabetes_binary)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+precision <- conf_matrix[2, 2] / sum(conf_matrix[, 2])
+recall <- conf_matrix[2, 2] / sum(conf_matrix[2, ])
+f1 <- 2 * (precision * recall) / (precision + recall)
+
+cat("Confusion Matrix:\n", conf_matrix, "\n\n")
+cat("Accuracy:", accuracy, "\n")
+cat("Precision:", precision, "\n")
+cat("Recall:", recall, "\n")
+cat("F1 Score:", f1, "\n")
+```
+
+### With the selected components that achieve the 70%. (11)
+
+```{r}
+num_components <- 11
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+### With the selected components that achieve the 75%. (13)
+
+```{r}
+num_components <- 13
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123)
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+### With the selected components that achieve the 80%. (14)
+
+```{r}
+num_components <- 14
+
+selected_components <- pca_fit$x[, 1:num_components]
+
+outcome_variable <- df$Diabetes_binary
+
+set.seed(123) 
+train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+
+train_data <- selected_components[train_indices, ]
+train_outcome <- outcome_variable[train_indices]
+test_data <- selected_components[-train_indices, ]
+test_outcome <- outcome_variable[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+
+predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+conf_matrix <- table(binary_predictions, test_outcome)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+
+print(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+```{r}
+str(selected_components)
+```
+
+
