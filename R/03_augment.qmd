@@ -17,7 +17,7 @@ df_cleaned <- read_tsv("../data/02_dat_clean.tsv")
 
 ### Smoking
 
-Changing the smokers variable from binary format to categorical. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
+Changing the smokers variable from binary format to character. The value "0" which indicates non-smokers is changed to "Non-Smoker", and the value "1" changed to "Smoker" respectively.
 
 ```{r}
 df_aug <- df_cleaned |> 
@@ -29,7 +29,7 @@ df_aug <- df_cleaned |>
 
 ### Diabetes
 
-Converting the diabetes_binary variable from binary to categorical.
+Converting the diabetes_binary variable from binary to character.
 
 ```{r}
 df_aug <-
@@ -41,12 +41,12 @@ df_aug <-
 
 ### Gender
 
-Changing the Sex variable from binary to categorical.
+Changing the Sex variable from binary to character.
 
 ```{r}
 df_aug <-
   df_aug |> 
-  mutate(Sex = case_when(
+  mutate(Sex_character = case_when(
     Sex == 0 ~ "Female",
     Sex == 1 ~ "Male"))
 ```
@@ -82,7 +82,7 @@ df_aug <-
 
 ### Physical Activity
 
-This variable transforms the "PhysActivity" from binary to categorical.
+This variable transforms the "PhysActivity" from binary to character.
 
 ```{r}
 df_aug <-
@@ -94,7 +94,7 @@ df_aug <-
 
 ### Habits
 
-One variable that should be added is habits, a categorical variable that describes whether the lifestyle of the individual is healthy or not. This depends on many variables, namely Smoking, Alcohol consumption, Fruits and Veggies consumption and Physical Activity. For the first 2, we assigned -1 point, while for the latter 3, we assigned +1 respectively. A high score indicates a healthy lifestyle, a medium one indicates an average lifestyle, while a low score indicates an unhealthy one.
+One variable that should be added is habits, a character variable that describes whether the lifestyle of the individual is healthy or not. This depends on many variables, namely Smoking, Alcohol consumption, Fruits and Veggies consumption and Physical Activity. For the first 2, we assigned -1 point, while for the latter 3, we assigned +1 respectively. A high score indicates a healthy lifestyle, a medium one indicates an average lifestyle, while a low score indicates an unhealthy one.
 
 ```{r}
 df_aug <-
