@@ -68,5 +68,3 @@ df_aug |>
 Among the individuals with healthy habits, it is illustrated that, in both diabetic and non-diabetic cases, more women have healthier habits, whereas in the "Average" habits group, the results are more conflicting. It can be seen that while in the non-diabetic cases, more women have an "Average" lifestyle, it is the opposite for the diabetic counterparts. It is also remarkable that female individuals in the non-diabetic group doubled from the "Average" to the "Healthy" group, while the increase is slighter in the diabetic cases.
 
 On the contrary, regarding the male counterparts, among the diabetic cases, there is not an important change between "Average" and "Healthy" groups, while in the non-diabetic cases, the "Healthy" cases where nearly 2000 more than the "Average" ones.
-
-ghhghgfhg
