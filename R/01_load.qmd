@@ -17,16 +17,18 @@ library("RColorBrewer")
 
 ## Load Data
 
-```{r}
+Loading the data from .csv file that has been downloaded.
+
+```{r message = FALSE}
 df <- read_csv("../_raw/project_data.csv")
-head(df)
 ```
 
 ## Save loaded data
 
-```{r}
+Saving the dataset as .tsv file in data directory. Also reading the saved file to make sure it works.
+
+```{r message = FALSE}
 write_tsv(df, "../data/01_dat_load.tsv")
 
 df <- read_tsv("../data/01_dat_load.tsv")
-head(df)
 ```
