@@ -114,101 +114,16 @@ abline(h = 0.8, col = "green", lty = 2)
 
 # NEW MODELS
 
-### With all the variables (numeric)
-
 ```{r}
-library(stats)
-
-set.seed(123)
-
-split <- sample(1:nrow(df_num), 0.7 * nrow(df_num))
-train_data <- df_num[split, ]
-test_data <- df_num[-split, ]
-
-model <- glm(Diabetes_binary ~ ., family = "binomial", data = train_data)
-
-predictions <- predict(model, newdata = test_data, type = "response")
-
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-conf_matrix <- table(binary_predictions, test_data$Diabetes_binary)
-accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
-
-precision <- conf_matrix[2, 2] / sum(conf_matrix[, 2])
-recall <- conf_matrix[2, 2] / sum(conf_matrix[2, ])
-f1 <- 2 * (precision * recall) / (precision + recall)
-
-cat("Confusion Matrix:\n", conf_matrix, "\n\n")
-cat("Accuracy:", accuracy, "\n")
-cat("Precision:", precision, "\n")
-cat("Recall:", recall, "\n")
-cat("F1 Score:", f1, "\n")
+table(df$Sex)
 ```
 
-### With the selected components that achieve the 70%. (11)
+So we have more female than men.
+
+### With the selected components that achieve the 80%. (15)
 
 ```{r}
-num_components <- 11
-
-selected_components <- pca_fit$x[, 1:num_components]
-
-outcome_variable <- df$Diabetes_binary
-
-set.seed(123)
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
-
-train_data <- selected_components[train_indices, ]
-train_outcome <- outcome_variable[train_indices]
-test_data <- selected_components[-train_indices, ]
-test_outcome <- outcome_variable[-train_indices]
-
-model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
-
-predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
-
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-conf_matrix <- table(binary_predictions, test_outcome)
-accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
-
-print(conf_matrix)
-cat("Accuracy:", accuracy, "\n")
-```
-
-### With the selected components that achieve the 75%. (13)
-
-```{r}
-num_components <- 13
-
-selected_components <- pca_fit$x[, 1:num_components]
-
-outcome_variable <- df$Diabetes_binary
-
-set.seed(123)
-train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
-
-train_data <- selected_components[train_indices, ]
-train_outcome <- outcome_variable[train_indices]
-test_data <- selected_components[-train_indices, ]
-test_outcome <- outcome_variable[-train_indices]
-
-model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
-
-predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
-
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-conf_matrix <- table(binary_predictions, test_outcome)
-accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
-
-print(conf_matrix)
-cat("Accuracy:", accuracy, "\n")
-```
-
-### With the selected components that achieve the 80%. (14)
-
-```{r}
-num_components <- 14
+num_components <- 15
 
 selected_components <- pca_fit$x[, 1:num_components]
 
@@ -235,6 +150,16 @@ print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
 
+AQUÍ TENGO QUE CONSEGUIR QUE ME PONGA CUALES SON ESAS VARIABLES EN VEZ DE LOS PC...
+
 ```{r}
 str(selected_components)
 ```
+
+MEN VS WOMEN MODELS.
+
+CREATE A DF FOR MEN AND ANOTHER ONE FOR WOMEN.
+
+PERFORM BOTH MODELS.
+
+CONCLUSIONS.
