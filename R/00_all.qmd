@@ -17,6 +17,6 @@ editor: visual
 
 {{< include 04_describe.qmd >}}
 
-{{< include 05_analysis_1.qmd >}}
+\#{{< include 05_analysis_1.qmd >}}
 
-{{< include 06_analysis_2.qmd >}}
+\#{{< include 06_analysis_2.qmd >}}
