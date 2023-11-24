@@ -58,10 +58,12 @@ The graph displays a general decrease of BMI in physically active individuals, c
 df_aug |> 
   ggplot(mapping = aes(x = fct_relevel(Habits,"Unhealthy","Average","Healthy"),
                        fill = Sex_character)) +
-  geom_bar(position = position_dodge(),alpha=0.6) +
+  geom_bar(position = position_dodge(),alpha=0.8) +
   facet_wrap(~Diabetes_Status) +
   theme_minimal()+
-  scale_fill_manual(values = c("coral2", "deeppink4")) +
+  scale_fill_manual(values = c("midnightblue", "mediumorchid2")) +
+  #scale_fill_manual(values = c("antiquewhite4", "coral2"))
+  #scale_fill_viridis_d() +
   theme(legend.position = "none") +
   ylab("Count") +
   xlab("Habits") +
