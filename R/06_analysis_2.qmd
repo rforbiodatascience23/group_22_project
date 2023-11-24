@@ -25,6 +25,8 @@ df_num = df[,numeriques]
 
 # PCA
 
+explain this
+
 ```{r}
 library(tidyverse)
 
