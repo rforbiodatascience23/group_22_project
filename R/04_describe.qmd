@@ -20,13 +20,13 @@ df_aug <- read_tsv("../data/03_dat_aug.tsv")
 ```{r}
 df_aug |> 
   ggplot(aes(x = BMI, y = Age_Range)) +
-  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
+  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.6) + 
   facet_wrap(~Smoking_Status)+
   labs(x = "BMI",
        y = "Age Group") +
   theme_minimal()+
   theme(legend.position = "none") +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "rocket") +
   labs(title = "BMI distribution over the different age groups", 
        subtitle = "A comparison between smokers and non-smokers")
 ```
