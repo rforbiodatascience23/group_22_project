@@ -21,6 +21,59 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 Data clean and data augmentation part(how we perform data cleaning and augmentation part and what we create also keep in mind biological perspective that influences our research questions)
 
+## Data Cleaning and Augmentation
+
+### Data Cleaning
+We ensured data integrity by performing comprehensive data cleaning, which included:
+
+1. **Removing Missing Values**
+   - Ensured dataset completeness.
+   - Code snippet:
+     ```R
+     df_cleaned <- df |> drop_na()
+     ```
+   - Outcome: No missing values found.
+
+2. **Verifying Data Types**
+   - Confirmed each variable's type for consistency.
+   - Code snippet:
+     ```R
+     column_types <- df_cleaned |> summarise(across(everything(), class))
+     ```
+   - Outcome: All variables confirmed as numeric.
+
+3. **Filtering Out Incorrect Values**
+   - Ensured all values fell within expected ranges.
+   - Code snippet:
+     ```R
+     df_cleaned <- df_cleaned |> filter(Diabetes_binary %in% c(0, 1, 2), ...)
+     ```
+   - Outcome: No out-of-range values detected.
+
+### Data Augmentation
+Our augmentation process enriched the dataset for deeper insights:
+
+1. **Categorical Conversion**
+   - Transformed binary variables to categorical (e.g., Smoker to Smoking_Status).
+   - Example code:
+     ```R
+     df_aug <- df_cleaned |> mutate(Smoking_Status = case_when(Smoker == 0 ~ "Non-Smoker", ...))
+     ```
+
+2. **New Variable Creation**
+   - Introduced new variables like `Habits` and `Health_Risk` to assess lifestyle and health risk.
+   - Example code:
+     ```R
+     df_aug <- df_aug |> mutate(Habit_Score = Veggies + Fruits + ..., Health_Risk = case_when(...))
+     ```
+
+3. **Socio-Economic Background**
+   - Developed socio-economic class variable based on education, income, and healthcare.
+   - Example code:
+     ```R
+     df_aug <- df_aug |> mutate(SE_Background = case_when(...))
+     ```
+
 ## Data Analysis
 
 Quick run through over both analysis parts (what methods we use with research questions in mind)
