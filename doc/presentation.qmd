@@ -19,36 +19,24 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Data Cleaning and Augmentation
 
-Data clean and data augmentation part(how we perform data cleaning and augmentation part and what we create also keep in mind biological perspective that influences our research questions)
-
-## Data Cleaning and Augmentation
+<div style="display: flex; font-size: 0.8em;">
+  <div style="flex: 1; padding-right: 10px;">
 
 ### Data Cleaning
-We ensured data integrity by performing comprehensive data cleaning, which included:
+- **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
+- **Verified Data Types**: `column_types <- summarise(df_cleaned, across(everything(), class))`
+- **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
 
-1. **Removing Missing Values**
-   - Ensured dataset completeness.
-   - Code snippet:
-     ```R
-     df_cleaned <- df |> drop_na()
-     ```
-   - Outcome: No missing values found.
+  </div>
+  <div style="flex: 1; padding-left: 10px;">
 
-2. **Verifying Data Types**
-   - Confirmed each variable's type for consistency.
-   - Code snippet:
-     ```R
-     column_types <- df_cleaned |> summarise(across(everything(), class))
-     ```
-   - Outcome: All variables confirmed as numeric.
+### Data Augmentation
+- **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
+- **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
+- **Socio-Economic Class**: Derived from income, education, and healthcare status.
 
-3. **Filtering Out Incorrect Values**
-   - Ensured all values fell within expected ranges.
-   - Code snippet:
-     ```R
-     df_cleaned <- df_cleaned |> filter(Diabetes_binary %in% c(0, 1, 2), ...)
-     ```
-   - Outcome: No out-of-range values detected.
+  </div>
+</div>
 
 ## Data Analysis
 
@@ -73,4 +61,3 @@ Analysis part2 results (same as part above)
 ## Discussion
 
 Discussion and key takeaways
-
