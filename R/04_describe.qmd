@@ -9,7 +9,7 @@ editor: visual
 
 ## Load data
 
-```{r}
+```{r message = FALSE}
 df_aug <- read_tsv("../data/03_dat_aug.tsv")
 ```
 
