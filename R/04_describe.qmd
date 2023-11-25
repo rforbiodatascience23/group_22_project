@@ -18,7 +18,7 @@ df_aug <- read_tsv("../data/03_dat_aug.tsv")
 1.  **The distribution of BMI in the different age groups, including a comparison between smokers and non-smokers.**
 
 ```{r}
-df_aug |> 
+{df_aug |> 
   ggplot(aes(x = BMI, y = Age_Range)) +
   geom_density_ridges(aes(fill = Age_Range) ,alpha=0.6) + 
   facet_wrap(~Smoking_Status)+
@@ -28,7 +28,8 @@ df_aug |>
   theme(legend.position = "none") +
   scale_fill_viridis_d(option = "rocket") +
   labs(title = "BMI distribution over the different age groups", 
-       subtitle = "A comparison between smokers and non-smokers")
+       subtitle = "A comparison between smokers and non-smokers")} |> 
+  ggsave(filename = "04_key_plot_1.png", path = "../results/")
 ```
 
 As it is illustrated from the plot above, smoking status affects mostly the youngest age groups, namely 18-24 and 25-34, where it is shown that smokers have a generally higher BMI than the non-smokers. For the other age groups, the behavior is almost the same between smokers and non-smokers, so smoking doesn't appear as a main factor influencing BMI for individuals over 35. However, the general tendency is that BMI increases over the age, as it can be seen by the peak.
@@ -55,7 +56,7 @@ The graph displays a general decrease of BMI in physically active individuals, c
 3.  **Distribution of habits among individuals between genders**
 
 ```{r}
-df_aug |> 
+{df_aug |> 
   ggplot(mapping = aes(x = fct_relevel(Habits,"Unhealthy","Average","Healthy"),
                        fill = Sex_character)) +
   geom_bar(position = position_dodge(),alpha=0.8) +
@@ -68,7 +69,8 @@ df_aug |>
   ylab("Count") +
   xlab("Habits") +
   labs(title = "The distribution of habits among individuals", 
-       subtitle = "Comparison between 2 genders")
+       subtitle = "Comparison between 2 genders")} |> 
+  ggsave(filename = "04_key_plot_2.png", path = "../results/")
 ```
 
 Among the individuals with healthy habits, it is illustrated that, in both diabetic and non-diabetic cases, more women have healthier habits, whereas in the "Average" habits group, the results are more conflicting. It can be seen that while in the non-diabetic cases, more women have an "Average" lifestyle, it is the opposite for the diabetic counterparts. It is also remarkable that female individuals in the non-diabetic group doubled from the "Average" to the "Healthy" group, while the increase is slighter in the diabetic cases.
