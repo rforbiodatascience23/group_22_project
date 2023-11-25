@@ -9,7 +9,7 @@ editor: visual
 
 ## Load Data
 
-```{r}
+```{r message = FALSE}
 df_cleaned <- read_tsv("../data/02_dat_clean.tsv")
 ```
 
