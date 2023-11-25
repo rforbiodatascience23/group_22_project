@@ -7,11 +7,23 @@ format:
 editor: visual
 ---
 
+## Load data
+
 ```{r}
 df <- read_tsv("../data/03_dat_aug.tsv")
 
 head(df)
 ```
+
+The second script of analysis will be related to the performing PCA and the creation of some logistic regression models with different variations. These variations are based on the creation of three different models. The first of them will use the components used to reach 80% variability after the PCA analysis and the second and third ones will be different models for men and women. Thanks to this we will be able to analyze whether gender has a special importance when predicting patients with diabetes.
+
+# PCA
+
+It has to be mentioned that we have used the code provided by the lecturers ([PCA tidyverse](https://clauswilke.com/blog/2020/09/07/pca-tidyverse-style/)) and apply it using our data to achieve some conclusions. That is why the code will be the achieved conclusions will be completely different. Thus, that is why we want to highlight that we have been able to understand how Principal Component Analysis (PCA) works thanks to this code and how to interpret the obtained results. Lets start with PCA.
+
+PCA is a dimensionality reduction method that is often used to reduce the dimensionality of large data sets, by transforming a large set of variables into a smaller one that still contains most of the information in the large set. PCA can be used for many purposes, however, we have opted to apply this technique to create models with less variables to try to gain more meaningful conclusions of them. Thus, we are using it to reduce the dimensionality to simplify our data set with many variables, to make it more manageable for analysis.
+
+Having said that, first thing that has to be done is to work only with numerical variables. PCA is typically applied to continuous variables, and it assumes that the variables are on a numerical scale. PCA is based on the covariance matrix, which involves computing variances and covariances between numeric variables. Therefore, directly applying PCA to a dataset with categorical variables is not appropriate However, there are techniques that extend PCA to handle categorical variables. One such technique is called Multiple Correspondence Analysis (MCA), which is an extension of PCA for categorical data. MCA is suitable for datasets where variables are categorical and can take more than two levels. As we are not working with categorical data, we will forget about this idea.
 
 ```{r}
 sapply(df,class)
@@ -19,13 +31,7 @@ numeriques <- which(sapply(df,is.numeric))
 numeriques
 ```
 
-```{r}
-df_num = df[,numeriques]
-```
-
-# PCA
-
-explain this
+After checking which are the numerical variables of our data set, we will only select those ones to perform the analysis. Before using PCA, we have to make sure that all our data is playing on a level field. Scaling means adjusting the values so they're all in a similar range.
 
 ```{r}
 library(tidyverse)
@@ -35,13 +41,12 @@ pca_fit <- df |>
   prcomp(scale = TRUE)
 ```
 
+Now, we will create a special kind of map for our data using PCA. To do this, we blend the PCA results with the original data, adding back the information we temporarily set aside. It's like bringing back the colors to our points based on categories that were there in the first place but were temporarily taken away for PCA. We use a tool called **`augment()`** from the "broom" package to make this happen. It needs the model we created and the original data as inputs.
+
 ```{r}
 library(dplyr)
 library(broom)
 library(cowplot)
-
-pca_fit <- prcomp(df |> 
-           select_if(is.numeric), scale = TRUE)
 
 df_augmented <- augment(pca_fit, df)
 
@@ -56,41 +61,21 @@ ggplot(df_augmented, aes(.fittedPC1,
   background_grid()
 ```
 
+It can be noticed that the difference among having diabetes or not is being quite well distinguished in the two first components. We will continue by cretaing the rotation matrix. In PCA this matrix is like a set of instructions that turns our data points into a new set of directions. It helps to highlight the most important information in the data. We need to think of it as finding the best view tu understand patterns in the data.
+
 ```{r}
 pca_fit |>
   tidy(matrix = "rotation")
 ```
 
-```{r}
-arrow_style <- arrow(angle = 20, 
-                     ends = "first", 
-                     type = "closed", 
-                     length = grid::unit(8, "pt"))
-
-pca_fit |>
-  tidy(matrix = "rotation") |>
-  pivot_wider(names_from = "PC", 
-              names_prefix = "PC", 
-              values_from = "value") |>
-  ggplot(aes(PC1, PC2)) +
-  geom_segment(xend = 0, 
-               yend = 0, 
-               arrow = arrow_style) +
-  geom_text(
-    aes(label = column),
-    hjust = 1, 
-    nudge_x = -0.02, 
-    color = "#904C2F") +
-  xlim(-1.25, .5) + 
-  ylim(-.5, 1) +
-  coord_fixed() +
-  theme_minimal_grid(12)
-```
+Finally we will look at the variance explained by each PC. To do this, we will compute the eigenvalues. But, what is an eigenvalue representing? An eigenvalue in PCA represents the amount of variance captured by a principal component. It tells us how much information that component holds: larger eigenvalues mean more important components.
 
 ```{r}
 pca_fit |>
   tidy(matrix = "eigenvalues")
 ```
+
+Here we can see those results in a plot.
 
 ```{r}
 pca_fit |>
@@ -103,6 +88,10 @@ pca_fit |>
   theme_minimal_hgrid(12)
 ```
 
+Having reached this part of the project, we now want to only select a certain amount of components to be used in our models. Selecting the number of components in PCA depends on our goals and the amount of data we are willing to retain. A common approach is to choose enough components to capture a significant portion of the total variance, often aiming for around 70-80%. This is of course a trade-off. The more components we have, the more information we will have. However, more noise will be introduced.
+
+To help us finding the desired number of components, we will create a scree plot and select those whose cumulative sum achives an 80% of cumulative variance.
+
 ```{r}
 plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
      xlab = "Number of Principal Components",
@@ -114,15 +103,19 @@ abline(h = 0.75, col = "blue", lty = 2)
 abline(h = 0.8, col = "green", lty = 2)
 ```
 
-# NEW MODELS
+Looking at the results of the plot, we will select a total of 15 components.
 
-```{r}
-table(df$Sex)
-```
+## Prediction model
 
-So we have more female than men.
+After performing PCA and selecting the appropiate number of components, we will build a simple logistic regression model for prediction tasks. In our case, the target variable will be Diabetes_binay and the following procedure will be made:
 
-### With the selected components that achieve the 80%. (15)
+1.  Dimensionality reduction: We will select 15 principal components from the results of a our PCA analysis (**`pca_fit`**).
+
+2.  Data splitting: The dataset is divided into training and testing sets (70% training, 30% testing) using random indices.
+
+3.  Model training: A logistic regression model (**`glm`**) is trained on the training data, where the outcome variable is binary (**`Diabetes_binary`**).
+
+4.  Prediction and evaluation: The model is used to predict outcomes on the test data. Predictions are converted to binary (0 or 1) based on a threshold of 0.5. To evaluate the model's performance, a confusion matrix is created and accuracy is computed as well.
 
 ```{r}
 num_components <- 15
@@ -152,16 +145,72 @@ print(conf_matrix)
 cat("Accuracy:", accuracy, "\n")
 ```
 
-AQUÍ TENGO QUE CONSEGUIR QUE ME PONGA CUALES SON ESAS VARIABLES EN VEZ DE LOS PC...
+One of the methods used to check the model's performance is a confusion matrix. It is a table that helps evaluate the performance of a classification model. It compares the predicted values to the actual values in a dataset and consists of four components. Those components are then used to compute some other metrics such as accuracy (the one that we have printed). The results obtained by applying the selected 15 components are quite good as we are achieving a value of 87% in accuracy.
+
+## Men VS. Women (GLM)
+
+The last part of the analysis will be foccused in detecting wether a prediction model works better for men or women. We want to help tackling gender bias in science. This means the data might not treat men and women fairly. This could happen if there aren't enough women included in studies, or if the way data is collected or analyzed favors one gender over the other. Fixing this means making sure studies include a good mix of men and women and treating everyone equally in how data is handled.
+
+First of all we will take a look to the distribution between men and women in our data set.
 
 ```{r}
-str(selected_components)
+table(df$Sex)
 ```
 
-MEN VS WOMEN MODELS.
+Value 0 means women and value 1 means men. So according to our data, we have slightly more women individuals rather than men. Lets generate two different datasets according to gender and apply logistic regression to see their performances.
 
-CREATE A DF FOR MEN AND ANOTHER ONE FOR WOMEN.
+```{r}
+women_data <- df |>
+  filter(Sex == 0) |>
+  select_if(is.numeric)
 
-PERFORM BOTH MODELS.
+men_data <- df |>
+  filter(Sex == 1) |>
+  select_if(is.numeric)
+```
+
+Lets use first women data in the model.
+
+```{r}
+model <- glm(Diabetes_binary ~ ., family = "binomial", data = women_data)
+
+predictions <- predict(model, type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+accuracy <- mean(binary_predictions == women_data$Diabetes_binary)
+
+cat("Accuracy:", accuracy, "\n")
+```
+
+Now lets create a model for men data.
+
+```{r}
+model <- glm(Diabetes_binary ~ ., family = "binomial", data = men_data)
+
+predictions <- predict(model, type = "response")
+
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+
+accuracy <- mean(binary_predictions == men_data$Diabetes_binary)
+
+cat("Accuracy:", accuracy, "\n")
+```
 
 CONCLUSIONS.
+
+```{r}
+model_all = glm(data = women_data,
+                Diabetes_binary ~ .,
+                family = binomial)
+
+summary(model_all)
+```
+
+```{r}
+model_all = glm(data = men_data,
+                Diabetes_binary ~ .,
+                family = binomial)
+
+summary(model_all)
+```
