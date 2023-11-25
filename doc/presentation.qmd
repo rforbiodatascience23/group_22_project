@@ -1,18 +1,4 @@
 ---
-<<<<<<< HEAD
-title: "Presentation - R for Bio Data Science"
-author: "Group 22"
-format: revealjs
----
-
-# Introduction
-
-# Materials and Methods
-
-# Results
-
-# Discussion
-=======
 title: "Project presentation"
 author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
@@ -27,13 +13,49 @@ Intro to the class and tidyverse
 
 Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)
 
+## Introduction
+
+<div style="font-size: 0.7em;">
+
+### Tidyverse and Data Exploration
+
+- **Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.
+
+### Our Dataset
+
+- **Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
+- **Key Features**: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information.
+
+### Research Questions
+
+-
+
+</div>
+
 ## Materials and Methods
 
 Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Data Cleaning and Augmentation
 
-Data clean and data augmentation part(how we perform data cleaning and augmentation part and what we create also keep in mind biological perspective that influences our research questions)
+<div style="display: flex; font-size: 0.8em;">
+  <div style="flex: 1; padding-right: 10px;">
+
+### Data Cleaning
+- **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
+- **Verified Data Types**: `column_types <- summarise(df_cleaned, across(everything(), class))`
+- **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
+
+  </div>
+  <div style="flex: 1; padding-left: 10px;">
+
+### Data Augmentation
+- **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
+- **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
+- **Socio-Economic Class**: Derived from income, education, and healthcare status.
+
+  </div>
+</div>
 
 ## Data Analysis
 
@@ -57,9 +79,4 @@ Analysis part2 results (same as part above)
 
 ## Discussion
 
-<<<<<<< HEAD
 Discussion and key takeaways
-=======
-Discussion and key takeaways 
->>>>>>> 5f4cda90678183c5673c2becc555985e435b5ce7
->>>>>>> 02779f0c0f60a95dabe5c87040f179ddfe2e8df8

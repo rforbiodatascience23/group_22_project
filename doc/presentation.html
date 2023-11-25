@@ -1157,13 +1157,49 @@ Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s2231
 <p>Intro to the class and tidyverse</p>
 <p>Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)</p>
 </section>
+<section id="introduction-1" class="slide level2">
+<h2>Introduction</h2>
+<div style="font-size: 0.7em;">
+<h3 id="tidyverse-and-data-exploration">Tidyverse and Data Exploration</h3>
+<ul>
+<li><strong>Focus</strong>: Utilizing the <code>tidyverse</code> suite in R for effective data manipulation and visualization.</li>
+</ul>
+<h3 id="our-dataset">Our Dataset</h3>
+<ul>
+<li><strong>Source</strong>: Behavioral Risk Factor Surveillance System (BRFSS) 2015.</li>
+<li><strong>Key Features</strong>: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information.</li>
+</ul>
+<h3 id="research-questions">Research Questions</h3>
+<ul>
+<li></li>
+</ul>
+</div>
+</section>
 <section id="materials-and-methods" class="slide level2">
 <h2>Materials and Methods</h2>
 <p>Flowchart(quick explanation on how we plan to answer research questions)</p>
 </section>
 <section id="data-cleaning-and-augmentation" class="slide level2">
 <h2>Data Cleaning and Augmentation</h2>
-<p>Data clean and data augmentation part(how we perform data cleaning and augmentation part and what we create also keep in mind biological perspective that influences our research questions)</p>
+<div style="display: flex; font-size: 0.8em;">
+<div style="flex: 1; padding-right: 10px;">
+<h3 id="data-cleaning">Data Cleaning</h3>
+<ul>
+<li><p><strong>Removed Missing Values</strong>: <code>df_cleaned &lt;- df |&gt; drop_na()</code></p></li>
+<li><p><strong>Verified Data Types</strong>: <code>column_types &lt;- summarise(df_cleaned, across(everything(), class))</code></p></li>
+<li><p><strong>Filtered Incorrect Values</strong>: Filtered out rows with values outside expected ranges.</p>
+</li></ul></div>
+<div style="flex: 1; padding-left: 10px;">
+
+
+<h3 id="data-augmentation">Data Augmentation</h3>
+<ul>
+<li><p><strong>Transformed Variables</strong>: Binary to categorical (e.g., <code>Smoker</code> to <code>Smoking Status</code>).</p></li>
+<li><p><strong>Created New Variables</strong>: E.g., <code>Habits</code>, <code>Health Risk</code>, based on lifestyle and health indicators.</p></li>
+<li><p><strong>Socio-Economic Class</strong>: Derived from income, education, and healthcare status.</p>
+</li></ul></div>
+
+</div>
 </section>
 <section id="data-analysis" class="slide level2">
 <h2>Data Analysis</h2>
