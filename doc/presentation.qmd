@@ -43,4 +43,4 @@ Analysis part2 results (same as part above)
 
 ## Discussion
 
-Discussion and key takeaways 
+Discussion and key takeaways
