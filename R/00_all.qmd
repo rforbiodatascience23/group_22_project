@@ -18,9 +18,15 @@ editor: visual
 
 {{< include 04_describe.qmd >}}
 
+<<<<<<< HEAD
 {{< include 05_analysis_1.qmd >}}
 
 {{< include 06_analysis_2.qmd >}}
+=======
+\#{{< include 05_analysis_1.qmd >}}
+
+\#{{< include 06_analysis_2.qmd >}}
+>>>>>>> 02779f0c0f60a95dabe5c87040f179ddfe2e8df8
 =======
 {{< include 01_load.qmd >}}
 {{< include 02_clean.qmd >}}
@@ -28,4 +34,8 @@ editor: visual
 {{< include 04_describe.qmd >}}
 {{< include 05_analysis_1.qmd >}}
 {{< include 06_analysis_2.qmd >}}
+<<<<<<< HEAD
 >>>>>>> 53a1cf65e5cb9e7e92596f5b44baade763a30c10
+=======
+>>>>>>> 5f4cda90678183c5673c2becc555985e435b5ce7
+>>>>>>> 02779f0c0f60a95dabe5c87040f179ddfe2e8df8

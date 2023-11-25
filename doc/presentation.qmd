@@ -1,4 +1,18 @@
 ---
+<<<<<<< HEAD
+title: "Presentation - R for Bio Data Science"
+author: "Group 22"
+format: revealjs
+---
+
+# Introduction
+
+# Materials and Methods
+
+# Results
+
+# Discussion
+=======
 title: "Project presentation"
 author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
@@ -43,4 +57,9 @@ Analysis part2 results (same as part above)
 
 ## Discussion
 
+<<<<<<< HEAD
 Discussion and key takeaways
+=======
+Discussion and key takeaways 
+>>>>>>> 5f4cda90678183c5673c2becc555985e435b5ce7
+>>>>>>> 02779f0c0f60a95dabe5c87040f179ddfe2e8df8
