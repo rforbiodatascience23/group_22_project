@@ -20,13 +20,13 @@ df_aug <- read_tsv("../data/03_dat_aug.tsv")
 ```{r}
 df_aug |> 
   ggplot(aes(x = BMI, y = Age_Range)) +
-  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.3) + 
+  geom_density_ridges(aes(fill = Age_Range) ,alpha=0.6) + 
   facet_wrap(~Smoking_Status)+
   labs(x = "BMI",
        y = "Age Group") +
   theme_minimal()+
   theme(legend.position = "none") +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "rocket") +
   labs(title = "BMI distribution over the different age groups", 
        subtitle = "A comparison between smokers and non-smokers")
 ```
@@ -40,11 +40,12 @@ df_aug |>
   ggplot(mapping = aes(x = BMI,
                        y = fct_relevel(Income_Class,"Poor","Average","Wealthy"))) +
   geom_boxplot(aes(fill = Physically_Active),
-               outlier.shape = NA) +
+               outlier.shape = NA,,alpha=0.6) +
   xlim(0,60) +
   xlab("BMI") +
   ylab("Income Class") +
   theme(legend.position = "none") +
+  scale_fill_manual(values = c("aquamarine", "blue")) +
   labs(title = "Comparison of BMI between different income classes", 
        subtitle = "Red: No Physical Activity, Blue: Physical Activity")
 ```
@@ -57,8 +58,13 @@ The graph displays a general decrease of BMI in physically active individuals, c
 df_aug |> 
   ggplot(mapping = aes(x = fct_relevel(Habits,"Unhealthy","Average","Healthy"),
                        fill = Sex_character)) +
-  geom_bar(position = position_dodge()) +
+  geom_bar(position = position_dodge(),alpha=0.8) +
   facet_wrap(~Diabetes_Status) +
+  theme_minimal()+
+  scale_fill_manual(values = c("midnightblue", "mediumorchid2")) +
+  #scale_fill_manual(values = c("antiquewhite4", "coral2"))
+  #scale_fill_viridis_d() +
+  theme(legend.position = "none") +
   ylab("Count") +
   xlab("Habits") +
   labs(title = "The distribution of habits among individuals", 
