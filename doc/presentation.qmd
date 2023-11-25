@@ -50,30 +50,6 @@ We ensured data integrity by performing comprehensive data cleaning, which inclu
      ```
    - Outcome: No out-of-range values detected.
 
-### Data Augmentation
-Our augmentation process enriched the dataset for deeper insights:
-
-1. **Categorical Conversion**
-   - Transformed binary variables to categorical (e.g., Smoker to Smoking_Status).
-   - Example code:
-     ```R
-     df_aug <- df_cleaned |> mutate(Smoking_Status = case_when(Smoker == 0 ~ "Non-Smoker", ...))
-     ```
-
-2. **New Variable Creation**
-   - Introduced new variables like `Habits` and `Health_Risk` to assess lifestyle and health risk.
-   - Example code:
-     ```R
-     df_aug <- df_aug |> mutate(Habit_Score = Veggies + Fruits + ..., Health_Risk = case_when(...))
-     ```
-
-3. **Socio-Economic Background**
-   - Developed socio-economic class variable based on education, income, and healthcare.
-   - Example code:
-     ```R
-     df_aug <- df_aug |> mutate(SE_Background = case_when(...))
-     ```
-
 ## Data Analysis
 
 Quick run through over both analysis parts (what methods we use with research questions in mind)
