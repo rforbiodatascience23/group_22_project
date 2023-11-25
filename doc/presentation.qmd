@@ -13,6 +13,25 @@ Intro to the class and tidyverse
 
 Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)
 
+## Introduction
+
+<div style="font-size: 0.7em;">
+
+### Tidyverse and Data Exploration
+
+- **Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.
+
+### Our Dataset
+
+- **Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
+- **Key Features**: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information.
+
+### Research Questions
+
+-
+
+</div>
+
 ## Materials and Methods
 
 Flowchart(quick explanation on how we plan to answer research questions)
