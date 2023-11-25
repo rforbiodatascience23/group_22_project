@@ -9,7 +9,7 @@ editor: visual
 
 ## Load Libraries
 
-```{r}
+```{r message = FALSE}
 library("tidyverse")
 library("ggridges")
 library("RColorBrewer")
