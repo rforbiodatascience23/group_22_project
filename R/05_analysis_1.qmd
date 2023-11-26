@@ -39,7 +39,7 @@ df_numeric <- df[sapply(df, is.numeric)]
 
 There are several correlation coefficient formulas such as the Sample correlation coefficient, the Population correlation coefficient or the Rank correlation coefficient. The formula selected for this analysis is the Pearson product-moment correlation. Also known as the Pearson correlation. This is the most common correlation coefficient and it can be computed for any data set that has a finite covariance matrix. To achieve the values, a division between the covariance of two variables by the product of their standard deviations has to be made.
 
-The following code computes the Pearson correlation between the numerical variables of the dataset and shows the obtained values.
+The following code computes the Pearson correlation between the numerical variables of the data set and shows the obtained values.
 
 ```{r}
 cor_matrix <- cor(df_numeric, method = "spearman")
@@ -174,7 +174,7 @@ Having said that, a Generalized Linear Model (GLM) is a statistical model used t
 Lets create the model and interpret its results.
 
 ```{r}
-model_all = glm(data = df_numeric,
+model_all <- glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
 
