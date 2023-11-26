@@ -3,6 +3,7 @@ title: "Project presentation"
 author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
   revealjs:
+    theme: solarized
     embed-resources: true
 editor: visual
 ---
@@ -15,22 +16,20 @@ Intro to selected dataframe and to research questions (explaining what informati
 
 ## Introduction
 
-<div style="font-size: 0.7em;">
-
+::: {style="font-size: 0.7em;"}
 ### Tidyverse and Data Exploration
 
-- **Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.
+-   **Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.
 
 ### Our Dataset
 
-- **Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
-- **Key Features**: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information.
+-   **Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
+-   **Key Features**: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information.
 
 ### Research Questions
 
--
-
-</div>
+-   
+:::
 
 ## Materials and Methods
 
@@ -39,23 +38,30 @@ Flowchart(quick explanation on how we plan to answer research questions)
 ## Data Cleaning and Augmentation
 
 <div style="display: flex; font-size: 0.8em;">
-  <div style="flex: 1; padding-right: 10px;">
 
+::: {style="flex: 1; padding-right: 10px;"}
 ### Data Cleaning
-- **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
-- **Verified Data Types**: `column_types <- summarise(df_cleaned, across(everything(), class))`
-- **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
 
-  </div>
-  <div style="flex: 1; padding-left: 10px;">
+-   **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
+
+-   **Verified Data Types**: `column_types <- summarise(df_cleaned, across(everything(), class))`
+
+-   **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
+
+    </div>
+
+    <div style="flex: 1; padding-left: 10px;">
 
 ### Data Augmentation
-- **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
-- **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
-- **Socio-Economic Class**: Derived from income, education, and healthcare status.
 
-  </div>
-</div>
+-   **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
+
+-   **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
+
+-   **Socio-Economic Class**: Derived from income, education, and healthcare status.
+
+    </div>
+:::
 
 ## Data Analysis
 
