@@ -31,11 +31,24 @@ Intro to selected dataframe and to research questions (explaining what informati
 The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
 :::
 
+
 ::: {.column width="50%" size="0.5em"}
+
 ### Our Dataset
 
 Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
+Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information\
+:::
+
+<div>
+
+Research Questions \
+
+</div>
+:::
+:::
+=======
 Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information
 :::
 
@@ -94,13 +107,13 @@ Data description (show the plots and what explain insights they give us, maybe e
 
 ::: {.column width="50%"}
 
-![](images/04_key_plot_1.png){.column width="84%"}
+![](images/04_key_plot_1.png){.column style="color: original"}
 
 :::
 
 ::: {.column width="50%"}
 
-![](images/04_key_plot_2.png){.column width="84%"}
+![](images/04_key_plot_2.png){.column}
 
 :::
 
