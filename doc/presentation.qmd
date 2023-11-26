@@ -16,13 +16,11 @@ Intro to selected dataframe and to research questions (explaining what informati
 
 ## Introduction
 
-:::: {.columns}
-
-::: {.column width="50%"}
-
+::: columns
+::: {.column width="50%" size="0.5em"}
 ### Tidyverse and Data Exploration
 
-Tidyverse: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
+`Tidyverse`: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
 
 -   readable
 
@@ -31,22 +29,20 @@ Tidyverse: Collection of R packages for data manipulation, exploration and visua
 -   reproducible
 
 The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
-
 :::
 
-::: {.column width="50%"}
-
+::: {.column width="50%" size="0.5em"}
 ### Our Dataset
 
 Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
 Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information
-
 :::
 
-::::
+### Research Questions
 
-. . . .
+-   aaaa
+:::
 
 ### Research Questions
 
@@ -93,6 +89,22 @@ Quick run through over both analysis parts (what methods we use with research qu
 ## Results
 
 Data description (show the plots and what explain insights they give us, maybe even answer some research questions)
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+![](images/04_key_plot_1.png){.column width="42%"}
+
+:::
+
+::: {.column width="60%"}
+
+![](images/04_key_plot_2.png){.column width="40%"}
+
+:::
+
+::::
 
 ## Results
 
