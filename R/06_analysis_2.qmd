@@ -15,7 +15,7 @@ df <- read_tsv("../data/03_dat_aug.tsv")
 head(df)
 ```
 
-The second script of analysis will be related to the performing PCA and the creation of some logistic regression models with different variations. These variations are based on the creation of three different models. The first of them will use the components used to reach 80% variability after the PCA analysis and the second and third ones will be different models for men and women. Thanks to this we will be able to analyze whether gender has a special importance when predicting patients with diabetes.
+The second script of analysis will be related to the performing PCA and the creation of some models with different variations. These variations are based on the creation of three different models. The first of them will use the components used to reach 80% variability after the PCA analysis combined with the use of logistic regression for prediction. The second and third ones will be different GLM for men and women. Thanks to this we will be able to analyze whether gender has a special importance when predicting patients with diabetes.
 
 # PCA
 
@@ -149,7 +149,7 @@ One of the methods used to check the model's performance is a confusion matrix. 
 
 ## Men VS. Women (GLM)
 
-The last part of the analysis will be foccused in detecting wether a prediction model works better for men or women. We want to help tackling gender bias in science. This means the data might not treat men and women fairly. This could happen if there aren't enough women included in studies, or if the way data is collected or analyzed favors one gender over the other. Fixing this means making sure studies include a good mix of men and women and treating everyone equally in how data is handled.
+The last part of the analysis will be foccused in detecting wether a GLM works better for men or women. We want to help tackling gender bias in science. This means the data might not treat men and women fairly. This could happen if there aren't enough women included in studies, or if the way data is collected or analyzed favors one gender over the other. Fixing this means making sure studies include a good mix of men and women and treating everyone equally in how data is handled.
 
 First of all we will take a look to the distribution between men and women in our data set.
 
@@ -172,40 +172,14 @@ men_data <- df |>
 Lets use first women data in the model.
 
 ```{r}
-model <- glm(Diabetes_binary ~ ., family = "binomial", data = women_data)
-
-predictions <- predict(model, type = "response")
-
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-accuracy <- mean(binary_predictions == women_data$Diabetes_binary)
-
-cat("Accuracy:", accuracy, "\n")
-```
-
-Now lets create a model for men data.
-
-```{r}
-model <- glm(Diabetes_binary ~ ., family = "binomial", data = men_data)
-
-predictions <- predict(model, type = "response")
-
-binary_predictions <- ifelse(predictions > 0.5, 1, 0)
-
-accuracy <- mean(binary_predictions == men_data$Diabetes_binary)
-
-cat("Accuracy:", accuracy, "\n")
-```
-
-CONCLUSIONS.
-
-```{r}
 model_all = glm(data = women_data,
                 Diabetes_binary ~ .,
                 family = binomial)
 
 summary(model_all)
 ```
+
+Now lets create a model for men data.
 
 ```{r}
 model_all = glm(data = men_data,
@@ -214,3 +188,7 @@ model_all = glm(data = men_data,
 
 summary(model_all)
 ```
+
+The results show how the model containing only male patients achieves a lower AIC than the model with only female patients. It is true that the difference is not very big. It can be seen how the male model gives more importance to variables related to physical health as well as the consumption of fruits instead of vegetables. The latter may make sense since there is a greater amount of sugar in fruits than in vegetables.
+
+Something that should be highlighted is that it has a significant improvement with the GLM built in the first part of the analysis. It manages to lower the value of the AIC a lot. This is something that we did not have in mind that could happen and that is why it can be considered as a task to analyze in the future.
