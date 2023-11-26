@@ -49,7 +49,11 @@ editor: visual
 
 ## Materials and Methods
 
-Flowchart(quick explanation on how we plan to answer research questions)
+<div>
+
+![](images/R_flowchart.png)
+
+</div>
 
 ## Data Cleaning and Augmentation
 
