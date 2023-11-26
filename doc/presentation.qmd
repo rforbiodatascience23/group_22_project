@@ -19,7 +19,15 @@ Intro to selected dataframe and to research questions (explaining what informati
 ::: {style="font-size: 0.7em;"}
 ### Tidyverse and Data Exploration
 
--   **Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.
+**Focus**: Utilizing the `tidyverse` suite in R for effective data manipulation and visualization.\
+Tidyverse: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
+
+::: nonincremental
+-   readable
+-   maintainable
+-   reproducable\
+    The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr \
+:::
 
 ### Our Dataset
 
