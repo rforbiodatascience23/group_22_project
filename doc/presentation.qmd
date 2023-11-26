@@ -10,12 +10,6 @@ editor: visual
 
 ## Introduction
 
-Intro to the class and tidyverse
-
-Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)
-
-## Introduction
-
 ### Tidyverse and Data Exploration
 
 `Tidyverse`: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
@@ -27,43 +21,18 @@ Intro to selected dataframe and to research questions (explaining what informati
 -   reproducible
 
 The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
-<<<<<<< HEAD
 
 ## Introduction
 
-=======
-:::
-
-::: {.column width="50%" size="0.5em"}
->>>>>>> 7c305fa12c04cc86b425dbd70be80e85736ac2f9
 ### Our Dataset
 
 Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
 Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information\
 
-
-<<<<<<< HEAD
 ### Research Questions 
 
 aaa
-
-=======
-Research Questions\
-
-</div>
-:::
-
-# :::
-
-Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information :::
-
-### Research Questions
-
--   aaaa :::
-
-### Research Questions
->>>>>>> 7c305fa12c04cc86b425dbd70be80e85736ac2f9
 
 ## Materials and Methods
 
