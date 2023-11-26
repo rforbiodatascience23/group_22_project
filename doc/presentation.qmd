@@ -94,13 +94,13 @@ Data description (show the plots and what explain insights they give us, maybe e
 
 ::: {.column width="50%"}
 
-![](images/04_key_plot_1.png){.column width="84%"}
+![](images/04_key_plot_1.png){.column style="color: original"}
 
 :::
 
 ::: {.column width="50%"}
 
-![](images/04_key_plot_2.png){.column width="84%"}
+![](images/04_key_plot_2.png){.column}
 
 :::
 
