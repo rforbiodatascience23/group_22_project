@@ -66,10 +66,10 @@ plot_2 <-
   geom_bar(position = position_dodge(),alpha=0.8) +
   facet_wrap(~Diabetes_Status) +
   theme_minimal(base_size = 14)+
-  scale_fill_manual(values = c("midnightblue", "mediumorchid2")) +
+  scale_fill_manual(name = "Gender", values = c("midnightblue", "mediumorchid2")) +
   #scale_fill_manual(values = c("antiquewhite4", "coral2"))
   #scale_fill_viridis_d() +
-  theme(legend.position = "none",
+  theme(legend.position = "right",
         plot.background = element_rect(fill = "white", color="white")) +
   ylab("Count") +
   xlab("Habits") +
