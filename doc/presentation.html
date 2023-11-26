@@ -1159,42 +1159,23 @@ Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s2231
 </section>
 <section id="introduction-1" class="slide level2">
 <h2>Introduction</h2>
-<div class="columns">
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ::: {.column width=“50%”} ======= ::: {.column width=“50%” size=“0.5em”} &gt;&gt;&gt;&gt;&gt;&gt;&gt; 4093c79ced9c67b5ed639f30e6e7f4aebc9b25b7 ### Tidyverse and Data Exploration</p><p><code>Tidyverse</code>: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:</p><ul>
+<h3 id="tidyverse-and-data-exploration">Tidyverse and Data Exploration</h3>
+<p><code>Tidyverse</code>: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:</p>
+<ul>
 <li><p>readable</p></li>
 <li><p>maintainable</p></li>
 <li><p>reproducible</p></li>
-</ul><p>The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr</p>
-</div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ::: {.column width=“50%”} ======= ::: {.column width=“50%” size=“0.5em”} &gt;&gt;&gt;&gt;&gt;&gt;&gt; 4093c79ced9c67b5ed639f30e6e7f4aebc9b25b7 ### Our Dataset</p>
-<p>Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information<br>
-:::</p>
-<div>
-<p>Research Questions<br>
-</p>
-</div>
-<p>::: ::: ======= Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information :::</p>
-<h3 id="research-questions">Research Questions</h3>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>4093c79ced9c67b5ed639f30e6e7f4aebc9b25b7</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<ul>
-<li>aaaa :::</li>
 </ul>
-<h3 id="research-questions-1">Research Questions</h3>
+<p>The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr</p>
+</section>
+<section id="introduction-2" class="slide level2">
+<h2>Introduction</h2>
+<h3 id="our-dataset">Our Dataset</h3>
+<p>Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.</p>
+<p>Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information<br>
+</p>
+<h3 id="research-questions">Research Questions</h3>
+<p>aaa</p>
 </section>
 <section id="materials-and-methods" class="slide level2">
 <h2>Materials and Methods</h2>
@@ -1202,25 +1183,27 @@ Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s2231
 </section>
 <section id="data-cleaning-and-augmentation" class="slide level2">
 <h2>Data Cleaning and Augmentation</h2>
-<div style="display: flex; font-size: 0.8em;">
-
-<div style="flex: 1; padding-right: 10px;">
+<style>
+.small-font {
+font-size: 0.8em;
+}
+</style>
+<div class="columns">
+<div class="column small-font" style="width:50%;">
 <h3 id="data-cleaning">Data Cleaning</h3>
 <ul>
 <li><p><strong>Removed Missing Values</strong>: <code>df_cleaned &lt;- df |&gt; drop_na()</code></p></li>
 <li><p><strong>Verified Data Types</strong>: <code>column_types &lt;- summarise(df_cleaned, across(everything(), class))</code></p></li>
-<li><p><strong>Filtered Incorrect Values</strong>: Filtered out rows with values outside expected ranges.</p>
-</li></ul></div>
-<div style="flex: 1; padding-left: 10px;">
-
-
+<li><p><strong>Filtered Incorrect Values</strong>: Filtered out rows with values outside expected ranges.</p></li>
+</ul>
+</div><div class="column small-font" style="width:50%;">
 <h3 id="data-augmentation">Data Augmentation</h3>
 <ul>
 <li><p><strong>Transformed Variables</strong>: Binary to categorical (e.g., <code>Smoker</code> to <code>Smoking Status</code>).</p></li>
 <li><p><strong>Created New Variables</strong>: E.g., <code>Habits</code>, <code>Health Risk</code>, based on lifestyle and health indicators.</p></li>
-<li><p><strong>Socio-Economic Class</strong>: Derived from income, education, and healthcare status.</p>
-</li></ul></div>
-
+<li><p><strong>Socio-Economic Class</strong>: Derived from income, education, and healthcare status.</p></li>
+</ul>
+</div>
 </div>
 </section>
 <section id="data-analysis" class="slide level2">
