@@ -12,7 +12,7 @@
 
 # Project Description
 
-In this project, we obtained a data set regarding diabetic and non-diabetic individuals (<https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset?select=diabetes_binary_5050split_health_indicators_BRFSS2015.csv>). This project includes 70,692 results from a survey, about different types of information, e.g high cholesterol, high blood pressure (BP), BMI, smoking status, education and income. After loading and cleaning the data in the first 2 respective files, we augmented the data set by adding variables related to the already existing ones. We created some qualitative measures to classify the individuals depending on their income, educational level, physical activity etc.
+In this project, we obtained a data set regarding diabetic and non-diabetic individuals (<https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset?select=diabetes_binary_5050split_health_indicators_BRFSS2015.csv>). This project includes 70,692 results from a survey, about different types of information, e.g high cholesterol, high blood pressure (BP), BMI, smoking status, education and income. After loading and cleaning the data in the first 2 respective files, we augmented the data set by adding variables related to the already existing ones. We created some qualitative measures to classify the individuals depending on their income, educational level, physical activity etc. The variables are described more analytically in the link above, by observing the "Data Card" of the data set.
 
 # Data acquisition
 
