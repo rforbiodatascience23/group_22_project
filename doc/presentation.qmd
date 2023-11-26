@@ -107,7 +107,7 @@ editor: visual
 
 -   **Step**: Step forward and backward for best variables selection.
 
--   **Results**: Lowest AIC achieved with backward model (contains 19 variables9.
+-   **Results**: Lowest AIC achieved with backward model (contains 19 variables).
 
     </div>
 :::
