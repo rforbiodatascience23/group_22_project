@@ -174,7 +174,7 @@ Having said that, a Generalized Linear Model (GLM) is a statistical model used t
 Lets create the model and interpret its results.
 
 ```{r}
-model_all = glm(data = df_numeric,
+model_all <- glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
 
