@@ -3,7 +3,7 @@ title: "Project presentation"
 author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
   revealjs:
-    theme: solarized
+    theme: dark
     embed-resources: true
 editor: visual
 ---
