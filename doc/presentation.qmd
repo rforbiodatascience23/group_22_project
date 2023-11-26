@@ -136,16 +136,29 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Results
 
-Data description (show the plots and what explain insights they give us, maybe even answer some research questions)
+::: {style="display: flex; font-size: 0.6em;"}
+::: {style="padding-right: 10px;"}
+![](images/04_key_plot_1.png){.column width="80%"}
 
-::: columns
-::: {.column width="50%"}
-![](images/04_key_plot_1.png){.column style="color: original"}
+::: {.incremental style="font-size: 0.7em;"}
+-   Smoking status affects mostly the youngest age groups
+-   Similar behavior for other age groups -\> smoking does not influence so significantly people over 35 years
+-   BMI tends to increase over the age
+:::
 :::
 
-::: {.column width="50%"}
-![](images/04_key_plot_2.png){.column}
+<div>
+
+![](images/04_key_plot_2.png){.column width="80%"}
+
+::: {.incremental style="font-size: 0.7em;"}
+-   Among Healthy individuals, more women have healthier habits
+-   More women have an Average lifestyle than men in the non-diabetic cases, opposite for the diabetic counterparts.
+-   Women in the non-diabetic group doubled from the Average to the Healthy group, not an important change for men
+-   Among non-diabetic men, the Healthy cases were nearly 2000 more than the Average ones.
 :::
+
+</div>
 :::
 
 ## Results
