@@ -113,15 +113,15 @@ Data description (show the plots and what explain insights they give us, maybe e
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 
-![](images/04_key_plot_1.png){.column width="42%"}
+![](images/04_key_plot_1.png){.column width="84%"}
 
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 
-![](images/04_key_plot_2.png){.column width="40%"}
+![](images/04_key_plot_2.png){.column width="84%"}
 
 :::
 
