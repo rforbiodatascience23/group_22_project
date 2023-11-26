@@ -43,9 +43,6 @@ editor: visual
 
 ### Research Questions
 
-
-### Research Questions
-=======
 1.  What are the key `predictive variables` in diabetes prognosis?
 
 2.  How does `gender` influence the manifestation and progression of diabetes?
