@@ -149,12 +149,13 @@ One of the methods used to check the model's performance is a confusion matrix. 
 
 ## Men VS. Women (GLM)
 
-The last part of the analysis will be foccused in detecting wether a GLM works better for men or women. We want to help tackling gender bias in science. This means the data might not treat men and women fairly. This could happen if there aren't enough women included in studies, or if the way data is collected or analyzed favors one gender over the other. Fixing this means making sure studies include a good mix of men and women and treating everyone equally in how data is handled.
+The last part of the analysis will be focused in detecting whether a GLM works better for men or women. We want to help tackling gender bias in science. This means the data might not treat men and women fairly. This could happen if there aren't enough women included in studies, or if the way data is collected or analyzed favors one gender over the other. Fixing this means making sure studies include a good mix of men and women and treating everyone equally in how data is handled.
 
 First of all we will take a look to the distribution between men and women in our data set.
 
 ```{r}
-table(df$Sex)
+df |> 
+  count(Sex)
 ```
 
 Value 0 means women and value 1 means men. So according to our data, we have slightly more women individuals rather than men. Lets generate two different datasets according to gender and apply logistic regression to see their performances.
