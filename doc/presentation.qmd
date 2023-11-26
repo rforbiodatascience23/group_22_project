@@ -16,8 +16,6 @@ Intro to selected dataframe and to research questions (explaining what informati
 
 ## Introduction
 
-::: columns
-::: {.column width="50%" size="0.5em"}
 ### Tidyverse and Data Exploration
 
 `Tidyverse`: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
@@ -29,35 +27,20 @@ Intro to selected dataframe and to research questions (explaining what informati
 -   reproducible
 
 The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
-:::
 
-
-::: {.column width="50%" size="0.5em"}
+## Introduction
 
 ### Our Dataset
 
 Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
 Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information\
-:::
 
-<div>
 
-Research Questions \
+### Research Questions 
 
-</div>
-:::
-:::
-=======
-Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information
-:::
+aaa
 
-### Research Questions
-
--   aaaa
-:::
-
-### Research Questions
 
 ## Materials and Methods
 
@@ -65,9 +48,14 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Data Cleaning and Augmentation
 
-<div style="display: flex; font-size: 0.8em;">
+<style>
+.small-font {
+  font-size: 0.8em;
+}
+</style>
 
-::: {style="flex: 1; padding-right: 10px;"}
+:::: columns
+::: {.column width="50%" .small-font}
 ### Data Cleaning
 
 -   **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
@@ -75,11 +63,9 @@ Flowchart(quick explanation on how we plan to answer research questions)
 -   **Verified Data Types**: `column_types <- summarise(df_cleaned, across(everything(), class))`
 
 -   **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
+:::
 
-    </div>
-
-    <div style="flex: 1; padding-left: 10px;">
-
+::: {.column width="50%" .small-font}
 ### Data Augmentation
 
 -   **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
@@ -88,8 +74,9 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 -   **Socio-Economic Class**: Derived from income, education, and healthcare status.
 
-    </div>
+
 :::
+::::
 
 ## Data Analysis
 
