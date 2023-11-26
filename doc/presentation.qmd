@@ -10,29 +10,42 @@ editor: visual
 
 ## Introduction
 
-### Tidyverse and Data Exploration
+::: columns
+::: {.column width="50%"}
+`Tidyverse`: enhances data manipulation and visualization with a tidy data workflow, fostering code that is
 
-`Tidyverse`: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
+::: incremental
+-   `readable`
+-   `maintainable`
+-   `reproducible`
+-   `Core packages` ggplot2, dplyr, tidyr, readr, broom
+:::
+:::
 
--   readable
+::: {.column .incremental width="50%"}
+#### `Our Dataset`
 
--   maintainable
+**Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
--   reproducible
+**Key Features**: Health indicators related to diabetes, including:
 
-The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
+::: incremental
+-   lifestyle factors
+-   health outcomes
+-   demographic information
+:::
+:::
+:::
+
+:::
 
 ## Introduction
 
-### Our Dataset
+### Research Questions
 
-Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
+1.  What are the key `predictive variables` in diabetes prognosis?
 
-Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information\
-
-### Research Questions 
-
-aaa
+2.  How does `gender` influence the manifestation and progression of diabetes?
 
 ## Materials and Methods
 
@@ -40,14 +53,15 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Data Cleaning and Augmentation
 
+```{=html}
 <style>
 .small-font {
   font-size: 0.8em;
 }
 </style>
-
-:::: columns
-::: {.column width="50%" .small-font}
+```
+::: columns
+::: {.column .small-font width="50%"}
 ### Data Cleaning
 
 -   **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
@@ -57,7 +71,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 -   **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
 :::
 
-::: {.column width="50%" .small-font}
+::: {.column .small-font width="50%"}
 ### Data Augmentation
 
 -   **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
@@ -65,10 +79,8 @@ Flowchart(quick explanation on how we plan to answer research questions)
 -   **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
 
 -   **Socio-Economic Class**: Derived from income, education, and healthcare status.
-
-
 :::
-::::
+:::
 
 ## Data Analysis
 

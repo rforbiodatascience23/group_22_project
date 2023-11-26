@@ -1154,28 +1154,39 @@ Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s2231
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
-<p>Intro to the class and tidyverse</p>
-<p>Intro to selected dataframe and to research questions (explaining what information our dataset contains and what we are interested in researching. Slide should end with concrete research questions)</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>Tidyverse</code>: enhances data manipulation and visualization with a tidy data workflow, fostering code that is</p>
+<div>
+<ul>
+<li class="fragment"><code>readable</code></li>
+<li class="fragment"><code>maintainable</code></li>
+<li class="fragment"><code>reproducible</code></li>
+<li class="fragment"><code>Core packages</code> ggplot2, dplyr, tidyr, readr, broom</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<h4 id="our-dataset"><code>Our Dataset</code></h4>
+<p><strong>Source</strong>: Behavioral Risk Factor Surveillance System (BRFSS) 2015.</p>
+<p><strong>Key Features</strong>: Health indicators related to diabetes, including:</p>
+<div>
+<ul>
+<li class="fragment">lifestyle factors</li>
+<li class="fragment">health outcomes</li>
+<li class="fragment">demographic information</li>
+</ul>
+</div>
+</div>
+</div>
+<p>:::</p>
 </section>
 <section id="introduction-1" class="slide level2">
 <h2>Introduction</h2>
-<h3 id="tidyverse-and-data-exploration">Tidyverse and Data Exploration</h3>
-<p><code>Tidyverse</code>: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:</p>
-<ul>
-<li><p>readable</p></li>
-<li><p>maintainable</p></li>
-<li><p>reproducible</p></li>
-</ul>
-<p>The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr</p>
-</section>
-<section id="introduction-2" class="slide level2">
-<h2>Introduction</h2>
-<h3 id="our-dataset">Our Dataset</h3>
-<p>Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.</p>
-<p>Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information<br>
-</p>
 <h3 id="research-questions">Research Questions</h3>
-<p>aaa</p>
+<ol type="1">
+<li><p>What are the key <code>predictive variables</code> in diabetes prognosis?</p></li>
+<li><p>How does <code>gender</code> influence the manifestation and progression of diabetes?</p></li>
+</ol>
 </section>
 <section id="materials-and-methods" class="slide level2">
 <h2>Materials and Methods</h2>
@@ -1208,11 +1219,47 @@ font-size: 0.8em;
 </section>
 <section id="data-analysis" class="slide level2">
 <h2>Data Analysis</h2>
-<p>Quick run through over both analysis parts (what methods we use with research questions in mind)</p>
+<div style="display: flex; font-size: 0.8em;">
+
+<div style="flex: 1; padding-right: 10px;">
+<h3 id="correlation">Correlation</h3>
+<ul>
+<li><p><strong>Between all variables</strong>: health related variables correlated between them. Not highly negatively correlated variables.</p></li>
+<li><p><strong>With the target variable</strong>: GenHlth, HighBP and BMI most correlated with diabetes variable.</p>
+</li></ul></div>
+<div style="flex: 1; padding-left: 10px;">
+
+
+<h3 id="glm">GLM</h3>
+<ul>
+<li><p><strong>All variables</strong>: Creation of a GLM with all numerical variables.</p></li>
+<li><p><strong>Step</strong>: Step forward and backward for best variables selection.</p></li>
+<li><p><strong>Results</strong>: Lowest AIC achieved with backward model (contains 19 variables9.</p>
+</li></ul></div>
+
+</div>
 </section>
 <section id="data-analysis-1" class="slide level2">
 <h2>Data Analysis</h2>
-<p>Quick run through over both analysis parts (what methods we use with research questions in mind)</p>
+<div style="display: flex; font-size: 0.8em;">
+
+<div style="flex: 1; padding-right: 10px;">
+<h3 id="pca-logistic-regression">PCA + Logistic Regression</h3>
+<ul>
+<li><p><strong>Selected components</strong>: 15 components that reach 80% of explained variability.</p></li>
+<li><p><strong>Logistic regression</strong>: Use of those components to perform a diabetes prediction model.</p></li>
+<li><p><strong>Results</strong>: Great accuracy with a value of 87%.</p>
+</li></ul></div>
+<div style="flex: 1; padding-left: 10px;">
+
+
+<h3 id="new-glms">New GLMs</h3>
+<ul>
+<li><p><strong>Men VS. Women</strong>: Creation of two different datasets according to sex.</p></li>
+<li><p><strong>Results</strong>: Better performance in Men model due to lowest AIC. More importance to general health variables and also to fruit variable. Much better performance than the GLM from first part of analysis.</p>
+</li></ul></div>
+
+</div>
 </section>
 <section id="results" class="slide level2">
 <h2>Results</h2>
