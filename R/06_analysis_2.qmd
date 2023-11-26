@@ -172,7 +172,7 @@ men_data <- df |>
 Lets use first women data in the model.
 
 ```{r}
-model_all = glm(data = women_data,
+model_all <- glm(data = women_data,
                 Diabetes_binary ~ .,
                 family = binomial)
 
@@ -182,7 +182,7 @@ summary(model_all)
 Now lets create a model for men data.
 
 ```{r}
-model_all = glm(data = men_data,
+model_all <- glm(data = men_data,
                 Diabetes_binary ~ .,
                 family = binomial)
 
