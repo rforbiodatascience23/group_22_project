@@ -158,7 +158,6 @@ editor: visual
 ::: {.incremental style="font-size: 0.9em;"}
 -   Among Healthy individuals, women have healthier habits
 -   More non-diabetic women have an Average lifestyle than men, opposite for the diabetic counterparts.
-
 :::
 
 </div>
