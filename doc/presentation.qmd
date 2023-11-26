@@ -138,7 +138,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ::: {style="display: flex; font-size: 0.6em;"}
 ::: {style="padding-right: 10px;"}
-![](images/04_key_plot_1.png){.column width="75%"}
+![](images/04_key_plot_1.png){.column width="80%"}
 
 ::: {.incremental style="font-size: 0.9em;"}
 -   Smoking status affects mostly the youngest age groups
@@ -149,7 +149,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 <div>
 
-![](images/04_key_plot_2-01.png){.column width="75%"}
+![](images/04_key_plot_2-01.png){.column width="80%"}
 
 ::: {.incremental style="font-size: 0.9em;"}
 -   Among Healthy individuals, women have healthier habits
