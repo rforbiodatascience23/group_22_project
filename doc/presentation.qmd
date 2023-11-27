@@ -3,51 +3,69 @@ title: "Project presentation"
 author: "Ander Barrio Campos(231938), Dionysios Dimitreas(s232752), Erikas Mikužis(s223164), Valeria Tedeschi(s231945), Angeliki Vliora(233059)"
 format:
   revealjs:
-    theme: dark
+    theme: moon
     embed-resources: true
 editor: visual
 ---
 
 ## Introduction
 
-### Tidyverse and Data Exploration
+::: columns
+::: {.column width="50%"}
+`Tidyverse`: enhances data manipulation and visualization with a tidy data workflow, fostering code that is
 
-`Tidyverse`: Collection of R packages for data manipulation, exploration and visualization. It supports a tidy data workflow making our code more:
+::: incremental
+-   `readable`
+-   `maintainable`
+-   `reproducible`
+-   `Core packages` ggplot2, dplyr, tidyr, readr, broom
+:::
+:::
 
--   readable
+::: {.column .incremental width="50%"}
+#### `Our Dataset`
 
--   maintainable
+**Source**: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
 
--   reproducible
+**Key Features**: Health indicators related to diabetes, including:
 
-The core packages within the tidyverse include ggplot2, dplyr, tidyr, readr
+::: incremental
+-   lifestyle factors
+-   health outcomes
+-   demographic information
+:::
+:::
+:::
+
+:::
 
 ## Introduction
 
-### Our Dataset
+### Research Questions
 
-Source: Behavioral Risk Factor Surveillance System (BRFSS) 2015.
+1.  What are the key `predictive variables` in diabetes prognosis?
 
-Key Features: Health indicators related to diabetes, including lifestyle factors, health outcomes, and demographic information\
-
-### Research Questions 
-
-aaa
+2.  How does `gender` influence the manifestation and progression of diabetes?
 
 ## Materials and Methods
 
-Flowchart(quick explanation on how we plan to answer research questions)
+<div>
+
+![](images/R_flowchart.png)
+
+</div>
 
 ## Data Cleaning and Augmentation
 
+```{=html}
 <style>
 .small-font {
   font-size: 0.8em;
 }
 </style>
-
-:::: columns
-::: {.column width="50%" .small-font}
+```
+::: columns
+::: {.column .small-font width="50%"}
 ### Data Cleaning
 
 -   **Removed Missing Values**: `df_cleaned <- df |> drop_na()`
@@ -57,7 +75,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 -   **Filtered Incorrect Values**: Filtered out rows with values outside expected ranges.
 :::
 
-::: {.column width="50%" .small-font}
+::: {.column .small-font width="50%"}
 ### Data Augmentation
 
 -   **Transformed Variables**: Binary to categorical (e.g., `Smoker` to `Smoking Status`).
@@ -65,10 +83,8 @@ Flowchart(quick explanation on how we plan to answer research questions)
 -   **Created New Variables**: E.g., `Habits`, `Health Risk`, based on lifestyle and health indicators.
 
 -   **Socio-Economic Class**: Derived from income, education, and healthcare status.
-
-
 :::
-::::
+:::
 
 ## Data Analysis
 
@@ -77,7 +93,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 ::: {style="flex: 1; padding-right: 10px;"}
 ### Correlation
 
--   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables.
+-   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables. GenHlth and Income negatively correlated.
 
 -   **With the target variable**: GenHlth, HighBP and BMI most correlated with diabetes variable.
 
@@ -91,7 +107,7 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 -   **Step**: Step forward and backward for best variables selection.
 
--   **Results**: Lowest AIC achieved with backward model (contains 19 variables9.
+-   **Results**: Lowest AIC achieved with backward model (contains 19 variables). Excluded variables from the full model are Smoker, AnyHealthcare, NoDocbcCost and Education_binary.
 
     </div>
 :::
@@ -124,16 +140,27 @@ Flowchart(quick explanation on how we plan to answer research questions)
 
 ## Results
 
-Data description (show the plots and what explain insights they give us, maybe even answer some research questions)
+::: {style="display: flex; font-size: 0.6em;"}
+::: {style="padding-right: 10px;"}
+![](images/04_key_plot_1.png){.column width="80%"}
 
-::: columns
-::: {.column width="50%"}
-![](images/04_key_plot_1.png){.column style="color: original"}
+::: {.incremental style="font-size: 0.9em;"}
+-   Smoking status affects mostly the youngest age groups
+-   Similar behavior for other age groups
+-   BMI tends to increase over the age
+:::
 :::
 
-::: {.column width="50%"}
-![](images/04_key_plot_2.png){.column}
+<div>
+
+![](images/04_key_plot_2-01.png){.column width="80%"}
+
+::: {.incremental style="font-size: 0.9em;"}
+-   Among Healthy individuals, women have healthier habits
+-   More non-diabetic women have an Average lifestyle than men, opposite for the diabetic counterparts.
 :::
+
+</div>
 :::
 
 ## Results
