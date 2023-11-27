@@ -17,7 +17,7 @@ df <- read_tsv("../data/03_dat_aug.tsv")
 table(df$Diabetes_binary)
 ```
 
-As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
+As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes and with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
 
 This script will the first one related to the analysis part. The focus here will be on interpreting the correlation coefficients to see what interaction exists between the variables and how they affect the variable related to the diagnosis of diabetes (Diabetes_binary).
 
