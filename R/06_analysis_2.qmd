@@ -26,16 +26,16 @@ PCA is a dimensionality reduction method that is often used to reduce the dimens
 Having said that, first thing that has to be done is to work only with numerical variables. PCA is typically applied to continuous variables, and it assumes that the variables are on a numerical scale. PCA is based on the covariance matrix, which involves computing variances and covariances between numeric variables. Therefore, directly applying PCA to a dataset with categorical variables is not appropriate However, there are techniques that extend PCA to handle categorical variables. One such technique is called Multiple Correspondence Analysis (MCA), which is an extension of PCA for categorical data. MCA is suitable for datasets where variables are categorical and can take more than two levels. As we are not working with categorical data, we will forget about this idea.
 
 ```{r}
-sapply(df,class)
-numeriques <- which(sapply(df,is.numeric))
-numeriques
+column_classes <- df |>
+  map_chr(class)
+
+numeric_columns <- names(which(column_classes == "numeric")) |>
+  print()
 ```
 
 After checking which are the numerical variables of our data set, we will only select those ones to perform the analysis. Before using PCA, we have to make sure that all our data is playing on a level field. Scaling means adjusting the values so they're all in a similar range.
 
 ```{r}
-library(tidyverse)
-
 pca_fit <- df |> 
   select_if(where(is.numeric)) |>
   prcomp(scale = TRUE)
@@ -44,10 +44,6 @@ pca_fit <- df |>
 Now, we will create a special kind of map for our data using PCA. To do this, we blend the PCA results with the original data, adding back the information we temporarily set aside. It's like bringing back the colors to our points based on categories that were there in the first place but were temporarily taken away for PCA. We use a tool called **`augment()`** from the "broom" package to make this happen. It needs the model we created and the original data as inputs.
 
 ```{r}
-library(dplyr)
-library(broom)
-library(cowplot)
-
 df_augmented <- augment(pca_fit, df)
 
 ggplot(df_augmented, aes(.fittedPC1, 
@@ -61,7 +57,7 @@ ggplot(df_augmented, aes(.fittedPC1,
   background_grid()
 ```
 
-It can be noticed that the difference among having diabetes or not is being quite well distinguished in the two first components. We will continue by cretaing the rotation matrix. In PCA this matrix is like a set of instructions that turns our data points into a new set of directions. It helps to highlight the most important information in the data. We need to think of it as finding the best view tu understand patterns in the data.
+It can be noticed that the difference among having diabetes or not is being quite well distinguished in the two first components. We will continue by creating the rotation matrix. In PCA this matrix is like a set of instructions that turns our data points into a new set of directions. It helps to highlight the most important information in the data. We need to think of it as finding the best view tu understand patterns in the data.
 
 ```{r}
 pca_fit |>
@@ -90,17 +86,26 @@ pca_fit |>
 
 Having reached this part of the project, we now want to only select a certain amount of components to be used in our models. Selecting the number of components in PCA depends on our goals and the amount of data we are willing to retain. A common approach is to choose enough components to capture a significant portion of the total variance, often aiming for around 70-80%. This is of course a trade-off. The more components we have, the more information we will have. However, more noise will be introduced.
 
-To help us finding the desired number of components, we will create a scree plot and select those whose cumulative sum achives an 80% of cumulative variance.
+To help us finding the desired number of components, we will create a scree plot and select those whose cumulative sum achieves an 80% of cumulative variance.
 
 ```{r}
-plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
-     xlab = "Number of Principal Components",
-     ylab = "Cumulative Proportion of Variance Explained",
-     type = "b")
+cumulative_var <- cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2)
 
-abline(h = 0.7, col = "red", lty = 2)
-abline(h = 0.75, col = "blue", lty = 2)
-abline(h = 0.8, col = "green", lty = 2)
+plot_data <- data.frame(
+  PC = seq_along(cumulative_var),
+  Cumulative_Proportion = cumulative_var
+)
+
+ggplot(plot_data, aes(x = PC, y = Cumulative_Proportion)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Number of Principal Components",
+    y = "Cumulative Proportion of Variance Explained"
+  ) +
+  geom_hline(yintercept = 0.7, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0.75, linetype = "dashed", color = "blue") +
+  geom_hline(yintercept = 0.8, linetype = "dashed", color = "green")
 ```
 
 Looking at the results of the plot, we will select a total of 15 components.
