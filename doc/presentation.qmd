@@ -189,8 +189,48 @@ editor: visual
 
 ## Results
 
-Analysis part2 results (same as part above)
+::: columns
+::: {.column width="50%"}
+![](../results/06_key_plot_4.png){width="100%"}
+:::
+
+::: {.column .small-font width="50%"}
+### Key Findings:
+::: {.incremental style="font-size: 0.7em;"}
+- **PCA Analysis**:
+  - Clear distinction in diabetes status across principal components.
+  - Top components capture significant variance in health-related variables.
+
+- **Logistic Regression Model**:
+  - High accuracy in predicting diabetes using principal components.
+  - Confirms the strong link between health indicators and diabetes.
+
+- **Gender-Based GLM Analysis**:
+  - Men's and women's data show different predictive variables' importance.
+  - Suggests gender-specific approaches might be more effective in diabetes prediction.
+
+:::
+:::
+:::
+
 
 ## Discussion
 
-Discussion and key takeaways
+### Concluding Thoughts
+::: incremental
+::: columns
+::: {.column .small-font width="50%"}
+- **Key Predictive Variables in Diabetes Prognosis**:
+  - `GenHlth`, `HighBP`, and `BMI` emerged as significant predictors.
+  - Highlights the interplay of overall health and specific medical indicators in diabetes risk.
+
+:::
+::: {.column .small-font width="50%"}
+- **Gender's Influence on Diabetes**:
+  - Different predictive variables for men and women indicate a gender-specific impact.
+  - Suggests tailored approaches in diabetes care based on gender.
+
+:::
+:::
+:::
+
