@@ -7,6 +7,11 @@ format:
 editor: visual
 ---
 
+```{r}
+library("tidyverse")
+library("broom")
+```
+
 ## Load data
 
 ```{r}
@@ -14,14 +19,10 @@ df <- read_tsv("../data/03_dat_aug.tsv")
 ```
 
 ```{r}
-str(df)
-```
-
-```{r}
 table(df$Diabetes_binary)
 ```
 
-As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
+As it can be seen, the original dataset has an equal 50-50 split of respondents with no diabetes and with either prediabetes or diabetes. The target variable Diabates_binary has 2 classes. 0 is for no diabetes, and 1 is for prediabetes or diabetes.
 
 This script will the first one related to the analysis part. The focus here will be on interpreting the correlation coefficients to see what interaction exists between the variables and how they affect the variable related to the diagnosis of diabetes (Diabetes_binary).
 
@@ -34,7 +35,8 @@ Thus, what is correlation? Correlation is an statistical measure of a relationsh
 One of the major restrictions of correlation is that it measures relationships only between numerical variables. If the relationship between categorical variables wants to be made, performing a chi-square test would be a good option. However, in this case, a dataset only containing numerical variables will be needed.
 
 ```{r}
-df_numeric <- df[sapply(df, is.numeric)]
+df_numeric <- df |>
+  select_if(is.numeric)
 ```
 
 There are several correlation coefficient formulas such as the Sample correlation coefficient, the Population correlation coefficient or the Rank correlation coefficient. The formula selected for this analysis is the Pearson product-moment correlation. Also known as the Pearson correlation. This is the most common correlation coefficient and it can be computed for any data set that has a finite covariance matrix. To achieve the values, a division between the covariance of two variables by the product of their standard deviations has to be made.
@@ -67,7 +69,6 @@ As there are many values, a plot will be displayed to make better assumptions. T
 Now that it is known how to interpret the correlation coefficients lets see the plot and analyze it.
 
 ```{r}
-library(ggplot2)
 ggplot(data = as.data.frame(as.table(cor_matrix)), 
        aes(x = Var1, y = Var2, fill = Freq)) +
   geom_tile() +
@@ -95,10 +96,10 @@ But what does it mean to be positively or negatively correlated? Lets see it wit
 We will check now the highers values for the achieved correlations.
 
 ```{r}
-diag(cor_matrix) <- 0
+cor_data <- as.data.frame(as.table(cor_matrix))
 
-strong_correlations <- subset(as.data.frame(as.table(cor_matrix)), 
-                              Freq > 0.35 | Freq < -0.35)
+strong_correlations <- cor_data |>
+  filter(Freq > 0.35 | Freq < -0.35)
 
 print("Strong Correlations:")
 print(strong_correlations)
@@ -109,20 +110,18 @@ As mentioned before, most of the highest correlation values ​​refer to the r
 Once this analysis has been carried out, we believe that it is interesting to simply look at the relationship of the rest of the variables with the variable associated with diabetes. We will follow exactly the same process as before.
 
 ```{r}
-cor_with_diabetes <- cor(df_numeric, 
-                         df_numeric$Diabetes_binary,
-                         method = "spearman")
+df_numeric <- df |>
+  select_if(is.numeric) |>
+  select(Diabetes_binary, everything())
 
-cor_df <- as.data.frame(as.table(cor_with_diabetes))
-colnames(cor_df) <- c("Variable", "Correlation")
+cor_with_diabetes <- df_numeric |>
+  cor(df_numeric$Diabetes_binary, method = "spearman")
 ```
 
 After generating the correlation matrix only related to the Diabetes_binary variable, we will generate a heatmap to take a look at the results.
 
 ```{r}
-library(ggplot2)
-
-ggplot(data = as.data.frame(as.table(cor_with_diabetes)), 
+plot_3 <- ggplot(data = as.data.frame(as.table(cor_with_diabetes)), 
        aes(x = Var2, 
            y = Var1, 
            fill = Freq)) +
@@ -137,6 +136,8 @@ ggplot(data = as.data.frame(as.table(cor_with_diabetes)),
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, 
                                    hjust = 1))
+
+plot_3
 ```
 
 We will print the results to have a better understanding of the results.
@@ -148,10 +149,10 @@ print(cor_with_diabetes)
 Overall, we can achieve the same conclusions as before. Health related variables are positively correlated with diabates variable. It is something that everybody would expect but it was nice taking a look to it. Age has also something to do with having diabetes or not, as well as having difficulties to walk. Those are really interesting facts, but which are the top three correlated variables with diabetes?
 
 ```{r}
-diag(cor_matrix) <- 0
+cor_with_diabetes_data <- as.data.frame(as.table(cor_with_diabetes))
 
-strong_correlations <- subset(as.data.frame(as.table(cor_with_diabetes)),
-                              Freq > 0.3 | Freq < -0.3)
+strong_correlations <- cor_with_diabetes_data |>
+  filter(Freq > 0.30 | Freq < -0.30)
 
 print("Strong Correlations:")
 print(strong_correlations)
@@ -177,21 +178,24 @@ Lets create the model and interpret its results.
 model_all <- glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
+```
 
-summary(model_all)
+```{r}
+tidy_summary <- tidy(model_all)
+glance_summary <- glance(model_all)
+
+full_summary <- bind_cols(tidy_summary, glance_summary)
+
+print(full_summary)
 ```
 
 Running **`summary(model_all)`** gives us the summary of the fitted model. We will take a look to the most important aspects:
 
-1.  Coefficients: They represent the estimated log-odds (in the case of logistic regression) of the response variable based on the predictor variables. Positive coefficients indicate a positive association with the log-odds of the response, while negative coefficients indicate a negative association. In our case, the highest positive value is achieved by CholCheck (it relates to cholesterol check) and the highest negative value is achieved by HvyAlcoholConsump (it relates to drinking a lot of alcohol or not).
+1.  p-values: Low p-values (typically below 0.05) suggest that the corresponding predictor variable is statistically significant in predicting the outcome. These variables can be seen in the model summary with the \*\*\* symbol. Most of them are the ones related with health (as mentioned in the correlation analysis). Here it seems interesting that being a smoker or not is not significant for diabetes outcome. However, looks like 'Sex' and 'Income' are really relevant for the outcome.
 
-    Thus, a high positive coefficient suggests that as the predictor variable increases, the odds of the positive outcome also increase and a high negative coefficient suggests that as the predictor variable increases, the odds of the positive outcome decrease.
+2.  Deviance and Residual Deviance: Deviance is a measure of model fit. We compare the deviance of our model to a null model (a model with no predictors) to assess how well our model explains the variability in the data. Lower deviance indicates a better fit and it can be seen that our model achieves that.
 
-2.  p-values: Low p-values (typically below 0.05) suggest that the corresponding predictor variable is statistically significant in predicting the outcome. These variables can be seen in the model summary with the \*\*\* symbol. Most of them are the ones related with health (as mentioned in the correlation analysis). Here it seems interesting that being a smoker or not is not significant for diabetes outcome. However, looks like 'Sex' and 'Income' are really relevant for the outcome.
-
-3.  Deviance and Residual Deviance: Deviance is a measure of model fit. We compare the deviance of our model to a null model (a model with no predictors) to assess how well our model explains the variability in the data. Lower deviance indicates a better fit and it can be seen that our model achieves that.
-
-4.  AIC (Akaike Information Criterion): AIC is a measure of model performance that penalizes for the number of parameters in the model. Lower AIC values indicate a better trade-off between model complexity and fit.
+3.  AIC (Akaike Information Criterion): AIC is a measure of model performance that penalizes for the number of parameters in the model. Lower AIC values indicate a better trade-off between model complexity and fit.
 
 Now that we have our model with all the variables, we will try to improve it by applying the step method. This is a method that is used for selecting a subset of predictors to include in a model. This process involves adding or removing variables one at a time based on statistical criteria (such as p-values) to improve the model's fit or simplicity. We will use two different approaches:
 
@@ -209,10 +213,17 @@ backward_model <- step(model_all,
                        direction = "backward")
 
 cat("\nForward Selection Model Summary:\n")
-summary(forward_model)
+tidy_summary_for <- tidy(forward_model)
+glance_summary_for <- glance(forward_model)
+full_summary_for <- bind_cols(tidy_summary_for, glance_summary_for)
+print(full_summary_for)
 
 cat("\nBackward Selection Model Summary:\n")
-summary(backward_model)
+tidy_summary_back <- tidy(backward_model)
+glance_summary_back <- glance(backward_model)
+full_summary_back <- bind_cols(tidy_summary_back, glance_summary_back)
+print(full_summary_back)
+
 ```
 
 After printing their summaries, we will select the model with the lowest AIC.
@@ -245,4 +256,11 @@ cat("Selected Variables:", paste(selected_variables, collapse = ", "), "\n\n")
 cat("Variables in 'model_all' but not selected by Backward Model:", paste(not_selected_variables, collapse = ", "), "\n")
 ```
 
-The backward model is selecting 19 variables out of the 22 variables that is using the full model. There are three variables that the most optimal model is not taking into account and this ones are AnyHealthcare, NoDocbcCost and Education_binary. This is something that we could have predicted because if we take a look to the summary of the model with all the variables, these three variables are the ones which has the highest p-value. Thus, they are the less significant for the first model.
+The backward model is selecting 19 variables out of the 23 variables that is using the full model. There are three variables that the most optimal model is not taking into account and this ones are Smoker, AnyHealthcare, NoDocbcCost and Education_binary. This is something that we could have predicted because if we take a look to the summary of the model with all the variables, these three variables are the ones which has the highest p-value. Thus, they are the less significant for the first model.
+
+# Saving Plots
+
+```{r}
+plot_3 |> 
+  ggsave(filename = "05_key_plot_3.png", path = "../results/")
+```

@@ -88,54 +88,56 @@ editor: visual
 
 ## Data Analysis
 
-<div style="display: flex; font-size: 0.8em;">
+::: columns
+::: {.column .small-font width="50%"}
 
-::: {style="flex: 1; padding-right: 10px;"}
 ### Correlation
-
--   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables.
+::: incremental
+-   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables. GenHlth and Income negatively correlated.
 
 -   **With the target variable**: GenHlth, HighBP and BMI most correlated with diabetes variable.
 
-    </div>
-
-    <div style="flex: 1; padding-left: 10px;">
+:::
+:::
+::: {.column .small-font width="50%"}
 
 ### GLM
-
+::: incremental
 -   **All variables**: Creation of a GLM with all numerical variables.
 
 -   **Step**: Step forward and backward for best variables selection.
 
--   **Results**: Lowest AIC achieved with backward model (contains 19 variables).
+-   **Results**: Lowest AIC achieved with backward model (contains 19 variables). Excluded variables from the full model are Smoker, AnyHealthcare, NoDocbcCost and Education_binary.
 
-    </div>
+:::
+:::
 :::
 
 ## Data Analysis
 
-<div style="display: flex; font-size: 0.8em;">
+::: columns
+::: {.column .small-font width="50%"}
 
-::: {style="flex: 1; padding-right: 10px;"}
 ### PCA + Logistic Regression
-
+::: incremental
 -   **Selected components**: 15 components that reach 80% of explained variability.
 
 -   **Logistic regression**: Use of those components to perform a diabetes prediction model.
 
 -   **Results**: Great accuracy with a value of 87%.
 
-    </div>
-
-    <div style="flex: 1; padding-left: 10px;">
+:::
+:::
+::: {.column .small-font width="50%"}
 
 ### New GLMs
-
+::: incremental
 -   **Men VS. Women**: Creation of two different datasets according to sex.
 
 -   **Results**: Better performance in Men model due to lowest AIC. More importance to general health variables and also to fruit variable. Much better performance than the GLM from first part of analysis.
 
-    </div>
+:::
+:::
 :::
 
 ## Results

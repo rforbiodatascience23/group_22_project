@@ -7,6 +7,11 @@ format:
 editor: visual
 ---
 
+```{r}
+library("tidyverse")
+library("broom")
+```
+
 ## Load data
 
 ```{r}
@@ -26,16 +31,16 @@ PCA is a dimensionality reduction method that is often used to reduce the dimens
 Having said that, first thing that has to be done is to work only with numerical variables. PCA is typically applied to continuous variables, and it assumes that the variables are on a numerical scale. PCA is based on the covariance matrix, which involves computing variances and covariances between numeric variables. Therefore, directly applying PCA to a dataset with categorical variables is not appropriate However, there are techniques that extend PCA to handle categorical variables. One such technique is called Multiple Correspondence Analysis (MCA), which is an extension of PCA for categorical data. MCA is suitable for datasets where variables are categorical and can take more than two levels. As we are not working with categorical data, we will forget about this idea.
 
 ```{r}
-sapply(df,class)
-numeriques <- which(sapply(df,is.numeric))
-numeriques
+column_classes <- df |>
+  map_chr(class)
+
+numeric_columns <- names(which(column_classes == "numeric")) |>
+  print()
 ```
 
 After checking which are the numerical variables of our data set, we will only select those ones to perform the analysis. Before using PCA, we have to make sure that all our data is playing on a level field. Scaling means adjusting the values so they're all in a similar range.
 
 ```{r}
-library(tidyverse)
-
 pca_fit <- df |> 
   select_if(where(is.numeric)) |>
   prcomp(scale = TRUE)
@@ -44,24 +49,17 @@ pca_fit <- df |>
 Now, we will create a special kind of map for our data using PCA. To do this, we blend the PCA results with the original data, adding back the information we temporarily set aside. It's like bringing back the colors to our points based on categories that were there in the first place but were temporarily taken away for PCA. We use a tool called **`augment()`** from the "broom" package to make this happen. It needs the model we created and the original data as inputs.
 
 ```{r}
-library(dplyr)
-library(broom)
-library(cowplot)
-
 df_augmented <- augment(pca_fit, df)
 
-ggplot(df_augmented, aes(.fittedPC1, 
-                         .fittedPC2, 
-                         color = Diabetes_Status)) + 
-  geom_point(size = 1.5) +
-  scale_color_manual(
-    values = c("Non-Diabetic" = "#D55E00", 
-               "Diabetic" = "#0072B2")) +
+ggplot(df_augmented, aes(.fittedPC1, .fittedPC2, color = Diabetes_Status)) + 
+  geom_point(size = 3, alpha = 0.7, shape = 16) +
+  scale_color_manual( values = c("Non-Diabetic" = "#FF5733", "Diabetic" = "#33FF57")) +
   theme_minimal() +
-  background_grid()
+  theme(panel.grid = element_blank(),
+        panel.background = element_rect(fill = "lightgray"))
 ```
 
-It can be noticed that the difference among having diabetes or not is being quite well distinguished in the two first components. We will continue by cretaing the rotation matrix. In PCA this matrix is like a set of instructions that turns our data points into a new set of directions. It helps to highlight the most important information in the data. We need to think of it as finding the best view tu understand patterns in the data.
+It can be noticed that the difference among having diabetes or not is being quite well distinguished in the two first components. We will continue by creating the rotation matrix. In PCA this matrix is like a set of instructions that turns our data points into a new set of directions. It helps to highlight the most important information in the data. We need to think of it as finding the best view tu understand patterns in the data.
 
 ```{r}
 pca_fit |>
@@ -81,26 +79,35 @@ Here we can see those results in a plot.
 pca_fit |>
   tidy(matrix = "eigenvalues") |>
   ggplot(aes(PC, percent)) +
-  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  geom_bar(fill = "#66c2a5", alpha = 0.7, stat = "identity") +
   scale_x_continuous(breaks = 1:22) +
-  scale_y_continuous(labels = scales::percent_format(),
-                     expand = expansion(mult = c(0, 0.01))) +
-  theme_minimal_hgrid(12)
+  theme_minimal()
 ```
 
 Having reached this part of the project, we now want to only select a certain amount of components to be used in our models. Selecting the number of components in PCA depends on our goals and the amount of data we are willing to retain. A common approach is to choose enough components to capture a significant portion of the total variance, often aiming for around 70-80%. This is of course a trade-off. The more components we have, the more information we will have. However, more noise will be introduced.
 
-To help us finding the desired number of components, we will create a scree plot and select those whose cumulative sum achives an 80% of cumulative variance.
+To help us finding the desired number of components, we will create a scree plot and select those whose cumulative sum achieves an 80% of cumulative variance.
 
 ```{r}
-plot(cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2), 
-     xlab = "Number of Principal Components",
-     ylab = "Cumulative Proportion of Variance Explained",
-     type = "b")
+cumulative_var <- cumsum(pca_fit$sdev^2) / sum(pca_fit$sdev^2)
 
-abline(h = 0.7, col = "red", lty = 2)
-abline(h = 0.75, col = "blue", lty = 2)
-abline(h = 0.8, col = "green", lty = 2)
+plot_data <- data.frame(
+  PC = seq_along(cumulative_var),
+  Cumulative_Proportion = cumulative_var
+)
+
+plot_4 <- ggplot(plot_data, aes(x = PC, y = Cumulative_Proportion)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Number of Principal Components",
+    y = "Cumulative Proportion of Variance Explained"
+  ) +
+  geom_hline(yintercept = 0.7, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0.75, linetype = "dashed", color = "blue") +
+  geom_hline(yintercept = 0.8, linetype = "dashed", color = "green")
+
+plot_4
 ```
 
 Looking at the results of the plot, we will select a total of 15 components.
@@ -120,28 +127,33 @@ After performing PCA and selecting the appropiate number of components, we will 
 ```{r}
 num_components <- 15
 
-selected_components <- pca_fit$x[, 1:num_components]
-
-outcome_variable <- df$Diabetes_binary
+selected_components <- as.data.frame(pca_fit$x[, 1:num_components])
 
 set.seed(123) 
 train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
 
-train_data <- selected_components[train_indices, ]
-train_outcome <- outcome_variable[train_indices]
-test_data <- selected_components[-train_indices, ]
-test_outcome <- outcome_variable[-train_indices]
+train_data <- selected_components |>
+  slice(train_indices)
 
-model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+train_outcome <- df$Diabetes_binary[train_indices]
+
+test_data <- selected_components |>
+  slice(-train_indices)
+
+test_outcome <- df$Diabetes_binary[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = cbind(train_outcome, train_data))
 
 predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
 
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-conf_matrix <- table(binary_predictions, test_outcome)
+conf_matrix <- table(Predicted = binary_predictions, Actual = test_outcome)
+
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-print(conf_matrix)
+conf_matrix |>
+  print()
 cat("Accuracy:", accuracy, "\n")
 ```
 
@@ -173,23 +185,36 @@ men_data <- df |>
 Lets use first women data in the model.
 
 ```{r}
-model_all <- glm(data = women_data,
+model_women <- glm(data = women_data,
                 Diabetes_binary ~ .,
                 family = binomial)
 
-summary(model_all)
+tidy_summary_women <- tidy(model_women)
+glance_summary_women <- glance(model_women)
+full_summary_women <- bind_cols(tidy_summary_women, glance_summary_women)
+print(full_summary_women)
 ```
 
 Now lets create a model for men data.
 
 ```{r}
-model_all <- glm(data = men_data,
+model_men <- glm(data = men_data,
                 Diabetes_binary ~ .,
                 family = binomial)
 
-summary(model_all)
+tidy_summary_men <- tidy(model_men)
+glance_summary_men <- glance(model_men)
+full_summary_men <- bind_cols(tidy_summary_men, glance_summary_men)
+print(full_summary_men)
 ```
 
 The results show how the model containing only male patients achieves a lower AIC than the model with only female patients. It is true that the difference is not very big. It can be seen how the male model gives more importance to variables related to physical health as well as the consumption of fruits instead of vegetables. The latter may make sense since there is a greater amount of sugar in fruits than in vegetables.
 
 Something that should be highlighted is that it has a significant improvement with the GLM built in the first part of the analysis. It manages to lower the value of the AIC a lot. This is something that we did not have in mind that could happen and that is why it can be considered as a task to analyze in the future.
+
+# Saving Plots
+
+```{r}
+plot_4 |> 
+  ggsave(filename = "06_key_plot_4.png", path = "../results/")
+```
