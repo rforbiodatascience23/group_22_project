@@ -167,7 +167,27 @@ editor: visual
 
 ## Results
 
-Analysis part1 results (same as part above)
+::: columns
+::: {.column width="50%"}
+![](../results/05_key_plot_3.png){width="100%"}
+:::
+
+::: {.column .small-font width="50%"}
+### Key Findings:
+::: {.incremental style="font-size: 0.7em;"}
+- **Correlation Analysis**:
+  - Health-related variables positively correlated with diabetes.
+  - Higher positive correlation between PhysHlth and GenHlth.
+  - Negative correlation between GenHlth and Income.
+
+- **GLM Results**:
+  - GenHlth, HighBP, and BMI are top predictors for diabetes.
+  - Backward selection model excludes Smoker, AnyHealthcare, and NoDocbcCost.
+  - Stronger health indicators suggest lower diabetes likelihood.
+
+:::
+:::
+:::
 
 ## Results
 
