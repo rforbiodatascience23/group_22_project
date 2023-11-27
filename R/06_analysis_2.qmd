@@ -53,7 +53,8 @@ df_augmented <- augment(pca_fit, df)
 
 ggplot(df_augmented, aes(.fittedPC1, .fittedPC2, color = Diabetes_Status)) + 
   geom_point(size = 3, alpha = 0.7, shape = 16) +
-  scale_color_manual( values = c("Non-Diabetic" = "#FF5733", "Diabetic" = "#33FF57")) +
+  scale_color_manual(values = c("Non-Diabetic" = "#FF5733", 
+                                "Diabetic" = "#33FF57")) +
   theme_minimal() +
   theme(panel.grid = element_blank(),
         panel.background = element_rect(fill = "lightgray"))
