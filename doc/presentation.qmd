@@ -93,9 +93,9 @@ editor: visual
 ### Correlation
 
 ::: incremental
--   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables. GenHlth and Income negatively correlated.
+-   **Purpose:** Check the relationship among numerical variables.
 
--   **With the target variable**: GenHlth, HighBP and BMI most correlated with diabetes variable.
+-   **Two types:** Between all the variables and only with the target variable (Diabetes_binary).
 :::
 :::
 
@@ -107,7 +107,7 @@ editor: visual
 
 -   **Step**: Step forward and backward for best variables selection.
 
--   **Results**: Lowest AIC achieved with backward model (contains 19 variables). Excluded variables from the full model are Smoker, AnyHealthcare, NoDocbcCost and Education_binary.
+-   **Evaluation**: Selection of lowest AIC model and analyse the selected variables.
 :::
 :::
 :::
@@ -119,11 +119,11 @@ editor: visual
 ### PCA + Logistic Regression
 
 ::: incremental
--   **Selected components**: 15 components that reach 80% of explained variability.
+-   **Purpose**: Decrease number of variables as we had plenty of them.
 
 -   **Logistic regression**: Use of those components to perform a diabetes prediction model.
 
--   **Results**: Great accuracy with a value of 87%.
+-   **Evaluation**: Confusion matrix and accuracy.
 :::
 :::
 
@@ -131,9 +131,11 @@ editor: visual
 ### New GLMs
 
 ::: incremental
--   **Men VS. Women**: Creation of two different datasets according to sex.
+-   **Purpose**: Check gender influence in the diagnosis of diabetes and tackle gender bias in science.
 
--   **Results**: Better performance in Men model due to lowest AIC. More importance to general health variables and also to fruit variable. Much better performance than the GLM from first part of analysis.
+-   **New datasets**: Creation of two different datasets according to sex.
+
+-   **Evaluation**: Compare the selected variables for each model and selection of the best model according to AIC.
 :::
 :::
 :::
