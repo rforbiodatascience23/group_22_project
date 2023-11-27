@@ -51,8 +51,9 @@ df_augmented <- augment(pca_fit, df)
 
 ggplot(df_augmented, aes(.fittedPC1, .fittedPC2, color = Diabetes_Status)) + 
   geom_point(size = 3, alpha = 0.7, shape = 16) +
-  scale_color_manual( values = c("Non-Diabetic" = "#FF5733", "Diabetic" = "#33FF57")) +
-  theme_minimal() +
+  scale_color_manual(values = c("Non-Diabetic" = "#FF5733", 
+                                "Diabetic" = "#33FF57")) +
+  theme_minimal(base_size = 14) +
   theme(panel.grid = element_blank(),
         panel.background = element_rect(fill = "lightgray"))
 ```
@@ -79,7 +80,7 @@ pca_fit |>
   ggplot(aes(PC, percent)) +
   geom_bar(fill = "#66c2a5", alpha = 0.7, stat = "identity") +
   scale_x_continuous(breaks = 1:22) +
-  theme_minimal()
+  theme_minimal(base_size = 14)
 ```
 
 Having reached this part of the project, we now want to only select a certain amount of components to be used in our models. Selecting the number of components in PCA depends on our goals and the amount of data we are willing to retain. A common approach is to choose enough components to capture a significant portion of the total variance, often aiming for around 70-80%. This is of course a trade-off. The more components we have, the more information we will have. However, more noise will be introduced.

@@ -76,8 +76,9 @@ ggplot(data = as.data.frame(as.table(cor_matrix)),
                        limit = c(-1, 1),
                        space = "Lab",
                        name = "Correlation") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.background = element_rect(fill = "white", color="white"))
 ```
 
 The redder the colour, the stronger the correlation in a positive way and the bluer the colour, the stronger but in a negative way. At first glance it can be seen that the health-related variables are positively related to each other. We are talking for example about the variables PhysHlth, GenHlth and DiffWalk and that there are no pairs of variables whose relationship is particularly negative.
@@ -130,9 +131,10 @@ plot_3 <- ggplot(data = as.data.frame(as.table(cor_with_diabetes)),
                        limit = c(-1, 1), 
                        space = "Lab", 
                        name = "Correlation") +
-  theme_minimal() +
+  theme_minimal(base_size = 14) +
   theme(axis.text.x = element_text(angle = 45, 
-                                   hjust = 1))
+                                   hjust = 1),
+        plot.background = element_rect(fill = "white", color="white"))
 
 plot_3
 ```
