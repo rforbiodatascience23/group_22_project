@@ -173,21 +173,24 @@ Lets create the model and interpret its results.
 model_all <- glm(data = df_numeric,
                 Diabetes_binary ~ .,
                 family = binomial)
+```
 
-summary(model_all)
+```{r}
+tidy_summary <- tidy(model_all)
+glance_summary <- glance(model_all)
+
+full_summary <- bind_cols(tidy_summary, glance_summary)
+
+print(full_summary)
 ```
 
 Running **`summary(model_all)`** gives us the summary of the fitted model. We will take a look to the most important aspects:
 
-1.  Coefficients: They represent the estimated log-odds (in the case of logistic regression) of the response variable based on the predictor variables. Positive coefficients indicate a positive association with the log-odds of the response, while negative coefficients indicate a negative association. In our case, the highest positive value is achieved by CholCheck (it relates to cholesterol check) and the highest negative value is achieved by HvyAlcoholConsump (it relates to drinking a lot of alcohol or not).
+1.  p-values: Low p-values (typically below 0.05) suggest that the corresponding predictor variable is statistically significant in predicting the outcome. These variables can be seen in the model summary with the \*\*\* symbol. Most of them are the ones related with health (as mentioned in the correlation analysis). Here it seems interesting that being a smoker or not is not significant for diabetes outcome. However, looks like 'Sex' and 'Income' are really relevant for the outcome.
 
-    Thus, a high positive coefficient suggests that as the predictor variable increases, the odds of the positive outcome also increase and a high negative coefficient suggests that as the predictor variable increases, the odds of the positive outcome decrease.
+2.  Deviance and Residual Deviance: Deviance is a measure of model fit. We compare the deviance of our model to a null model (a model with no predictors) to assess how well our model explains the variability in the data. Lower deviance indicates a better fit and it can be seen that our model achieves that.
 
-2.  p-values: Low p-values (typically below 0.05) suggest that the corresponding predictor variable is statistically significant in predicting the outcome. These variables can be seen in the model summary with the \*\*\* symbol. Most of them are the ones related with health (as mentioned in the correlation analysis). Here it seems interesting that being a smoker or not is not significant for diabetes outcome. However, looks like 'Sex' and 'Income' are really relevant for the outcome.
-
-3.  Deviance and Residual Deviance: Deviance is a measure of model fit. We compare the deviance of our model to a null model (a model with no predictors) to assess how well our model explains the variability in the data. Lower deviance indicates a better fit and it can be seen that our model achieves that.
-
-4.  AIC (Akaike Information Criterion): AIC is a measure of model performance that penalizes for the number of parameters in the model. Lower AIC values indicate a better trade-off between model complexity and fit.
+3.  AIC (Akaike Information Criterion): AIC is a measure of model performance that penalizes for the number of parameters in the model. Lower AIC values indicate a better trade-off between model complexity and fit.
 
 Now that we have our model with all the variables, we will try to improve it by applying the step method. This is a method that is used for selecting a subset of predictors to include in a model. This process involves adding or removing variables one at a time based on statistical criteria (such as p-values) to improve the model's fit or simplicity. We will use two different approaches:
 
@@ -205,10 +208,17 @@ backward_model <- step(model_all,
                        direction = "backward")
 
 cat("\nForward Selection Model Summary:\n")
-summary(forward_model)
+tidy_summary_for <- tidy(forward_model)
+glance_summary_for <- glance(forward_model)
+full_summary_for <- bind_cols(tidy_summary_for, glance_summary_for)
+print(full_summary_for)
 
 cat("\nBackward Selection Model Summary:\n")
-summary(backward_model)
+tidy_summary_back <- tidy(backward_model)
+glance_summary_back <- glance(backward_model)
+full_summary_back <- bind_cols(tidy_summary_back, glance_summary_back)
+print(full_summary_back)
+
 ```
 
 After printing their summaries, we will select the model with the lowest AIC.
