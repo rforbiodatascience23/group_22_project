@@ -7,6 +7,10 @@ format:
 editor: visual
 ---
 
+```{r}
+library("tidyverse")
+```
+
 ## Load Data
 
 ```{r message = FALSE}

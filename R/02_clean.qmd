@@ -7,6 +7,10 @@ format:
 editor: visual
 ---
 
+```{r}
+library("tidyverse")
+```
+
 ## Checking for missing values
 
 In the first part of data cleaning, we focus on identifying and removing any missing values in our dataset. Missing data can significantly impact the quality of our analysis, leading to biased or inaccurate results.

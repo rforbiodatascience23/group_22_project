@@ -7,6 +7,12 @@ format:
 editor: visual
 ---
 
+```{r}
+library("tidyverse")
+library("ggridges")
+library("RColorBrewer")
+```
+
 ## Load data
 
 ```{r message = FALSE}
@@ -92,3 +98,4 @@ plot_1 |>
 plot_2 |> 
   ggsave(filename = "04_key_plot_2.png", path = "../results/")
 ```
+
