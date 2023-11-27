@@ -93,7 +93,7 @@ editor: visual
 ::: {style="flex: 1; padding-right: 10px;"}
 ### Correlation
 
--   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables.
+-   **Between all variables**: health related variables correlated between them. Not highly negatively correlated variables. GenHlth and Income negatively correlated.
 
 -   **With the target variable**: GenHlth, HighBP and BMI most correlated with diabetes variable.
 
@@ -107,7 +107,7 @@ editor: visual
 
 -   **Step**: Step forward and backward for best variables selection.
 
--   **Results**: Lowest AIC achieved with backward model (contains 19 variables).
+-   **Results**: Lowest AIC achieved with backward model (contains 19 variables). Excluded variables from the full model are Smoker, AnyHealthcare, NoDocbcCost and Education_binary.
 
     </div>
 :::
