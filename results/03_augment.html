@@ -2630,24 +2630,12 @@ vertical-align: -.125em;
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
+
 </div>
 <section id="load-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-data">Load Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_cleaned <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;../data/02_dat_clean.tsv&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df_cleaned <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;../data/02_dat_clean.tsv&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="adding-new-variables" class="level2">
@@ -2656,122 +2644,122 @@ vertical-align: -.125em;
 <h3 class="anchored" data-anchor-id="smoking">Smoking</h3>
 <p>Changing the smokers variable from binary format to character. The value “0” which indicates non-smokers is changed to “Non-Smoker”, and the value “1” changed to “Smoker” respectively.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span> df_cleaned <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Smoking_Status =</span> <span class="fu">case_when</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    Smoker <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Non-Smoker&quot;</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    Smoker <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Smoker&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span> df_cleaned <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Smoking_Status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    Smoker <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Non-Smoker&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    Smoker <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Smoker&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="diabetes" class="level3">
 <h3 class="anchored" data-anchor-id="diabetes">Diabetes</h3>
 <p>Converting the diabetes_binary variable from binary to character.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diabetes_Status =</span> <span class="fu">case_when</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    Diabetes_binary <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Non-Diabetic&quot;</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    Diabetes_binary <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Diabetic&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diabetes_Status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    Diabetes_binary <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Non-Diabetic&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    Diabetes_binary <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Diabetic&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="gender" class="level3">
 <h3 class="anchored" data-anchor-id="gender">Gender</h3>
 <p>Changing the Sex variable from binary to character.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Sex_character =</span> <span class="fu">case_when</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Sex <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Female&quot;</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    Sex <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Male&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Sex_character =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    Sex <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Female&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    Sex <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Male&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="age" class="level3">
 <h3 class="anchored" data-anchor-id="age">Age</h3>
 <p>The age was changed from the 13-level age category to the corresponding range values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_Range =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;18-24&quot;</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;25-34&quot;</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;35-44&quot;</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">6</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;45-59&quot;</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">9</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">&quot;60-74&quot;</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">12</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">13</span> <span class="sc">~</span> <span class="st">&quot;75-&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_Range =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;18-24&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;25-34&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;35-44&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">6</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;45-59&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">9</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">&quot;60-74&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">==</span> <span class="dv">12</span> <span class="sc">|</span> Age <span class="sc">==</span> <span class="dv">13</span> <span class="sc">~</span> <span class="st">&quot;75-&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="income" class="level3">
 <h3 class="anchored" data-anchor-id="income">Income</h3>
 <p>Income variable changed from a scale from 1-9 to three classes: Poor, Average and Wealthy.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Class =</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    Income <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;Poor&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    Income  <span class="sc">&gt;</span> <span class="dv">3</span> <span class="sc">&amp;</span> Income <span class="sc">&lt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    Income <span class="sc">&gt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Wealthy&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Class =</span> <span class="fu">case_when</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Income <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;Poor&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    Income  <span class="sc">&gt;</span> <span class="dv">3</span> <span class="sc">&amp;</span> Income <span class="sc">&lt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    Income <span class="sc">&gt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Wealthy&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="physical-activity" class="level3">
 <h3 class="anchored" data-anchor-id="physical-activity">Physical Activity</h3>
 <p>This variable transforms the “PhysActivity” from binary to character.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Physically_Active =</span> <span class="fu">case_when</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    PhysActivity <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;No&quot;</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    PhysActivity <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Yes&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Physically_Active =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    PhysActivity <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;No&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    PhysActivity <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;Yes&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="habits" class="level3">
 <h3 class="anchored" data-anchor-id="habits">Habits</h3>
 <p>One variable that should be added is habits, a character variable that describes whether the lifestyle of the individual is healthy or not. This depends on many variables, namely Smoking, Alcohol consumption, Fruits and Veggies consumption and Physical Activity. For the first 2, we assigned -1 point, while for the latter 3, we assigned +1 respectively. A high score indicates a healthy lifestyle, a medium one indicates an average lifestyle, while a low score indicates an unhealthy one.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Habit_Score =</span> Veggies <span class="sc">+</span> Fruits <span class="sc">+</span> PhysActivity <span class="sc">-</span> Smoker <span class="sc">-</span> HvyAlcoholConsump) <span class="sc">|&gt;</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Habits =</span> <span class="fu">case_when</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Unhealthy&quot;</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> Habit_Score <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Healthy&quot;</span>),</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Habit_Score =</span> Veggies <span class="sc">+</span> Fruits <span class="sc">+</span> PhysActivity <span class="sc">-</span> Smoker <span class="sc">-</span> HvyAlcoholConsump) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Habits =</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Unhealthy&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> Habit_Score <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    Habit_Score <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Healthy&quot;</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="health-risk" class="level3">
 <h3 class="anchored" data-anchor-id="health-risk">Health risk</h3>
 <p>The health risk depends on the prevalence of a heart attack/disease, stroke, high BP and high cholesterol. This variable weights the heart disease and stroke variables more than the others.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Risk_Score =</span> HighBP <span class="sc">+</span> HighChol <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>Stroke <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>HeartDiseaseorAttack) <span class="sc">|&gt;</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Health_Risk =</span> <span class="fu">case_when</span>(</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Low Risk&quot;</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> Risk_Score <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;Medium Risk&quot;</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;High Risk&quot;</span>),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Risk_Score =</span> HighBP <span class="sc">+</span> HighChol <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>Stroke <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>HeartDiseaseorAttack) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Health_Risk =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;Low Risk&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> Risk_Score <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;Medium Risk&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    Risk_Score <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;High Risk&quot;</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="socio-economical-class" class="level3">
 <h3 class="anchored" data-anchor-id="socio-economical-class">Socio-economical Class</h3>
 <p>At first we created a binary variable for the educational background. 0 refers to individuals who didn’t attend school or attend school and didn’t graduate high-school, while 1 refers to those who graduated high school and maybe received higher education.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Education_binary =</span> <span class="fu">case_when</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    Education <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    Education <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SE_Score =</span> Income <span class="sc">+</span> AnyHealthcare <span class="sc">+</span> Education_binary <span class="sc">+</span> PhysActivity) <span class="sc">|&gt;</span> </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SE_Background =</span> <span class="fu">case_when</span>(</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    SE_Score <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Lower Class&quot;</span>,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    SE_Score <span class="sc">&gt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Higher Class&quot;</span>),</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_aug <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  df_aug <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Education_binary =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    Education <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Education <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SE_Score =</span> Income <span class="sc">+</span> AnyHealthcare <span class="sc">+</span> Education_binary <span class="sc">+</span> PhysActivity) <span class="sc">|&gt;</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SE_Background =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    SE_Score <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Lower Class&quot;</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    SE_Score <span class="sc">&gt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;Higher Class&quot;</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">&quot;unused&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="writing-the-file" class="level2">
 <h2 class="anchored" data-anchor-id="writing-the-file">Writing the file</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(df_aug, <span class="at">file =</span> <span class="st">&quot;../data/03_dat_aug.tsv&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(df_aug, <span class="at">file =</span> <span class="st">&quot;../data/03_dat_aug.tsv&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

@@ -7,7 +7,7 @@ format:
 editor: visual
 ---
 
-```{r}
+```{r echo = FALSE, message = FALSE}
 library("tidyverse")
 library("ggridges")
 library("RColorBrewer")
@@ -91,11 +91,10 @@ On the contrary, regarding the male counterparts, among the diabetic cases, ther
 
 # Saving Plots
 
-```{r}
+```{r message = FALSE}
 plot_1 |> 
   ggsave(filename = "04_key_plot_1.png", path = "../results/")
 
 plot_2 |> 
   ggsave(filename = "04_key_plot_2.png", path = "../results/")
 ```
-

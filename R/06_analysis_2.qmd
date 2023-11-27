@@ -7,17 +7,15 @@ format:
 editor: visual
 ---
 
-```{r}
+```{r echo=FALSE}
 library("tidyverse")
 library("broom")
 ```
 
 ## Load data
 
-```{r}
+```{r message = FALSE}
 df <- read_tsv("../data/03_dat_aug.tsv")
-
-head(df)
 ```
 
 The second script of analysis will be related to the performing PCA and the creation of some models with different variations. These variations are based on the creation of three different models. The first of them will use the components used to reach 80% variability after the PCA analysis combined with the use of logistic regression for prediction. The second and third ones will be different GLM for men and women. Thanks to this we will be able to analyze whether gender has a special importance when predicting patients with diabetes.
@@ -214,7 +212,7 @@ Something that should be highlighted is that it has a significant improvement wi
 
 # Saving Plots
 
-```{r}
+```{r message = FALSE}
 plot_4 |> 
   ggsave(filename = "06_key_plot_4.png", path = "../results/")
 ```
