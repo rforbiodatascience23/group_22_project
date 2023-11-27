@@ -127,28 +127,33 @@ After performing PCA and selecting the appropiate number of components, we will 
 ```{r}
 num_components <- 15
 
-selected_components <- pca_fit$x[, 1:num_components]
-
-outcome_variable <- df$Diabetes_binary
+selected_components <- as.data.frame(pca_fit$x[, 1:num_components])
 
 set.seed(123) 
 train_indices <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
 
-train_data <- selected_components[train_indices, ]
-train_outcome <- outcome_variable[train_indices]
-test_data <- selected_components[-train_indices, ]
-test_outcome <- outcome_variable[-train_indices]
+train_data <- selected_components |>
+  slice(train_indices)
 
-model <- glm(train_outcome ~ ., family = "binomial", data = as.data.frame(cbind(train_outcome, train_data)))
+train_outcome <- df$Diabetes_binary[train_indices]
+
+test_data <- selected_components |>
+  slice(-train_indices)
+
+test_outcome <- df$Diabetes_binary[-train_indices]
+
+model <- glm(train_outcome ~ ., family = "binomial", data = cbind(train_outcome, train_data))
 
 predictions <- predict(model, newdata = as.data.frame(test_data), type = "response")
 
 binary_predictions <- ifelse(predictions > 0.5, 1, 0)
 
-conf_matrix <- table(binary_predictions, test_outcome)
+conf_matrix <- table(Predicted = binary_predictions, Actual = test_outcome)
+
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
-print(conf_matrix)
+conf_matrix |>
+  print()
 cat("Accuracy:", accuracy, "\n")
 ```
 
