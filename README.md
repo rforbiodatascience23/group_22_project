@@ -30,6 +30,5 @@ Run the 00_all.file to render all files:
 
 -   04_describe.qmd: Visualizing the data
 
--   05_analysis_1.qmd:
+-   05_analysis_1.qmd & 06_analysis_2: The analysis part has been divided into two different scripts. The first one analyses the correlation with all variables and with the target variable (Diabetes_binary). In addition to this a GLM is created with all numerical variables and a "step" is applied to get the best possible model. The second script performs PCA and its result is used to create a prediction model. The analysis ends by making a comparison between two different GLMs created by differentiating the gender.
 
--   06_analysis_2.qmd:
