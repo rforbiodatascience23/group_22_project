@@ -172,17 +172,16 @@ editor: visual
 
 ::: {.column .small-font width="50%"}
 ### Key Findings:
+
 ::: {.incremental style="font-size: 0.7em;"}
-- **Correlation Analysis**:
-  - Health-related variables positively correlated with diabetes.
-  - Higher positive correlation between PhysHlth and GenHlth.
-  - Negative correlation between GenHlth and Income.
-
-- **GLM Results**:
-  - GenHlth, HighBP, and BMI are top predictors for diabetes.
-  - Backward selection model excludes Smoker, AnyHealthcare, and NoDocbcCost.
-  - Stronger health indicators suggest lower diabetes likelihood.
-
+-   **Correlation Analysis**:
+    -   Health-related variables positively correlated with diabetes.
+    -   Higher positive correlation between PhysHlth and GenHlth.
+    -   Negative correlation between GenHlth and Income.
+-   **GLM Results**:
+    -   GenHlth, HighBP, and BMI are top predictors for diabetes.
+    -   Backward selection model excludes Smoker, AnyHealthcare, and NoDocbcCost.
+    -   Stronger health indicators suggest lower diabetes likelihood.
 :::
 :::
 :::
@@ -196,41 +195,37 @@ editor: visual
 
 ::: {.column .small-font width="50%"}
 ### Key Findings:
+
 ::: {.incremental style="font-size: 0.7em;"}
-- **PCA Analysis**:
-  - Clear distinction in diabetes status across principal components.
-  - Top components capture significant variance in health-related variables.
-
-- **Logistic Regression Model**:
-  - High accuracy in predicting diabetes using principal components.
-  - Confirms the strong link between health indicators and diabetes.
-
-- **Gender-Based GLM Analysis**:
-  - Men's and women's data show different predictive variables' importance.
-  - Suggests gender-specific approaches might be more effective in diabetes prediction.
-
+-   **PCA Analysis**:
+    -   Clear distinction in diabetes status across principal components.
+    -   Top components capture significant variance in health-related variables.
+-   **Logistic Regression Model**:
+    -   High accuracy in predicting diabetes using principal components.
+    -   Confirms the strong link between health indicators and diabetes.
+-   **Gender-Based GLM Analysis**:
+    -   Men's and women's data show different predictive variables' importance.
+    -   Suggests gender-specific approaches might be more effective in diabetes prediction.
 :::
 :::
 :::
-
 
 ## Discussion
 
 ### Concluding Thoughts
+
 ::: incremental
 ::: columns
 ::: {.column .small-font width="50%"}
-- **Key Predictive Variables in Diabetes Prognosis**:
-  - `GenHlth`, `HighBP`, and `BMI` emerged as significant predictors.
-  - Highlights the interplay of overall health and specific medical indicators in diabetes risk.
-
+-   **Key Predictive Variables in Diabetes Prognosis**:
+    -   `GenHlth`, `HighBP`, and `BMI` emerged as significant predictors.
+    -   Highlights the interplay of overall health and specific medical indicators in diabetes risk.
 :::
+
 ::: {.column .small-font width="50%"}
-- **Gender's Influence on Diabetes**:
-  - Different predictive variables for men and women indicate a gender-specific impact.
-  - Suggests tailored approaches in diabetes care based on gender.
-
+-   **Gender's Influence on Diabetes**:
+    -   Different predictive variables for men and women indicate a gender-specific impact.
+    -   Suggests tailored approaches in diabetes care based on gender.
 :::
 :::
 :::
-
